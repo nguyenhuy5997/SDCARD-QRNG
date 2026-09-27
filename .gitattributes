@@ -1,0 +1,2 @@
+# Windows batch files must keep CRLF on every machine (cmd mis-parses labels/goto with LF), whatever core.autocrlf is
+*.bat text eol=crlf

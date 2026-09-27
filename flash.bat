@@ -10,19 +10,21 @@ rem Build first (build.bat). The external loader is ExtMemLoader\Release\exercis
 rem ExtMemLoader\Release\EVT2_V8Y_GD25Q128E.stldr (build it once with "build.bat loader").
 rem Always connects with mode=UR (under reset): a HOTPLUG connect while the Appli runs XIP fails with
 rem "failed to erase memory". Do not interrupt a running flash (it can leave the ST-Link stuck until replugged).
-rem Override the tool path with the environment variable PROGRAMMER_CLI.
+rem STM32_Programmer_CLI is found by find_tools.bat (CubeIDE plugin, standalone CubeProgrammer or PATH); override
+rem it with the environment variable PROGRAMMER_CLI.
 
 setlocal EnableExtensions
 set "ROOT=%~dp0"
 if "%ROOT:~-1%"=="\" set "ROOT=%ROOT:~0,-1%"
-if not defined PROGRAMMER_CLI set "PROGRAMMER_CLI=D:\Tools\STM32CubeIDE_2.2.0\STM32CubeIDE\plugins\com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.win32_2.2.500.202603051304\tools\bin\STM32_Programmer_CLI.exe"
+call "%ROOT%\find_tools.bat"
 
 if not exist "%PROGRAMMER_CLI%" (
-    echo [flash] STM32_Programmer_CLI not found: %PROGRAMMER_CLI%
+    echo [flash] STM32_Programmer_CLI not found ^(install STM32CubeIDE or STM32CubeProgrammer^)
     echo         set PROGRAMMER_CLI=^<path to STM32_Programmer_CLI.exe^>
     exit /b 1
 )
 
+echo [flash] using %PROGRAMMER_CLI%
 set "BOOT_ELF=%ROOT%\Boot\Release\exercise1_Boot.elf"
 set "APPLI_ELF=%ROOT%\Appli\Release\exercise1_Appli.elf"
 set "LOADER_ELF=%ROOT%\ExtMemLoader\Release\exercise1_ExtMemLoader.elf"

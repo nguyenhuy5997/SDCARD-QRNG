@@ -8,16 +8,18 @@ rem   build.bat loader     external loader for the GD25 (flash.bat)  -> ExtMemLo
 rem   build.bat all        all three
 rem
 rem Uses its own scratch workspace (default %TEMP%\evt2_v8y_ws), so it works while the IDE has the real workspace open.
-rem Override the tool path or the workspace with the environment variables CUBEIDE and V8Y_WS.
+rem STM32CubeIDE is found by find_tools.bat (see there); override the tool path or the workspace with the
+rem environment variables CUBEIDE and V8Y_WS.
 
 setlocal EnableExtensions
 set "ROOT=%~dp0"
 if "%ROOT:~-1%"=="\" set "ROOT=%ROOT:~0,-1%"
-if not defined CUBEIDE set "CUBEIDE=D:\Tools\STM32CubeIDE_2.2.0\STM32CubeIDE\stm32cubeidec.exe"
+call "%ROOT%\find_tools.bat"
 if not defined V8Y_WS set "V8Y_WS=%TEMP%\evt2_v8y_ws"
+echo [build] using %CUBEIDE%
 
 if not exist "%CUBEIDE%" (
-    echo [build] STM32CubeIDE not found: %CUBEIDE%
+    echo [build] STM32CubeIDE not found ^(looked in C:\ST, D:\ST, C:\Tools, D:\Tools, Program Files^)
     echo         set CUBEIDE=^<path to stm32cubeidec.exe^>
     exit /b 1
 )
