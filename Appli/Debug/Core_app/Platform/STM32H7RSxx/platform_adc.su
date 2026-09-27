@@ -1,0 +1,6 @@
+../Core_app/Platform/STM32H7RSxx/platform_adc.c:45:19:platform_adc_init	16	static
+../Core_app/Platform/STM32H7RSxx/platform_adc.c:67:19:platform_adc_deinit	0	static
+../Core_app/Platform/STM32H7RSxx/platform_adc.c:77:19:platform_adc_read	16	static
+../Core_app/Platform/STM32H7RSxx/platform_adc.c:98:19:platform_adc_start_dma	16	static
+../Core_app/Platform/STM32H7RSxx/platform_adc.c:110:19:platform_adc_stop_dma	8	static
+../Core_app/Platform/STM32H7RSxx/platform_adc.c:122:10:platform_adc_dma_pos	0	static

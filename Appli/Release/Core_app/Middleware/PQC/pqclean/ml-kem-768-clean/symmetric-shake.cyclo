@@ -1,0 +1,3 @@
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/symmetric-shake.c:18:6:PQCLEAN_MLKEM768_CLEAN_kyber_shake128_absorb	1
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/symmetric-shake.c:42:6:PQCLEAN_MLKEM768_CLEAN_kyber_shake256_prf	1
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/symmetric-shake.c:62:6:PQCLEAN_MLKEM768_CLEAN_kyber_shake256_rkprf	1

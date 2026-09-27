@@ -1,0 +1,2 @@
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Loader/core/systick_management.c:44:19:HAL_InitTick	0	static
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Loader/core/systick_management.c:66:10:HAL_GetTick	0	static

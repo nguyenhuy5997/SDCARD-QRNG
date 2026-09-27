@@ -1,0 +1,6 @@
+../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes.c:309:13:shift_rows	3
+../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes.c:322:13:inv_shift_rows	3
+../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes.c:380:13:add_roundkey	3
+../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes.c:115:6:AES_user_encrypt	20
+../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes.c:169:6:AES_user_decrypt	28
+../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes.c:207:12:AES_ctx_alloc	5

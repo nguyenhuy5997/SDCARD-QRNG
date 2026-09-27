@@ -1,0 +1,9 @@
+D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_cryp_ex.c:964:13:CRYPEx_SetKey	0	static
+D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_cryp_ex.c:840:26:CRYPEx_KeyEncrypt	32	static
+D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_cryp_ex.c:720:26:CRYPEx_KeyDecrypt	32	static
+D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_cryp_ex.c:118:19:HAL_CRYPEx_AESGCM_GenerateAuthTAG	32	static
+D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_cryp_ex.c:295:19:HAL_CRYPEx_AESCCM_GenerateAuthTAG	48	static
+D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_cryp_ex.c:490:19:HAL_CRYPEx_WrapKey	16	static
+D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_cryp_ex.c:543:19:HAL_CRYPEx_UnwrapKey	16	static
+D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_cryp_ex.c:614:19:HAL_CRYPEx_EncryptSharedKey	8	static
+D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_cryp_ex.c:669:19:HAL_CRYPEx_DecryptSharedKey	16	static

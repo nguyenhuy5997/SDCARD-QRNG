@@ -1,0 +1,12 @@
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:761:38:driver_set_FlagWEL.constprop	3
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:140:38:EXTMEM_DRIVER_NOR_SFDP_Init	7
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:270:38:EXTMEM_DRIVER_NOR_SFDP_DeInit	1
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:282:6:EXTMEM_DRIVER_NOR_SFDP_GetFlashInfo	5
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:308:38:EXTMEM_DRIVER_NOR_SFDP_Read	2
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:342:38:EXTMEM_DRIVER_NOR_SFDP_Write	6
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:562:38:EXTMEM_DRIVER_NOR_SFDP_MassErase	3
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:609:38:EXTMEM_DRIVER_NOR_SFDP_SectorErase	9
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:699:38:EXTMEM_DRIVER_NOR_SFDP_Enable_MemoryMappedMode	1
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:722:38:EXTMEM_DRIVER_NOR_SFDP_Disable_MemoryMappedMode	1
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:797:13:EXTMEM_MemCopy	2
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/nor_sfdp/stm32_sfdp_driver.c:424:38:EXTMEM_DRIVER_NOR_SFDP_WriteInMappedMode	20

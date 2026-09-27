@@ -1,0 +1,5 @@
+../Core_app/Drivers/QRNG/extractor.c:123:13:reseed_toeplitz	2
+../Core_app/Drivers/QRNG/extractor.c:27:6:extractor_init	1
+../Core_app/Drivers/QRNG/extractor.c:41:6:extractor_run	5
+../Core_app/Drivers/QRNG/extractor.c:67:6:extractor_reseed	6
+../Core_app/Drivers/QRNG/extractor.c:96:9:extractor_set_key	6

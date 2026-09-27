@@ -1,0 +1,17 @@
+../Core_app/Middleware/CA/ca_x509.c:94:25:tlv_expect	14
+../Core_app/Middleware/CA/ca_x509.c:122:25:ecdsa_sig_der_ok	12
+../Core_app/Middleware/CA/ca_x509.c:200:25:parse_utctime	21
+../Core_app/Middleware/CA/ca_x509.c:233:13:u256_from_be	2
+../Core_app/Middleware/CA/ca_x509.c:116:13:span_is	2
+../Core_app/Middleware/CA/ca_x509.c:505:18:ca_token_parse.part.0	14
+../Core_app/Middleware/CA/ca_x509.c:283:13:submod	4
+../Core_app/Middleware/CA/ca_x509.c:273:13:addmod	7
+../Core_app/Middleware/CA/ca_x509.c:292:13:mulmod	3
+../Core_app/Middleware/CA/ca_x509.c:144:25:parse_name	18
+../Core_app/Middleware/CA/ca_x509.c:305:13:p256_point_ok	10
+../Core_app/Middleware/CA/ca_x509.c:367:18:ca_x509_parse_cert.part.0	67
+../Core_app/Middleware/CA/ca_x509.c:326:6:ca_x509_point_on_curve	1
+../Core_app/Middleware/CA/ca_x509.c:367:18:ca_x509_parse_cert	3
+../Core_app/Middleware/CA/ca_x509.c:505:18:ca_token_parse	3
+../Core_app/Middleware/CA/ca_x509.c:556:18:ca_chain_verify	36
+../Core_app/Middleware/CA/ca_x509.c:606:13:ca_x509_status_name	2

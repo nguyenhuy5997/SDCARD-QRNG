@@ -1,0 +1,3 @@
+../Core_app/Platform/STM32H7RSxx/platform_rng.c:45:19:platform_rng_init	3
+../Core_app/Platform/STM32H7RSxx/platform_rng.c:61:19:platform_rng_get_word	4
+../Core_app/Platform/STM32H7RSxx/platform_rng.c:73:19:platform_rng_get_bytes	7

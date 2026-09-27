@@ -1,0 +1,4 @@
+../Core_app/Drivers/QRNG/entropy.c:27:6:entropy_init	0	static
+../Core_app/Drivers/QRNG/entropy.c:32:6:entropy_get_samples	0	static
+../Core_app/Drivers/QRNG/entropy.c:46:6:entropy_reset	4	static
+../Core_app/Drivers/QRNG/entropy.c:58:6:entropy_run_health_checks	48	static

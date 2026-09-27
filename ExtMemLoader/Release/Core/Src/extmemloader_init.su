@@ -1,0 +1,2 @@
+../Core/Src/extmemloader_init.c:78:10:extmemloader_Init	256	static,ignoring_inline_asm
+../Core/Src/extmemloader_init.c:371:6:Error_Handler	0	static

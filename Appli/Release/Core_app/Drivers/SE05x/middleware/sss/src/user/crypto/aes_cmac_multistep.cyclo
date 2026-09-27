@@ -1,0 +1,2 @@
+../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes_cmac_multistep.c:23:6:aes_cmac_update	1
+../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes_cmac_multistep.c:33:6:aes_cmac_finish	3

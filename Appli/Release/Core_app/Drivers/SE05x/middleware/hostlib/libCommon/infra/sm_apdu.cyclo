@@ -1,0 +1,11 @@
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_apdu.c:49:4:AllocateAPDUBuffer	2
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_apdu.c:69:4:FreeAPDUBuffer	3
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_apdu.c:90:4:SetApduHeader	2
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_apdu.c:126:6:smApduAdaptLc	6
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_apdu.c:136:6:smApduAdaptLe	7
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_apdu.c:147:6:smApduAdaptLcLe	11
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_apdu.c:264:5:smApduAppendCmdData	8
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_apdu.c:356:5:smGetSw	6
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_apdu.c:393:5:smApduGetResponseBody	10
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_apdu.c:459:6:smApduGetArrayBytes	6
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_apdu.c:485:6:smApduGetTxRxCase	11

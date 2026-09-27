@@ -1,0 +1,9 @@
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/polyvec.c:15:6:PQCLEAN_MLKEM768_CLEAN_polyvec_compress	48	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/polyvec.c:54:6:PQCLEAN_MLKEM768_CLEAN_polyvec_decompress	40	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/polyvec.c:82:6:PQCLEAN_MLKEM768_CLEAN_polyvec_tobytes	16	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/polyvec.c:99:6:PQCLEAN_MLKEM768_CLEAN_polyvec_frombytes	16	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/polyvec.c:113:6:PQCLEAN_MLKEM768_CLEAN_polyvec_ntt	8	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/polyvec.c:128:6:PQCLEAN_MLKEM768_CLEAN_polyvec_invntt_tomont	8	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/polyvec.c:145:6:PQCLEAN_MLKEM768_CLEAN_polyvec_basemul_acc_montgomery	528	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/polyvec.c:167:6:PQCLEAN_MLKEM768_CLEAN_polyvec_reduce	8	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/polyvec.c:183:6:PQCLEAN_MLKEM768_CLEAN_polyvec_add	24	static

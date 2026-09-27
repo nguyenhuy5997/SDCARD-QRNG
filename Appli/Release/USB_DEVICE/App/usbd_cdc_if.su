@@ -1,0 +1,6 @@
+../USB_DEVICE/App/usbd_cdc_if.c:173:15:CDC_DeInit_HS	0	static
+../USB_DEVICE/App/usbd_cdc_if.c:314:15:CDC_TransmitCplt_HS	0	static
+../USB_DEVICE/App/usbd_cdc_if.c:268:15:CDC_Receive_HS	16	static
+../USB_DEVICE/App/usbd_cdc_if.c:158:15:CDC_Init_HS	8	static
+../USB_DEVICE/App/usbd_cdc_if.c:187:15:CDC_Control_HS	0	static
+../USB_DEVICE/App/usbd_cdc_if.c:288:9:CDC_Transmit_HS	8	static

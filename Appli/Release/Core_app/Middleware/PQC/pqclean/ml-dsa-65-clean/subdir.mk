@@ -1,0 +1,48 @@
+################################################################################
+# Automatically-generated file. Do not edit!
+# Toolchain: GNU Tools for STM32 (14.3.rel1)
+################################################################################
+
+# Add inputs and outputs from these tool invocations to the build variables 
+C_SRCS += \
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/ntt.c \
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/packing.c \
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/poly.c \
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/polyvec.c \
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/reduce.c \
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/rounding.c \
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.c \
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/symmetric-shake.c 
+
+OBJS += \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/ntt.o \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/packing.o \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/poly.o \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/polyvec.o \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/reduce.o \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/rounding.o \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.o \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/symmetric-shake.o 
+
+C_DEPS += \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/ntt.d \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/packing.d \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/poly.d \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/polyvec.d \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/reduce.d \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/rounding.d \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.d \
+./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/symmetric-shake.d 
+
+
+# Each subdirectory must supply rules for building sources it contributes
+Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/%.o Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/%.su Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/%.cyclo: ../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/%.c Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/subdir.mk
+	arm-none-eabi-gcc "$<" -mcpu=cortex-m7 -std=gnu11 -DUSE_HAL_DRIVER -DSTM32H7S3xx -DT1oI2C -DT1oI2C_UM11225 -DSSS_USE_FTR_FILE -DAX_EMBEDDED=1 -DPLUG_AND_TRUST_STM32 -DPLUG_AND_TRUST_STM32_ENABLE_SCP03 -DHOST_IF_UART -c -I../Core/Inc -I../../Drivers/STM32H7RSxx_HAL_Driver/Inc -I../../Drivers/STM32H7RSxx_HAL_Driver/Inc/Legacy -I../../Drivers/CMSIS/Device/ST/STM32H7RSxx/Include -I../../Drivers/CMSIS/Include -I../Core_app/Platform -I../Core_app/BSP -I../Core_app/App -I../Core_app/Middleware/Security -I../Core_app/Middleware/Biometric -I../Core_app/Middleware/QRNG -I../Core_app/Middleware/CommandProtocol -I../Core_app/Middleware/CA -I../Core_app/Middleware/PQC -I../Core_app/Middleware/PQC/pqclean -I../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean -I../Core_app/Middleware/PQC/pqclean/common -I../Core_app/Drivers/QRNG -I../Core_app/Drivers/AD5398 -I../Core_app/Drivers/FPC5234 -I../Core_app/Drivers/SE05x/middleware/hostlib/inc -I../Core_app/Drivers/SE05x/middleware/hostlib/platform/inc -I../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra -I../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/log -I../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom -I../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/T1oI2C -I../Core_app/Drivers/SE05x/middleware/hostlib/se05x/src -I../Core_app/Drivers/SE05x/middleware/hostlib/se05x_03_xx_xx -I../Core_app/Drivers/SE05x/middleware/sss/inc -I../Core_app/Drivers/SE05x/middleware/sss/port/default -I../Core_app/Drivers/SE05x/middleware/sss/src/user -I../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto -I../Core_app/Drivers/SE05x/config -I../Core_app/Drivers/SE05x/platform/stm32h7rs/inc -I../Core_app/Drivers/SE05x/tests -I../USB_DEVICE/App -I../USB_DEVICE/Target -I../../Middlewares/ST/STM32_USB_Device_Library/Core/Inc -I../../Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc -O3 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"$(@:%.o=%.d)" -MT"$@" --specs=nano.specs -mfpu=fpv5-d16 -mfloat-abi=hard -mthumb -o "$@"
+
+clean: clean-Core_app-2f-Middleware-2f-PQC-2f-pqclean-2f-ml-2d-dsa-2d-65-2d-clean
+
+clean-Core_app-2f-Middleware-2f-PQC-2f-pqclean-2f-ml-2d-dsa-2d-65-2d-clean:
+	-$(RM) ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/ntt.cyclo ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/ntt.d ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/ntt.o ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/ntt.su ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/packing.cyclo ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/packing.d ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/packing.o ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/packing.su ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/poly.cyclo ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/poly.d ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/poly.o ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/poly.su ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/polyvec.cyclo ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/polyvec.d ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/polyvec.o ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/polyvec.su ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/reduce.cyclo ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/reduce.d ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/reduce.o ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/reduce.su ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/rounding.cyclo ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/rounding.d ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/rounding.o ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/rounding.su ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.cyclo ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.d ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.o ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.su ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/symmetric-shake.cyclo ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/symmetric-shake.d ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/symmetric-shake.o ./Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/symmetric-shake.su
+
+.PHONY: clean-Core_app-2f-Middleware-2f-PQC-2f-pqclean-2f-ml-2d-dsa-2d-65-2d-clean
+

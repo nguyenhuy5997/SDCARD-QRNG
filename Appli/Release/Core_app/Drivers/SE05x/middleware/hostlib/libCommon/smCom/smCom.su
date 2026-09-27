@@ -1,0 +1,4 @@
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smCom.c:148:5:smCom_Init	4	static
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smCom.c:193:6:smCom_DeInit	0	static
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smCom.c:229:5:smCom_Transceive	0	static
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smCom.c:253:5:smCom_TransceiveRaw	8	static

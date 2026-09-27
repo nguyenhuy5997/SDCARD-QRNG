@@ -1,0 +1,4 @@
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/T1oI2C/phNxpEsePal_i2c.c:135:6:phPalEse_i2c_close	1
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/T1oI2C/phNxpEsePal_i2c.c:161:11:phPalEse_i2c_open_and_configure	4
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/T1oI2C/phNxpEsePal_i2c.c:206:5:phPalEse_i2c_read	7
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/T1oI2C/phNxpEsePal_i2c.c:251:5:phPalEse_i2c_write	5

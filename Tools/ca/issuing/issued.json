@@ -1,0 +1,30 @@
+[
+  {
+    "serial": "4D1E9B1D39013BFFCE680458E7D5A3FF",
+    "device_id": "111111111111111111111111111111111111",
+    "not_before": 1789997552,
+    "not_after": 2105357612,
+    "status": "good"
+  },
+  {
+    "serial": "1111FE655D76A1FE43D422FD93CAAD86",
+    "device_id": "222222222222222222222222222222222222",
+    "not_before": 1789997552,
+    "not_after": 2105357612,
+    "status": "good"
+  },
+  {
+    "serial": "6B420FCA4F9CD9CD1EEF0C7461AB747C",
+    "device_id": "04005001B5747A2B4055AD04493112482590",
+    "not_before": 1790497293,
+    "not_after": 2105857353,
+    "status": "good"
+  },
+  {
+    "serial": "0B8171D3E1A2FD60FF9EAEDBEC7070B7",
+    "device_id": "04005001B5747A2B4055AD04493112482590",
+    "not_before": 1790497324,
+    "not_after": 2105857384,
+    "status": "good"
+  }
+]

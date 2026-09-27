@@ -1,0 +1,2 @@
+../Core_app/Drivers/QRNG/toeplitz_util.c:35:5:generate_toeplitz_bits	14
+../Core_app/Drivers/QRNG/toeplitz_util.c:97:20:check_toeplitz_quality	6

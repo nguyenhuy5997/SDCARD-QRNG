@@ -1,0 +1,3 @@
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/ntt.c:80:6:PQCLEAN_MLKEM768_CLEAN_ntt	64	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/ntt.c:106:6:PQCLEAN_MLKEM768_CLEAN_invntt	56	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/ntt.c:140:6:PQCLEAN_MLKEM768_CLEAN_basemul	24	static

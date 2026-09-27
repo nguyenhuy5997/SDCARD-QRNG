@@ -1,0 +1,15 @@
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:19:6:PQCLEAN_MLKEM768_CLEAN_poly_compress	32	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:57:6:PQCLEAN_MLKEM768_CLEAN_poly_decompress	8	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:76:6:PQCLEAN_MLKEM768_CLEAN_poly_tobytes	16	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:102:6:PQCLEAN_MLKEM768_CLEAN_poly_frombytes	4	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:118:6:PQCLEAN_MLKEM768_CLEAN_poly_frommsg	32	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:137:6:PQCLEAN_MLKEM768_CLEAN_poly_tomsg	8	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:169:6:PQCLEAN_MLKEM768_CLEAN_poly_getnoise_eta1	136	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:187:6:PQCLEAN_MLKEM768_CLEAN_poly_getnoise_eta2	136	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:203:6:PQCLEAN_MLKEM768_CLEAN_poly_ntt	16	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:217:6:PQCLEAN_MLKEM768_CLEAN_poly_invntt_tomont	0	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:230:6:PQCLEAN_MLKEM768_CLEAN_poly_basemul_montgomery	32	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:246:6:PQCLEAN_MLKEM768_CLEAN_poly_tomont	16	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:262:6:PQCLEAN_MLKEM768_CLEAN_poly_reduce	16	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:278:6:PQCLEAN_MLKEM768_CLEAN_poly_add	4	static
+../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/poly.c:294:6:PQCLEAN_MLKEM768_CLEAN_poly_sub	4	static

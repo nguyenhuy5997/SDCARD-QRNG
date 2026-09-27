@@ -1,0 +1,10 @@
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c:133:22:EXTMEM_Init	3
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c:245:22:EXTMEM_DeInit	3
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c:338:22:EXTMEM_Read	3
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c:435:22:EXTMEM_Write	3
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c:538:22:EXTMEM_WriteInMappedMode	3
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c:608:22:EXTMEM_EraseSector	17
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c:773:22:EXTMEM_EraseAll	3
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c:863:22:EXTMEM_GetInfo	3
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c:945:22:EXTMEM_MemoryMappedMode	6
+D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.c:1086:22:EXTMEM_GetMapAddress	5

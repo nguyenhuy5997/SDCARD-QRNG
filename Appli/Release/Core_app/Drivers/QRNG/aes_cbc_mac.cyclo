@@ -1,0 +1,4 @@
+../Core_app/Drivers/QRNG/aes_cbc_mac.c:13:6:aes_cbc_mac_init	1
+../Core_app/Drivers/QRNG/aes_cbc_mac.c:19:6:aes_cbc_mac_set_key	1
+../Core_app/Drivers/QRNG/aes_cbc_mac.c:24:6:aes_cbc_mac_extractor	1
+../Core_app/Drivers/QRNG/aes_cbc_mac.c:29:6:aes_cbc_mac_extractor_batch	1

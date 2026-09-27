@@ -1,0 +1,2 @@
+../Core_app/Drivers/QRNG/toeplitz.c:26:6:toeplitz_build_lookup	32	static
+../Core_app/Drivers/QRNG/toeplitz.c:49:6:toeplitz_extractor_ultra_fast	4056	static

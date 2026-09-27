@@ -1,0 +1,15 @@
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:162:22:wait_for_fresh_buffer.constprop	24	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:516:22:get_entropy_using	24	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:252:15:qrng_service_init	16	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:370:15:qrng_service_deinit	16	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:387:6:qrng_service_is_ready	0	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:456:15:qrng_service_get_noise	16	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:593:15:qrng_service_get_entropy	0	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:598:15:qrng_service_get_entropy_with	0	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:603:15:qrng_service_set_health_test	0	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:609:6:qrng_service_is_healthy	0	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:614:15:qrng_service_set_extractor	0	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:625:15:qrng_service_set_extractor_key	8	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:638:15:qrng_service_reseed_extractor	8	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:649:15:qrng_service_set_auto_reseed	0	static
+../Core_app/Middleware/QRNG/ADC_Noise/qrng_service_adc_noise.c:656:15:qrng_service_get_startup_health_record	8	static

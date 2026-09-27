@@ -1,0 +1,9 @@
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.c:23:5:PQCLEAN_MLDSA65_CLEAN_crypto_sign_keypair	59632	static
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.c:84:5:PQCLEAN_MLDSA65_CLEAN_crypto_sign_signature_ctx	78184	static
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.c:215:5:PQCLEAN_MLDSA65_CLEAN_crypto_sign_ctx	32	static
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.c:248:5:PQCLEAN_MLDSA65_CLEAN_crypto_sign_verify_ctx	56296	static
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.c:344:5:PQCLEAN_MLDSA65_CLEAN_crypto_sign_open_ctx	40	static
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.c:378:5:PQCLEAN_MLDSA65_CLEAN_crypto_sign_signature	24	static
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.c:386:5:PQCLEAN_MLDSA65_CLEAN_crypto_sign	32	static
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.c:394:5:PQCLEAN_MLDSA65_CLEAN_crypto_sign_verify	24	static
+../Core_app/Middleware/PQC/pqclean/ml-dsa-65-clean/sign.c:402:5:PQCLEAN_MLDSA65_CLEAN_crypto_sign_open	24	static

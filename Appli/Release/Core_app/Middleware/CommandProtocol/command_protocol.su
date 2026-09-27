@@ -1,0 +1,11 @@
+../Core_app/Middleware/CommandProtocol/command_protocol.c:389:13:finish_and_send	32	static
+../Core_app/Middleware/CommandProtocol/command_protocol.c:204:23:command_protocol_init	8	static
+../Core_app/Middleware/CommandProtocol/command_protocol.c:213:23:command_protocol_register	0	static
+../Core_app/Middleware/CommandProtocol/command_protocol.c:223:23:command_protocol_register_media	0	static
+../Core_app/Middleware/CommandProtocol/command_protocol.c:412:23:command_protocol_send	24	static
+../Core_app/Middleware/CommandProtocol/command_protocol.c:428:10:command_protocol_tx_scratch	0	static
+../Core_app/Middleware/CommandProtocol/command_protocol.c:433:23:command_protocol_send_staged	8	static
+../Core_app/Middleware/CommandProtocol/command_protocol.c:552:28:command_protocol_trace_hook	0	static
+../Core_app/Middleware/CommandProtocol/command_protocol.c:622:10:command_protocol_current_session_id	0	static
+../Core_app/Middleware/CommandProtocol/command_protocol.c:627:10:command_protocol_current_seq	0	static
+../Core_app/Middleware/CommandProtocol/command_protocol.c:632:6:command_protocol_poll	584	static

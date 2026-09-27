@@ -1,0 +1,4 @@
+../Core_app/Drivers/AD5398/ad5398.c:44:19:ad5398_init	16	static
+../Core_app/Drivers/AD5398/ad5398.c:65:19:ad5398_set_current_ua	32	static
+../Core_app/Drivers/AD5398/ad5398.c:97:19:ad5398_get_current_ua	32	static
+../Core_app/Drivers/AD5398/ad5398.c:116:19:ad5398_power_down	32	static

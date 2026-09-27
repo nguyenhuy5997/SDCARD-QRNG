@@ -1,0 +1,2 @@
+../Core_app/App/protocol_adapters/security_protocol.c:169:21:mldsa_load_keypair	24	static
+../Core_app/App/protocol_adapters/security_protocol.c:188:6:security_protocol_handler	1128	static

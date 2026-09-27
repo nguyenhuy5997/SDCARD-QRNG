@@ -1,0 +1,3 @@
+../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes.c:115:6:AES_user_encrypt	3
+../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes.c:169:6:AES_user_decrypt	4
+../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes.c:207:12:AES_ctx_alloc	4

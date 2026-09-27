@@ -1,0 +1,5 @@
+../Core_app/Drivers/SE05x/middleware/sss/src/se05x/fsl_sss_se05x_scp03.c:250:14:nxScp03_HostLocal_CalculateHostCryptogram	368	static
+../Core_app/Drivers/SE05x/middleware/sss/src/se05x/fsl_sss_se05x_scp03.c:283:14:nxScp03_HostLocal_VerifyCardCryptogram	376	static
+../Core_app/Drivers/SE05x/middleware/sss/src/se05x/fsl_sss_se05x_scp03.c:76:14:nxScp03_AuthenticateChannel	584	static
+../Core_app/Drivers/SE05x/middleware/sss/src/se05x/fsl_sss_se05x_scp03.c:441:14:nxScp03_Generate_SessionKey	104	static
+../Core_app/Drivers/SE05x/middleware/sss/src/se05x/fsl_sss_se05x_scp03.c:567:6:nxScp03_setDerivationData	16	static

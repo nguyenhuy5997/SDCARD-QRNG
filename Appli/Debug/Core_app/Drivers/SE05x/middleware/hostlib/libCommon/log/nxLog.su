@@ -1,0 +1,5 @@
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/log/nxLog.c:358:13:ansi_setColor	0	static
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/log/nxLog.c:154:9:nLog_Init	0	static
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/log/nxLog.c:174:6:nLog_DeInit	0	static
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/log/nxLog.c:192:6:nLog	280	static
+../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/log/nxLog.c:247:6:nLog_au8	32	static

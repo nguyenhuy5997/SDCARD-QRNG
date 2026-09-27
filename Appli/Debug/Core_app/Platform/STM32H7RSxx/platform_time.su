@@ -1,0 +1,6 @@
+../Core_app/Platform/STM32H7RSxx/platform_time.c:26:10:platform_get_tick_ms	0	static
+../Core_app/Platform/STM32H7RSxx/platform_time.c:31:6:platform_delay_ms	0	static
+../Core_app/Platform/STM32H7RSxx/platform_time.c:36:6:platform_delay_us	4	static
+../Core_app/Platform/STM32H7RSxx/platform_time.c:48:6:platform_wait_for_interrupt	0	static
+../Core_app/Platform/STM32H7RSxx/platform_time.c:92:10:platform_get_cycle_count	4	static
+../Core_app/Platform/STM32H7RSxx/platform_time.c:98:10:platform_get_cpu_hz	0	static

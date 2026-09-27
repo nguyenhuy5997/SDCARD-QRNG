@@ -1,0 +1,3 @@
+../Core_app/App/protocol_adapters/media_protocol.c:286:6:media_protocol_init	1
+../Core_app/App/protocol_adapters/media_protocol.c:1128:6:media_protocol_handler	42
+../Core_app/App/protocol_adapters/media_protocol.c:1138:6:media_protocol_poll	11

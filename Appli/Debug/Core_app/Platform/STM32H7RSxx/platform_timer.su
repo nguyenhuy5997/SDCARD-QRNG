@@ -1,0 +1,5 @@
+../Core_app/Platform/STM32H7RSxx/platform_timer.c:36:19:platform_timer_init	8	static
+../Core_app/Platform/STM32H7RSxx/platform_timer.c:55:19:platform_timer_deinit	0	static
+../Core_app/Platform/STM32H7RSxx/platform_timer.c:65:19:platform_timer_start	8	static
+../Core_app/Platform/STM32H7RSxx/platform_timer.c:74:19:platform_timer_stop	8	static
+../Core_app/Platform/STM32H7RSxx/platform_timer.c:83:10:platform_timer_get_count	0	static

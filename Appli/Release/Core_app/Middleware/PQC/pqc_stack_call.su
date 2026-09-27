@@ -1,0 +1,2 @@
+../Core_app/Middleware/PQC/pqc_stack_call.c:50:36:pqc_stack_switch_call	0	static,ignoring_inline_asm
+../Core_app/Middleware/PQC/pqc_stack_call.c:62:6:pqc_call_on_alt_stack	0	static,ignoring_inline_asm

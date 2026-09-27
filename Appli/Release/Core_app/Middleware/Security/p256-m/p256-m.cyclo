@@ -1,0 +1,17 @@
+../Core_app/Middleware/Security/p256-m/p256-m.c:506:13:m256_add	1
+../Core_app/Middleware/Security/p256-m/p256-m.c:543:13:m256_sub.constprop	1
+../Core_app/Middleware/Security/p256-m/p256-m.c:579:13:m256_mul	2
+../Core_app/Middleware/Security/p256-m/p256-m.c:579:13:m256_mul.constprop	2
+../Core_app/Middleware/Security/p256-m/p256-m.c:679:13:m256_inv.constprop	5
+../Core_app/Middleware/Security/p256-m/p256-m.c:579:13:m256_mul.constprop	2
+../Core_app/Middleware/Security/p256-m/p256-m.c:845:13:point_to_affine	5
+../Core_app/Middleware/Security/p256-m/p256-m.c:864:13:point_double	1
+../Core_app/Middleware/Security/p256-m/p256-m.c:912:13:point_add	1
+../Core_app/Middleware/Security/p256-m/p256-m.c:1052:13:scalar_mult	4
+../Core_app/Middleware/Security/p256-m/p256-m.c:1052:13:scalar_mult.constprop	2
+../Core_app/Middleware/Security/p256-m/p256-m.c:1135:12:scalar_from_bytes	1
+../Core_app/Middleware/Security/p256-m/p256-m.c:1008:12:point_from_bytes	4
+../Core_app/Middleware/Security/p256-m/p256-m.c:1193:5:p256_gen_keypair	6
+../Core_app/Middleware/Security/p256-m/p256-m.c:1214:5:p256_ecdh_shared_secret	4
+../Core_app/Middleware/Security/p256-m/p256-m.c:1304:5:p256_ecdsa_sign	10
+../Core_app/Middleware/Security/p256-m/p256-m.c:1378:5:p256_ecdsa_verify	10
