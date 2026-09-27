@@ -3,6 +3,18 @@
 Board sản phẩm: MCU STM32H7S3V8Y6TR (WLCSP101), flash ngoài GD25Q128E (XIP qua XSPIM port 1), secure element SE050F2.
 Ghi chú chi tiết (lịch sử, kết quả đo, việc còn mở): `CLAUDE.md`. Tool nạp danh tính CA: `Tools/README.md`.
 
+## Build và nạp bằng dòng lệnh (không cần mở CubeIDE)
+
+```bat
+build.bat [appli|boot|loader|all]    rem headless STM32CubeIDE, workspace nháp %TEMP%\evt2_v8y_ws (mặc định: appli)
+flash.bat [appli|boot|all]           rem STM32_Programmer_CLI qua ST-Link SWD, mode=UR (mặc định: appli)
+```
+
+- `flash.bat appli` nạp Appli vào flash ngoài GD25 qua external loader (build ExtMemLoader trước: `build.bat loader`), rồi reset.
+- `flash.bat boot` nạp Boot vào flash trong MCU; `all` = Boot rồi Appli.
+- Đổi đường dẫn công cụ bằng biến môi trường `CUBEIDE` (stm32cubeidec.exe) và `PROGRAMMER_CLI` (STM32_Programmer_CLI.exe).
+- Không ngắt lệnh khi đang nạp; nếu báo "Unable to get core ID" / "No STM32 target found" thì kiểm tra board có nguồn và ST-Link đã nối.
+
 ## Macro công tắc (compile-time)
 
 ### Macro đặt bằng cờ biên dịch (`Appli/.cproject`, không nằm trong file)
