@@ -100,33 +100,40 @@ static int s_dbg_attempt_count;
  * QRNG_EXTRACTOR_USE_*'s values (1/2/3, Core_app/Drivers/QRNG/
  * qrng_constant.h's numbering) are two independent enumerations -- do
  * not cast one to the other, map explicitly. */
-/* Turns the analog noise front end on or off (the STM32H7S3V8Y6TR board replaced the single OPTO_EN with three
- * active-high enables, see board.h).
- * TODO(power-up sequence): the hardware owner will give the real order and any settle delays. Until then the
- * enables go high in schematic order (first stage, second stage, LED) and low in reverse order. */
-static platform_status_t qrng_analog_front_end(bool on)
+/* Analog noise front end power sequence (board.h, BOARD_QRNG_POWERUP_STEP_MS). The three enables are active high
+ * and low after reset (MX_GPIO_Init(); Boot and the loader also drive them low); the AD5398 PD pin is high (sink
+ * off) until ad5398_set_current_ua() releases it. */
+static void qrng_analog_power_off(void)
 {
-#if !BOARD_QRNG_ANALOG_ENABLE
-    on = false; /* safety lock (board.h): never switch the analog front end on */
-#endif
+    (void)ad5398_power_down();                                        /* drive current off first */
+    (void)platform_gpio_write(BOARD_LED_EN_GPIO, false);
+    (void)platform_gpio_write(BOARD_PS_SECOND_STAGE_EN_GPIO, false);
+    (void)platform_gpio_write(BOARD_PS_FIRST_STAGE_EN_GPIO, false);
+}
+
+/** PS_FIRST_STAGE -> PS_SECOND_STAGE -> LED_ENABLE -> AD5398 at BOARD_QRNG_DRIVE_CURRENT_UA (register read back
+ *  and checked by ad5398_set_current_ua()). Everything is switched off again if any step fails. */
+static platform_status_t qrng_analog_power_on(void)
+{
     static const platform_gpio_t order[] = {
         BOARD_PS_FIRST_STAGE_EN_GPIO,
         BOARD_PS_SECOND_STAGE_EN_GPIO,
         BOARD_LED_EN_GPIO,
     };
-    const size_t n = sizeof(order) / sizeof(order[0]);
-    platform_status_t result = PLATFORM_OK;
 
-    for (size_t i = 0; i < n; i++) {
-        platform_status_t st = platform_gpio_write(order[on ? i : (n - 1U - i)], on);
-        if (st != PLATFORM_OK) {
-            result = st; /* keep going when turning off, so nothing is left powered */
-            if (on) {
-                break;
-            }
-        }
+    platform_status_t st = ad5398_init(); /* talks to the chip, keeps the PD pin high: no current yet */
+    for (size_t i = 0; st == PLATFORM_OK && i < sizeof(order) / sizeof(order[0]); i++) {
+        st = platform_gpio_write(order[i], true);
+        platform_delay_ms(BOARD_QRNG_POWERUP_STEP_MS);
     }
-    return result;
+    if (st == PLATFORM_OK) {
+        st = ad5398_set_current_ua(BOARD_QRNG_DRIVE_CURRENT_UA);
+        platform_delay_ms(BOARD_QRNG_POWERUP_STEP_MS);
+    }
+    if (st != PLATFORM_OK) {
+        qrng_analog_power_off();
+    }
+    return st;
 }
 
 static uint8_t map_extractor_algorithm(qrng_extractor_t algo)
@@ -177,6 +184,8 @@ static qrng_status_t wait_for_fresh_buffer(uint32_t timeout_ms)
     }
 }
 
+static void record_attempt(uint8_t health, uint32_t healthy, const uint16_t *pool, size_t n);
+
 static qrng_status_t run_startup_health_check(void)
 {
 #if EVT2_DIAGNOSTICS
@@ -197,12 +206,15 @@ static qrng_status_t run_startup_health_check(void)
             s_dbg_attempt_sample1[attempt] = 0xFFFFU;
             s_dbg_attempt_count++;
 #endif
+            record_attempt(0xFFU, 0U, NULL, 0U);
             continue;
         }
         /* NIST 800-90B 4.3(4): startup tests run the continuous health
          * tests over at least 1024 consecutive samples -- one half
          * buffer (QRNG_ADC_SAMPLES/2) already covers that. */
         entropy_run_health_checks(&s_entropy, true);
+        record_attempt((uint8_t)s_entropy.health_status, s_entropy.healthy_samples, s_entropy.raw_pool,
+                       QRNG_ADC_SAMPLES / 2U);
 #if EVT2_DIAGNOSTICS
         s_dbg_last_health_status = (uint32_t)s_entropy.health_status;
         s_dbg_last_healthy_samples = s_entropy.healthy_samples;
@@ -222,7 +234,6 @@ static qrng_status_t run_startup_health_check(void)
     return QRNG_HEALTH_FAIL;
 }
 
-#if EVT2_DIAGNOSTICS /* dev/QA only, see Core/Src/main.c */
 /* TEMPORARY diagnostic -- see s_dbg_boot_adc_sps's doc comment above.
  * Polls platform_adc_dma_pos() for window_ms with no health-check work
  * in between, same technique as qrng_service_debug_measure_adc_rate()
@@ -247,23 +258,50 @@ static uint32_t measure_adc_rate_raw(uint32_t window_ms)
     uint32_t elapsed_ms = platform_get_tick_ms() - start_tick;
     return elapsed_ms ? (uint32_t)(total_samples * 1000 / elapsed_ms) : 0U;
 }
-#endif /* EVT2_DIAGNOSTICS */
 
-qrng_status_t qrng_service_init(void)
+/* ADC samples/s measured right after the ADC started in qrng_service_init() (0 until then), kept even when the
+ * startup health check fails afterwards -- see qrng_service_measure_adc_rate(). */
+static uint32_t s_boot_adc_sps;
+
+static qrng_init_diag_t s_init_diag = { .init_status = 0xFFU };
+
+static void record_attempt(uint8_t health, uint32_t healthy, const uint16_t *pool, size_t n)
 {
-    if (s_ready) {
-        return QRNG_OK;
+    s_init_diag.health_status = health;
+    s_init_diag.healthy_samples = healthy;
+    s_init_diag.attempts++;
+    if (pool == NULL) {
+        return;
     }
+    uint16_t mn = 0xFFFFU;
+    uint16_t mx = 0U;
+    for (size_t i = 0; i < n; i++) {
+        mn = (pool[i] < mn) ? pool[i] : mn;
+        mx = (pool[i] > mx) ? pool[i] : mx;
+    }
+    s_init_diag.min = mn;
+    s_init_diag.max = mx;
+    memcpy(s_init_diag.samples, pool, sizeof(s_init_diag.samples));
+}
 
-#if !BOARD_QRNG_ANALOG_ENABLE
-    /* Safety lock (board.h): keep the analog front end off and the AD5398 powered down, and never start. The
-     * enables are already low from MX_GPIO_Init(); drive them low again in case anything changed them. The AD5398
-     * register write needs the chip to answer; ad5398_power_down() drives the PD pin in any case. */
-    (void)qrng_analog_front_end(false);
-    (void)ad5398_init();
-    (void)ad5398_power_down();
-    return QRNG_ERROR;
-#endif
+void qrng_service_get_init_diag(qrng_init_diag_t *out)
+{
+    if (out != NULL) {
+        *out = s_init_diag;
+    }
+}
+
+/* qrng_service_init() failed after the analog front end was powered: stop sampling and switch it off again. */
+static void qrng_init_fail_cleanup(void)
+{
+    (void)platform_adc_stop_dma(BOARD_ADC);
+    (void)platform_timer_stop(BOARD_ADC_TRIGGER_TIMER);
+    qrng_analog_power_off();
+}
+
+static qrng_status_t qrng_service_init_impl(void)
+{
+    s_init_diag.step = 1U;
 
     /* STM32H7RSxx port: the MCU has no DAC (Platform/STM32H7RSxx/
      * platform_dac.c returns PLATFORM_NOT_SUPPORTED for everything). That
@@ -283,17 +321,20 @@ qrng_status_t qrng_service_init(void)
     else if (dac_status != PLATFORM_NOT_SUPPORTED) {
         return QRNG_ERROR;
     }
-    /* H7S3 board: the AD5398 current-sink DAC sets the noise-source drive current instead of the MCU DAC.
-     * It must be at BOARD_QRNG_DRIVE_CURRENT_UA before the circuit is enabled and left to settle below;
-     * a missing/unresponsive AD5398 or a failed readback is fatal (the noise would be taken at the wrong
-     * operating point). ad5398_set_current_ua() verifies the write by reading the register back. */
-    if (ad5398_init() != PLATFORM_OK || ad5398_set_current_ua(BOARD_QRNG_DRIVE_CURRENT_UA) != PLATFORM_OK) {
+    /* H7S3 board: the AD5398 current-sink DAC sets the noise-source drive current instead of the MCU DAC, as the
+     * last step of the power-up sequence (qrng_analog_power_on()); a missing/unresponsive AD5398 or a failed
+     * readback is fatal (the noise would be taken at the wrong operating point) and powers everything off. */
+    s_init_diag.step = 2U;
+    if (qrng_analog_power_on() != PLATFORM_OK) {
         return QRNG_ERROR;
     }
-    if (qrng_analog_front_end(true) != PLATFORM_OK) {
-        (void)qrng_analog_front_end(false);
-        return QRNG_ERROR;
+    {
+        uint32_t ua = 0U;
+        bool on = false;
+        (void)ad5398_get_current_ua(&ua, &on);
+        s_init_diag.ad5398_ua = on ? ua : 0U;
     }
+    s_init_diag.step = 3U;
     /* Let the analog noise circuit (DAC-driven avalanche/opto noise
      * source) settle into its proper noisy operating point before the
      * ADC samples it -- immediately after power-up the signal can be
@@ -334,36 +375,108 @@ qrng_status_t qrng_service_init(void)
 
     if (platform_rng_init() != PLATFORM_OK || platform_hash_init() != PLATFORM_OK ||
         platform_crypto_init() != PLATFORM_OK) {
+        qrng_init_fail_cleanup();
         return QRNG_ERROR;
     }
 
+    s_init_diag.step = 4U;
     if (platform_timer_init(BOARD_ADC_TRIGGER_TIMER) != PLATFORM_OK ||
         platform_adc_init(BOARD_ADC) != PLATFORM_OK) {
+        qrng_init_fail_cleanup();
         return QRNG_ERROR;
     }
 
     entropy_init(&s_entropy);
     s_last_dma_pos = 0;
 
+    s_init_diag.step = 5U;
     if (platform_adc_start_dma(BOARD_ADC, s_adc_buf, QRNG_ADC_SAMPLES) != PLATFORM_OK ||
         platform_timer_start(BOARD_ADC_TRIGGER_TIMER) != PLATFORM_OK) {
+        qrng_init_fail_cleanup();
         return QRNG_ERROR;
     }
 
+    s_boot_adc_sps = measure_adc_rate_raw(100U); /* 100 ms of the ADC/DMA chain alone, before any health work */
 #if EVT2_DIAGNOSTICS
-    /* See s_dbg_boot_adc_sps's doc comment. 300ms is short enough to not meaningfully add to boot time, long
-     * enough to average out DMA-position-polling jitter. */
-    s_dbg_boot_adc_sps = measure_adc_rate_raw(300U);
+    /* See s_dbg_boot_adc_sps's doc comment. */
+    s_dbg_boot_adc_sps = s_boot_adc_sps;
 #endif
 
+    s_init_diag.step = 6U;
+    s_init_diag.attempts = 0U;
     if (run_startup_health_check() != QRNG_OK) {
+        qrng_init_fail_cleanup();
         return QRNG_HEALTH_FAIL;
     }
 
     extractor_init();
     s_reseed_counter = 0;
 
+    s_init_diag.step = 7U;
     s_ready = true;
+    return QRNG_OK;
+}
+
+qrng_status_t qrng_service_init(void)
+{
+    if (s_ready) {
+        return QRNG_OK;
+    }
+    const qrng_status_t st = qrng_service_init_impl();
+    s_init_diag.init_status = (uint8_t)st;
+    return st;
+}
+
+/* ---- raw capture (analog front-end bring-up) ---- */
+static bool s_raw_running;
+
+qrng_status_t qrng_service_raw_capture(uint16_t *out, size_t n)
+{
+    if (out == NULL || n != QRNG_RAW_CAPTURE_SAMPLES || n != (QRNG_ADC_SAMPLES / 2U)) {
+        return QRNG_INVALID_PARAM;
+    }
+    if (!s_ready && !s_raw_running) {
+        if (qrng_analog_power_on() != PLATFORM_OK) {
+            return QRNG_ERROR;
+        }
+        platform_delay_ms(3000); /* same settle time as qrng_service_init() */
+        if (platform_timer_init(BOARD_ADC_TRIGGER_TIMER) != PLATFORM_OK || platform_adc_init(BOARD_ADC) != PLATFORM_OK) {
+            qrng_init_fail_cleanup();
+            return QRNG_ERROR;
+        }
+        entropy_init(&s_entropy);
+        s_last_dma_pos = 0;
+        if (platform_adc_start_dma(BOARD_ADC, s_adc_buf, QRNG_ADC_SAMPLES) != PLATFORM_OK ||
+            platform_timer_start(BOARD_ADC_TRIGGER_TIMER) != PLATFORM_OK) {
+            qrng_init_fail_cleanup();
+            return QRNG_ERROR;
+        }
+        s_raw_running = true;
+    }
+    const qrng_status_t st = wait_for_fresh_buffer(QRNG_BUFFER_TIMEOUT_MS);
+    if (st != QRNG_OK) {
+        return st;
+    }
+    memcpy(out, s_entropy.raw_pool, n * sizeof(uint16_t));
+    return QRNG_OK;
+}
+
+qrng_status_t qrng_service_raw_stop(void)
+{
+    if (s_raw_running && !s_ready) {
+        qrng_init_fail_cleanup(); /* ADC + timer stop, analog power-off sequence */
+    }
+    s_raw_running = false;
+    return QRNG_OK;
+}
+
+qrng_status_t qrng_service_measure_adc_rate(uint32_t window_ms, uint32_t *boot_sps, uint32_t *live_sps)
+{
+    if (boot_sps == NULL || live_sps == NULL || window_ms == 0U || window_ms > 1000U) {
+        return QRNG_INVALID_PARAM;
+    }
+    *boot_sps = s_boot_adc_sps;
+    *live_sps = (s_ready || s_raw_running) ? measure_adc_rate_raw(window_ms) : 0U;
     return QRNG_OK;
 }
 
@@ -376,8 +489,7 @@ qrng_status_t qrng_service_deinit(void)
     (void)platform_adc_stop_dma(BOARD_ADC);
     (void)platform_timer_stop(BOARD_ADC_TRIGGER_TIMER);
     (void)platform_dac_stop(BOARD_QRNG_DAC);
-    (void)ad5398_power_down();
-    (void)qrng_analog_front_end(false);
+    qrng_analog_power_off();
 
     s_ready = false;
     s_startup_record_valid = false;

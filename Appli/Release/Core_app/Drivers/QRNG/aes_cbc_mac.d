@@ -9,7 +9,7 @@ Core_app/Drivers/QRNG/aes_cbc_mac.o: \
  ../Core_app/Platform/platform_rng.h ../Core_app/Platform/platform_dac.h \
  ../Core_app/Platform/platform_hash.h \
  ../Core_app/Platform/platform_crypto.h \
- ../Core_app/Platform/platform_usb.h
+ ../Core_app/Platform/platform_usb.h ../Core_app/Platform/platform_temp.h
 ../Core_app/Drivers/QRNG/aes_cbc_mac.h:
 ../Core_app/Drivers/QRNG/qrng_constant.h:
 ../Core_app/Platform/platform.h:
@@ -25,3 +25,4 @@ Core_app/Drivers/QRNG/aes_cbc_mac.o: \
 ../Core_app/Platform/platform_hash.h:
 ../Core_app/Platform/platform_crypto.h:
 ../Core_app/Platform/platform_usb.h:
+../Core_app/Platform/platform_temp.h:

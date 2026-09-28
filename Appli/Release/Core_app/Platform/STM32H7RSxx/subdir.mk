@@ -12,6 +12,7 @@ C_SRCS += \
 ../Core_app/Platform/STM32H7RSxx/platform_hash.c \
 ../Core_app/Platform/STM32H7RSxx/platform_i2c.c \
 ../Core_app/Platform/STM32H7RSxx/platform_rng.c \
+../Core_app/Platform/STM32H7RSxx/platform_temp.c \
 ../Core_app/Platform/STM32H7RSxx/platform_time.c \
 ../Core_app/Platform/STM32H7RSxx/platform_timer.c \
 ../Core_app/Platform/STM32H7RSxx/platform_uart.c \
@@ -26,6 +27,7 @@ OBJS += \
 ./Core_app/Platform/STM32H7RSxx/platform_hash.o \
 ./Core_app/Platform/STM32H7RSxx/platform_i2c.o \
 ./Core_app/Platform/STM32H7RSxx/platform_rng.o \
+./Core_app/Platform/STM32H7RSxx/platform_temp.o \
 ./Core_app/Platform/STM32H7RSxx/platform_time.o \
 ./Core_app/Platform/STM32H7RSxx/platform_timer.o \
 ./Core_app/Platform/STM32H7RSxx/platform_uart.o \
@@ -40,6 +42,7 @@ C_DEPS += \
 ./Core_app/Platform/STM32H7RSxx/platform_hash.d \
 ./Core_app/Platform/STM32H7RSxx/platform_i2c.d \
 ./Core_app/Platform/STM32H7RSxx/platform_rng.d \
+./Core_app/Platform/STM32H7RSxx/platform_temp.d \
 ./Core_app/Platform/STM32H7RSxx/platform_time.d \
 ./Core_app/Platform/STM32H7RSxx/platform_timer.d \
 ./Core_app/Platform/STM32H7RSxx/platform_uart.d \
@@ -54,7 +57,7 @@ Core_app/Platform/STM32H7RSxx/%.o Core_app/Platform/STM32H7RSxx/%.su Core_app/Pl
 clean: clean-Core_app-2f-Platform-2f-STM32H7RSxx
 
 clean-Core_app-2f-Platform-2f-STM32H7RSxx:
-	-$(RM) ./Core_app/Platform/STM32H7RSxx/platform_adc.cyclo ./Core_app/Platform/STM32H7RSxx/platform_adc.d ./Core_app/Platform/STM32H7RSxx/platform_adc.o ./Core_app/Platform/STM32H7RSxx/platform_adc.su ./Core_app/Platform/STM32H7RSxx/platform_crypto.cyclo ./Core_app/Platform/STM32H7RSxx/platform_crypto.d ./Core_app/Platform/STM32H7RSxx/platform_crypto.o ./Core_app/Platform/STM32H7RSxx/platform_crypto.su ./Core_app/Platform/STM32H7RSxx/platform_dac.cyclo ./Core_app/Platform/STM32H7RSxx/platform_dac.d ./Core_app/Platform/STM32H7RSxx/platform_dac.o ./Core_app/Platform/STM32H7RSxx/platform_dac.su ./Core_app/Platform/STM32H7RSxx/platform_gpio.cyclo ./Core_app/Platform/STM32H7RSxx/platform_gpio.d ./Core_app/Platform/STM32H7RSxx/platform_gpio.o ./Core_app/Platform/STM32H7RSxx/platform_gpio.su ./Core_app/Platform/STM32H7RSxx/platform_hash.cyclo ./Core_app/Platform/STM32H7RSxx/platform_hash.d ./Core_app/Platform/STM32H7RSxx/platform_hash.o ./Core_app/Platform/STM32H7RSxx/platform_hash.su ./Core_app/Platform/STM32H7RSxx/platform_i2c.cyclo ./Core_app/Platform/STM32H7RSxx/platform_i2c.d ./Core_app/Platform/STM32H7RSxx/platform_i2c.o ./Core_app/Platform/STM32H7RSxx/platform_i2c.su ./Core_app/Platform/STM32H7RSxx/platform_rng.cyclo ./Core_app/Platform/STM32H7RSxx/platform_rng.d ./Core_app/Platform/STM32H7RSxx/platform_rng.o ./Core_app/Platform/STM32H7RSxx/platform_rng.su ./Core_app/Platform/STM32H7RSxx/platform_time.cyclo ./Core_app/Platform/STM32H7RSxx/platform_time.d ./Core_app/Platform/STM32H7RSxx/platform_time.o ./Core_app/Platform/STM32H7RSxx/platform_time.su ./Core_app/Platform/STM32H7RSxx/platform_timer.cyclo ./Core_app/Platform/STM32H7RSxx/platform_timer.d ./Core_app/Platform/STM32H7RSxx/platform_timer.o ./Core_app/Platform/STM32H7RSxx/platform_timer.su ./Core_app/Platform/STM32H7RSxx/platform_uart.cyclo ./Core_app/Platform/STM32H7RSxx/platform_uart.d ./Core_app/Platform/STM32H7RSxx/platform_uart.o ./Core_app/Platform/STM32H7RSxx/platform_uart.su ./Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.cyclo ./Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.d ./Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.o ./Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.su ./Core_app/Platform/STM32H7RSxx/platform_usb_tinyusb.cyclo ./Core_app/Platform/STM32H7RSxx/platform_usb_tinyusb.d ./Core_app/Platform/STM32H7RSxx/platform_usb_tinyusb.o ./Core_app/Platform/STM32H7RSxx/platform_usb_tinyusb.su
+	-$(RM) ./Core_app/Platform/STM32H7RSxx/platform_adc.cyclo ./Core_app/Platform/STM32H7RSxx/platform_adc.d ./Core_app/Platform/STM32H7RSxx/platform_adc.o ./Core_app/Platform/STM32H7RSxx/platform_adc.su ./Core_app/Platform/STM32H7RSxx/platform_crypto.cyclo ./Core_app/Platform/STM32H7RSxx/platform_crypto.d ./Core_app/Platform/STM32H7RSxx/platform_crypto.o ./Core_app/Platform/STM32H7RSxx/platform_crypto.su ./Core_app/Platform/STM32H7RSxx/platform_dac.cyclo ./Core_app/Platform/STM32H7RSxx/platform_dac.d ./Core_app/Platform/STM32H7RSxx/platform_dac.o ./Core_app/Platform/STM32H7RSxx/platform_dac.su ./Core_app/Platform/STM32H7RSxx/platform_gpio.cyclo ./Core_app/Platform/STM32H7RSxx/platform_gpio.d ./Core_app/Platform/STM32H7RSxx/platform_gpio.o ./Core_app/Platform/STM32H7RSxx/platform_gpio.su ./Core_app/Platform/STM32H7RSxx/platform_hash.cyclo ./Core_app/Platform/STM32H7RSxx/platform_hash.d ./Core_app/Platform/STM32H7RSxx/platform_hash.o ./Core_app/Platform/STM32H7RSxx/platform_hash.su ./Core_app/Platform/STM32H7RSxx/platform_i2c.cyclo ./Core_app/Platform/STM32H7RSxx/platform_i2c.d ./Core_app/Platform/STM32H7RSxx/platform_i2c.o ./Core_app/Platform/STM32H7RSxx/platform_i2c.su ./Core_app/Platform/STM32H7RSxx/platform_rng.cyclo ./Core_app/Platform/STM32H7RSxx/platform_rng.d ./Core_app/Platform/STM32H7RSxx/platform_rng.o ./Core_app/Platform/STM32H7RSxx/platform_rng.su ./Core_app/Platform/STM32H7RSxx/platform_temp.cyclo ./Core_app/Platform/STM32H7RSxx/platform_temp.d ./Core_app/Platform/STM32H7RSxx/platform_temp.o ./Core_app/Platform/STM32H7RSxx/platform_temp.su ./Core_app/Platform/STM32H7RSxx/platform_time.cyclo ./Core_app/Platform/STM32H7RSxx/platform_time.d ./Core_app/Platform/STM32H7RSxx/platform_time.o ./Core_app/Platform/STM32H7RSxx/platform_time.su ./Core_app/Platform/STM32H7RSxx/platform_timer.cyclo ./Core_app/Platform/STM32H7RSxx/platform_timer.d ./Core_app/Platform/STM32H7RSxx/platform_timer.o ./Core_app/Platform/STM32H7RSxx/platform_timer.su ./Core_app/Platform/STM32H7RSxx/platform_uart.cyclo ./Core_app/Platform/STM32H7RSxx/platform_uart.d ./Core_app/Platform/STM32H7RSxx/platform_uart.o ./Core_app/Platform/STM32H7RSxx/platform_uart.su ./Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.cyclo ./Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.d ./Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.o ./Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.su ./Core_app/Platform/STM32H7RSxx/platform_usb_tinyusb.cyclo ./Core_app/Platform/STM32H7RSxx/platform_usb_tinyusb.d ./Core_app/Platform/STM32H7RSxx/platform_usb_tinyusb.o ./Core_app/Platform/STM32H7RSxx/platform_usb_tinyusb.su
 
 .PHONY: clean-Core_app-2f-Platform-2f-STM32H7RSxx
 

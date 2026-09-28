@@ -7,8 +7,8 @@ Core_app/App/app_main.o: ../Core_app/App/app_main.c \
  ../Core_app/Platform/platform_rng.h ../Core_app/Platform/platform_dac.h \
  ../Core_app/Platform/platform_hash.h \
  ../Core_app/Platform/platform_crypto.h \
- ../Core_app/Platform/platform_usb.h ../Core_app/BSP/board.h \
- ../Core_app/App/app_trace.h \
+ ../Core_app/Platform/platform_usb.h ../Core_app/Platform/platform_temp.h \
+ ../Core_app/BSP/board.h ../Core_app/App/app_trace.h \
  ../Core_app/Middleware/CommandProtocol/command_protocol.h \
  ../Core_app/Middleware/QRNG/qrng_service.h \
  ../Core_app/Middleware/Security/security_service.h
@@ -26,6 +26,7 @@ Core_app/App/app_main.o: ../Core_app/App/app_main.c \
 ../Core_app/Platform/platform_hash.h:
 ../Core_app/Platform/platform_crypto.h:
 ../Core_app/Platform/platform_usb.h:
+../Core_app/Platform/platform_temp.h:
 ../Core_app/BSP/board.h:
 ../Core_app/App/app_trace.h:
 ../Core_app/Middleware/CommandProtocol/command_protocol.h:

@@ -10,6 +10,7 @@
  *   +0x40 fault_bfar +0x44 fault_mmfar
  *   +0x48 history[8], 40 bytes each: rsr, last_bc, last_arg, prev_bc, loop_count, tick, usb_irqs, i2c_ops,
  *         fault_pc, fault_cfsr
+ *   +0x188 temp_c (int32, deg C)  +0x18C temp_max_c  +0x190 sleep_permille  +0x194 sleep_count  (app_power.c)
  */
 #include "app_trace.h"
 
@@ -31,6 +32,8 @@ void app_trace_boot(void)
         /* first run after power-on (RAM content is garbage) */
         memset(&g_app_trace, 0, sizeof(g_app_trace));
         g_app_trace.magic = APP_TRACE_MAGIC;
+        g_app_trace.temp_c = APP_TRACE_TEMP_NONE;
+        g_app_trace.temp_max_c = APP_TRACE_TEMP_NONE;
     }
     else {
         /* file the run that just ended */

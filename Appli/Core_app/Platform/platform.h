@@ -42,6 +42,7 @@ typedef enum {
 #include "platform_hash.h"
 #include "platform_crypto.h"
 #include "platform_usb.h"
+#include "platform_temp.h"
 
 #ifdef __cplusplus
 }

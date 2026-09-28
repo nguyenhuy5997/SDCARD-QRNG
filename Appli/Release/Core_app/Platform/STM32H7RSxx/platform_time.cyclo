@@ -2,5 +2,6 @@
 ../Core_app/Platform/STM32H7RSxx/platform_time.c:31:6:platform_delay_ms	1
 ../Core_app/Platform/STM32H7RSxx/platform_time.c:36:6:platform_delay_us	3
 ../Core_app/Platform/STM32H7RSxx/platform_time.c:48:6:platform_wait_for_interrupt	1
-../Core_app/Platform/STM32H7RSxx/platform_time.c:92:10:platform_get_cycle_count	2
-../Core_app/Platform/STM32H7RSxx/platform_time.c:98:10:platform_get_cpu_hz	1
+../Core_app/Platform/STM32H7RSxx/platform_time.c:92:10:platform_sleep_until_interrupt	7
+../Core_app/Platform/STM32H7RSxx/platform_time.c:145:10:platform_get_cycle_count	2
+../Core_app/Platform/STM32H7RSxx/platform_time.c:151:10:platform_get_cpu_hz	1

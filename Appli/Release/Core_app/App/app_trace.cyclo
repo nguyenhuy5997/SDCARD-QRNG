@@ -1,6 +1,6 @@
-../Core_app/App/app_trace.c:25:6:app_trace_boot	3
-../Core_app/App/app_trace.c:77:6:app_trace_loop	1
-../Core_app/App/app_trace.c:85:6:command_protocol_trace_hook	1
-../Core_app/App/app_trace.c:90:6:platform_i2c_trace_hook	3
-../Core_app/App/app_trace.c:97:6:app_trace_fault_c	1
-../Core_app/App/app_trace.c:116:6:app_trace_fault_entry	1
+../Core_app/App/app_trace.c:26:6:app_trace_boot	3
+../Core_app/App/app_trace.c:80:6:app_trace_loop	1
+../Core_app/App/app_trace.c:88:6:command_protocol_trace_hook	1
+../Core_app/App/app_trace.c:93:6:platform_i2c_trace_hook	3
+../Core_app/App/app_trace.c:100:6:app_trace_fault_c	1
+../Core_app/App/app_trace.c:119:6:app_trace_fault_entry	1

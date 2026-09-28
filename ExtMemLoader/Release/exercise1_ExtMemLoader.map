@@ -1297,7 +1297,7 @@ LOAD D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.e
                 0x240202c8                        _ebss = .
                 0x240202c8                        __bss_end__ = _ebss
 
-.text           0x20000214     0x4f4c
+.text           0x20000214     0x4f44
                 0x20000214                        . = ALIGN (0x4)
  *(.text)
  .text          0x20000214       0x40 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crtbegin.o
@@ -1306,399 +1306,399 @@ LOAD D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.e
                 0x20000254       0x34 ./Core/Src/extmem_manager.o
                 0x20000254                MX_EXTMEM_MANAGER_Init
  .text.extmemloader_Init
-                0x20000288      0x310 ./Core/Src/extmemloader_init.o
+                0x20000288      0x308 ./Core/Src/extmemloader_init.o
                 0x20000288                extmemloader_Init
  .text.Error_Handler
-                0x20000598        0x2 ./Core/Src/extmemloader_init.o
-                0x20000598                Error_Handler
- *fill*         0x2000059a        0x2 
+                0x20000590        0x2 ./Core/Src/extmemloader_init.o
+                0x20000590                Error_Handler
+ *fill*         0x20000592        0x2 
  .text.HAL_MspInit
-                0x2000059c       0x74 ./Core/Src/stm32h7rsxx_hal_msp.o
-                0x2000059c                HAL_MspInit
+                0x20000594       0x74 ./Core/Src/stm32h7rsxx_hal_msp.o
+                0x20000594                HAL_MspInit
  .text.HAL_XSPI_MspInit
-                0x20000610       0xdc ./Core/Src/stm32h7rsxx_hal_msp.o
-                0x20000610                HAL_XSPI_MspInit
+                0x20000608       0xdc ./Core/Src/stm32h7rsxx_hal_msp.o
+                0x20000608                HAL_XSPI_MspInit
  .text.SystemInit
-                0x200006ec       0x1c ./Core/Src/system_stm32h7rsxx.o
-                0x200006ec                SystemInit
+                0x200006e4       0x1c ./Core/Src/system_stm32h7rsxx.o
+                0x200006e4                SystemInit
  .text.HAL_Init
-                0x20000708       0x1e ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal.o
-                0x20000708                HAL_Init
- *fill*         0x20000726        0x2 
+                0x20000700       0x1e ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal.o
+                0x20000700                HAL_Init
+ *fill*         0x2000071e        0x2 
  .text.HAL_Delay
-                0x20000728       0x24 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal.o
-                0x20000728                HAL_Delay
+                0x20000720       0x24 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal.o
+                0x20000720                HAL_Delay
  .text.HAL_SBS_EnableCompensationCell
-                0x2000074c       0x14 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal.o
-                0x2000074c                HAL_SBS_EnableCompensationCell
+                0x20000744       0x14 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal.o
+                0x20000744                HAL_SBS_EnableCompensationCell
  .text.HAL_SBS_GetCompensationCellReadyStatus
-                0x20000760       0x14 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal.o
-                0x20000760                HAL_SBS_GetCompensationCellReadyStatus
+                0x20000758       0x14 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal.o
+                0x20000758                HAL_SBS_GetCompensationCellReadyStatus
  .text.HAL_SBS_ConfigCompensationCell
-                0x20000774       0x54 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal.o
-                0x20000774                HAL_SBS_ConfigCompensationCell
+                0x2000076c       0x54 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal.o
+                0x2000076c                HAL_SBS_ConfigCompensationCell
  .text.HAL_NVIC_SetPriorityGrouping
-                0x200007c8       0x24 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_cortex.o
-                0x200007c8                HAL_NVIC_SetPriorityGrouping
+                0x200007c0       0x24 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_cortex.o
+                0x200007c0                HAL_NVIC_SetPriorityGrouping
  .text.HAL_NVIC_SetPriority
-                0x200007ec       0x64 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_cortex.o
-                0x200007ec                HAL_NVIC_SetPriority
+                0x200007e4       0x64 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_cortex.o
+                0x200007e4                HAL_NVIC_SetPriority
  .text.HAL_NVIC_EnableIRQ
-                0x20000850       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_cortex.o
-                0x20000850                HAL_NVIC_EnableIRQ
+                0x20000848       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_cortex.o
+                0x20000848                HAL_NVIC_EnableIRQ
  .text.HAL_MPU_Disable
-                0x2000086c       0x24 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_cortex.o
-                0x2000086c                HAL_MPU_Disable
+                0x20000864       0x24 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_cortex.o
+                0x20000864                HAL_MPU_Disable
  .text.HAL_DMA_Abort
-                0x20000890       0x94 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_dma.o
-                0x20000890                HAL_DMA_Abort
+                0x20000888       0x94 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_dma.o
+                0x20000888                HAL_DMA_Abort
  .text.HAL_GPIO_Init
-                0x20000924      0x148 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_gpio.o
-                0x20000924                HAL_GPIO_Init
+                0x2000091c      0x148 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_gpio.o
+                0x2000091c                HAL_GPIO_Init
  .text.HAL_GPIO_WritePin
-                0x20000a6c        0xa ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_gpio.o
-                0x20000a6c                HAL_GPIO_WritePin
- *fill*         0x20000a76        0x2 
+                0x20000a64        0xa ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_gpio.o
+                0x20000a64                HAL_GPIO_WritePin
+ *fill*         0x20000a6e        0x2 
  .text.HAL_PWR_EnableBkUpAccess
-                0x20000a78       0x10 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_pwr.o
-                0x20000a78                HAL_PWR_EnableBkUpAccess
+                0x20000a70       0x10 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_pwr.o
+                0x20000a70                HAL_PWR_EnableBkUpAccess
  .text.HAL_PWREx_ConfigSupply
-                0x20000a88       0x6c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_pwr_ex.o
-                0x20000a88                HAL_PWREx_ConfigSupply
+                0x20000a80       0x6c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_pwr_ex.o
+                0x20000a80                HAL_PWREx_ConfigSupply
  .text.HAL_PWREx_ControlVoltageScaling
-                0x20000af4       0x34 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_pwr_ex.o
-                0x20000af4                HAL_PWREx_ControlVoltageScaling
+                0x20000aec       0x34 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_pwr_ex.o
+                0x20000aec                HAL_PWREx_ControlVoltageScaling
  .text.HAL_PWREx_EnableUSBHSregulator
-                0x20000b28       0x10 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_pwr_ex.o
-                0x20000b28                HAL_PWREx_EnableUSBHSregulator
+                0x20000b20       0x10 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_pwr_ex.o
+                0x20000b20                HAL_PWREx_EnableUSBHSregulator
  .text.HAL_PWREx_EnableXSPIM1
-                0x20000b38       0x10 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_pwr_ex.o
-                0x20000b38                HAL_PWREx_EnableXSPIM1
+                0x20000b30       0x10 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_pwr_ex.o
+                0x20000b30                HAL_PWREx_EnableXSPIM1
  .text.RCC_PLL1_GetVCOOutputFreq
-                0x20000b48       0xa4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20000b40       0xa4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
  .text.RCC_PLL2_GetVCOOutputFreq
-                0x20000bec       0xa4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20000be4       0xa4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
  .text.RCC_PLL3_GetVCOOutputFreq
-                0x20000c90       0xa4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20000c88       0xa4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
  .text.RCC_PLL_Config
-                0x20000d34      0x1cc ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20000d2c      0x1cc ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
  .text.HAL_RCC_OscConfig
-                0x20000f00      0x434 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x20000f00                HAL_RCC_OscConfig
+                0x20000ef8      0x434 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20000ef8                HAL_RCC_OscConfig
  .text.HAL_RCC_GetSysClockFreq
-                0x20001334      0x148 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x20001334                HAL_RCC_GetSysClockFreq
+                0x2000132c      0x148 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x2000132c                HAL_RCC_GetSysClockFreq
  .text.HAL_RCC_ClockConfig
-                0x2000147c      0x21c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x2000147c                HAL_RCC_ClockConfig
+                0x20001474      0x21c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20001474                HAL_RCC_ClockConfig
  .text.HAL_RCC_GetHCLKFreq
-                0x20001698       0x34 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x20001698                HAL_RCC_GetHCLKFreq
+                0x20001690       0x34 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20001690                HAL_RCC_GetHCLKFreq
  .text.HAL_RCC_GetPCLK1Freq
-                0x200016cc       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x200016cc                HAL_RCC_GetPCLK1Freq
+                0x200016c4       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x200016c4                HAL_RCC_GetPCLK1Freq
  .text.HAL_RCC_GetPCLK2Freq
-                0x200016e8       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x200016e8                HAL_RCC_GetPCLK2Freq
+                0x200016e0       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x200016e0                HAL_RCC_GetPCLK2Freq
  .text.HAL_RCC_GetPCLK4Freq
-                0x20001704       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x20001704                HAL_RCC_GetPCLK4Freq
+                0x200016fc       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x200016fc                HAL_RCC_GetPCLK4Freq
  .text.HAL_RCC_GetPLL1QFreq
-                0x20001720       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x20001720                HAL_RCC_GetPLL1QFreq
+                0x20001718       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20001718                HAL_RCC_GetPLL1QFreq
  .text.HAL_RCC_GetPLL2PFreq
-                0x2000173c       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x2000173c                HAL_RCC_GetPLL2PFreq
+                0x20001734       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20001734                HAL_RCC_GetPLL2PFreq
  .text.HAL_RCC_GetPLL2QFreq
-                0x20001758       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x20001758                HAL_RCC_GetPLL2QFreq
+                0x20001750       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20001750                HAL_RCC_GetPLL2QFreq
  .text.HAL_RCC_GetPLL2RFreq
-                0x20001774       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x20001774                HAL_RCC_GetPLL2RFreq
+                0x2000176c       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x2000176c                HAL_RCC_GetPLL2RFreq
  .text.HAL_RCC_GetPLL2SFreq
-                0x20001790       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x20001790                HAL_RCC_GetPLL2SFreq
+                0x20001788       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20001788                HAL_RCC_GetPLL2SFreq
  .text.HAL_RCC_GetPLL2TFreq
-                0x200017ac       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x200017ac                HAL_RCC_GetPLL2TFreq
+                0x200017a4       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x200017a4                HAL_RCC_GetPLL2TFreq
  .text.HAL_RCC_GetPLL3PFreq
-                0x200017c8       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x200017c8                HAL_RCC_GetPLL3PFreq
+                0x200017c0       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x200017c0                HAL_RCC_GetPLL3PFreq
  .text.HAL_RCC_GetPLL3QFreq
-                0x200017e4       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x200017e4                HAL_RCC_GetPLL3QFreq
+                0x200017dc       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x200017dc                HAL_RCC_GetPLL3QFreq
  .text.HAL_RCC_GetPLL3RFreq
-                0x20001800       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x20001800                HAL_RCC_GetPLL3RFreq
+                0x200017f8       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x200017f8                HAL_RCC_GetPLL3RFreq
  .text.HAL_RCC_GetPLL3SFreq
-                0x2000181c       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
-                0x2000181c                HAL_RCC_GetPLL3SFreq
+                0x20001814       0x1c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+                0x20001814                HAL_RCC_GetPLL3SFreq
  .text.RCC_GetCLKPFreq
-                0x20001838       0x60 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc_ex.o
+                0x20001830       0x60 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc_ex.o
  .text.HAL_RCCEx_PeriphCLKConfig
-                0x20001898      0x8d4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc_ex.o
-                0x20001898                HAL_RCCEx_PeriphCLKConfig
+                0x20001890      0x8d4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc_ex.o
+                0x20001890                HAL_RCCEx_PeriphCLKConfig
  .text.HAL_RCCEx_GetPeriphCLKFreq
-                0x2000216c      0xad4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc_ex.o
-                0x2000216c                HAL_RCCEx_GetPeriphCLKFreq
+                0x20002164      0xad4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc_ex.o
+                0x20002164                HAL_RCCEx_GetPeriphCLKFreq
  .text.HAL_RCCEx_DisableClockProtection
-                0x20002c40       0x14 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc_ex.o
-                0x20002c40                HAL_RCCEx_DisableClockProtection
+                0x20002c38       0x14 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc_ex.o
+                0x20002c38                HAL_RCCEx_DisableClockProtection
  .text.XSPI_ConfigCmd
-                0x20002c54      0x1bc ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
+                0x20002c4c      0x1bc ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
  .text.XSPI_WaitFlagStateUntilTimeout
-                0x20002e10       0x4e ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
- *fill*         0x20002e5e        0x2 
+                0x20002e08       0x4e ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
+ *fill*         0x20002e56        0x2 
  .text.HAL_XSPI_Init
-                0x20002e60      0x124 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
-                0x20002e60                HAL_XSPI_Init
+                0x20002e58      0x124 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
+                0x20002e58                HAL_XSPI_Init
  .text.HAL_XSPI_Command
-                0x20002f84       0xa4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
-                0x20002f84                HAL_XSPI_Command
+                0x20002f7c       0xa4 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
+                0x20002f7c                HAL_XSPI_Command
  .text.HAL_XSPI_Transmit
-                0x20003028       0x8c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
-                0x20003028                HAL_XSPI_Transmit
+                0x20003020       0x8c ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
+                0x20003020                HAL_XSPI_Transmit
  .text.HAL_XSPI_Receive
-                0x200030b4       0xb0 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
-                0x200030b4                HAL_XSPI_Receive
+                0x200030ac       0xb0 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
+                0x200030ac                HAL_XSPI_Receive
  .text.HAL_XSPI_AutoPolling
-                0x20003164       0xae ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
-                0x20003164                HAL_XSPI_AutoPolling
+                0x2000315c       0xae ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
+                0x2000315c                HAL_XSPI_AutoPolling
  .text.HAL_XSPI_MemoryMapped
-                0x20003212       0x62 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
-                0x20003212                HAL_XSPI_MemoryMapped
+                0x2000320a       0x62 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
+                0x2000320a                HAL_XSPI_MemoryMapped
  .text.HAL_XSPI_Abort
-                0x20003274       0xa0 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
-                0x20003274                HAL_XSPI_Abort
+                0x2000326c       0xa0 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
+                0x2000326c                HAL_XSPI_Abort
  .text.HAL_XSPIM_Config
-                0x20003314      0x114 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
-                0x20003314                HAL_XSPIM_Config
+                0x2000330c      0x114 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_xspi.o
+                0x2000330c                HAL_XSPIM_Config
  .text.memory_write
-                0x20003428       0x16 ./Middlewares/ST/STM32_ExtMem_Loader/memory_wrapper.o
-                0x20003428                memory_write
+                0x20003420       0x16 ./Middlewares/ST/STM32_ExtMem_Loader/memory_wrapper.o
+                0x20003420                memory_write
  .text.memory_masserase
-                0x2000343e       0x10 ./Middlewares/ST/STM32_ExtMem_Loader/memory_wrapper.o
-                0x2000343e                memory_masserase
+                0x20003436       0x10 ./Middlewares/ST/STM32_ExtMem_Loader/memory_wrapper.o
+                0x20003436                memory_masserase
  .text.memory_sectorerase
-                0x2000344e       0x2e ./Middlewares/ST/STM32_ExtMem_Loader/memory_wrapper.o
-                0x2000344e                memory_sectorerase
+                0x20003446       0x2e ./Middlewares/ST/STM32_ExtMem_Loader/memory_wrapper.o
+                0x20003446                memory_sectorerase
  .text.memory_mapmode
-                0x2000347c       0x18 ./Middlewares/ST/STM32_ExtMem_Loader/memory_wrapper.o
-                0x2000347c                memory_mapmode
+                0x20003474       0x18 ./Middlewares/ST/STM32_ExtMem_Loader/memory_wrapper.o
+                0x20003474                memory_mapmode
  .text.Reset_Handler
-                0x20003494       0x18 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
-                0x20003494                Reset_Handler
- .text.Init     0x200034ac       0x34 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
-                0x200034ac                Init
- .text.Write    0x200034e0       0x34 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
-                0x200034e0                Write
+                0x2000348c       0x18 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
+                0x2000348c                Reset_Handler
+ .text.Init     0x200034a4       0x34 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
+                0x200034a4                Init
+ .text.Write    0x200034d8       0x34 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
+                0x200034d8                Write
  .text.MassErase
-                0x20003514       0x28 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
-                0x20003514                MassErase
+                0x2000350c       0x28 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
+                0x2000350c                MassErase
  .text.SectorErase
-                0x2000353c       0x34 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
-                0x2000353c                SectorErase
+                0x20003534       0x34 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
+                0x20003534                SectorErase
  .text.startup.main
-                0x20003570       0x64 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
-                0x20003570                main
+                0x20003568       0x64 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
+                0x20003568                main
  .text.HAL_InitTick
-                0x200035d4       0x34 ./Middlewares/ST/STM32_ExtMem_Loader/systick_management.o
-                0x200035d4                HAL_InitTick
+                0x200035cc       0x34 ./Middlewares/ST/STM32_ExtMem_Loader/systick_management.o
+                0x200035cc                HAL_InitTick
  .text.HAL_GetTick
-                0x20003608       0x1c ./Middlewares/ST/STM32_ExtMem_Loader/systick_management.o
-                0x20003608                HAL_GetTick
+                0x20003600       0x1c ./Middlewares/ST/STM32_ExtMem_Loader/systick_management.o
+                0x20003600                HAL_GetTick
  .text.EXTMEM_Init
-                0x20003624       0x34 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.o
-                0x20003624                EXTMEM_Init
+                0x2000361c       0x34 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.o
+                0x2000361c                EXTMEM_Init
  .text.EXTMEM_Write
-                0x20003658       0x2c ./Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.o
-                0x20003658                EXTMEM_Write
+                0x20003650       0x2c ./Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.o
+                0x20003650                EXTMEM_Write
  .text.EXTMEM_EraseSector
-                0x20003684       0xb4 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.o
-                0x20003684                EXTMEM_EraseSector
+                0x2000367c       0xb4 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.o
+                0x2000367c                EXTMEM_EraseSector
  .text.EXTMEM_EraseAll
-                0x20003738       0x2c ./Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.o
-                0x20003738                EXTMEM_EraseAll
+                0x20003730       0x2c ./Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.o
+                0x20003730                EXTMEM_EraseAll
  .text.EXTMEM_MemoryMappedMode
-                0x20003764       0x34 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.o
-                0x20003764                EXTMEM_MemoryMappedMode
+                0x2000375c       0x34 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_extmem.o
+                0x2000375c                EXTMEM_MemoryMappedMode
  .text.SAL_XSPI_SetClock
-                0x20003798       0x36 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003798                SAL_XSPI_SetClock
+                0x20003790       0x36 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003790                SAL_XSPI_SetClock
  .text.SAL_XSPI_Init
-                0x200037ce       0x4c ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x200037ce                SAL_XSPI_Init
+                0x200037c6       0x4c ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x200037c6                SAL_XSPI_Init
  .text.SAL_XSPI_MemoryConfig
-                0x2000381a      0x1a8 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x2000381a                SAL_XSPI_MemoryConfig
+                0x20003812      0x1a8 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003812                SAL_XSPI_MemoryConfig
  .text.SAL_XSPI_GetSFDP
-                0x200039c2       0x86 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x200039c2                SAL_XSPI_GetSFDP
+                0x200039ba       0x86 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x200039ba                SAL_XSPI_GetSFDP
  .text.SAL_XSPI_GetId
-                0x20003a48       0xb0 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003a48                SAL_XSPI_GetId
+                0x20003a40       0xb0 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003a40                SAL_XSPI_GetId
  .text.SAL_XSPI_DisableMapMode
-                0x20003af8        0xa ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003af8                SAL_XSPI_DisableMapMode
+                0x20003af0        0xa ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003af0                SAL_XSPI_DisableMapMode
  .text.SAL_XSPI_UpdateMemoryType
-                0x20003b02       0x32 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003b02                SAL_XSPI_UpdateMemoryType
+                0x20003afa       0x32 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003afa                SAL_XSPI_UpdateMemoryType
  .text.SAL_XSPI_Abort
-                0x20003b34        0x6 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003b34                SAL_XSPI_Abort
+                0x20003b2c        0x6 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003b2c                SAL_XSPI_Abort
  .text.XSPI_FormatCommand
-                0x20003b3a       0x18 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003b3a                XSPI_FormatCommand
+                0x20003b32       0x18 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003b32                XSPI_FormatCommand
  .text.SAL_XSPI_CommandSendAddress
-                0x20003b52       0x54 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003b52                SAL_XSPI_CommandSendAddress
+                0x20003b4a       0x54 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003b4a                SAL_XSPI_CommandSendAddress
  .text.SAL_XSPI_CommandSendData
-                0x20003ba6       0x62 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003ba6                SAL_XSPI_CommandSendData
+                0x20003b9e       0x62 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003b9e                SAL_XSPI_CommandSendData
  .text.SAL_XSPI_SendReadCommand
-                0x20003c08       0x62 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003c08                SAL_XSPI_SendReadCommand
+                0x20003c00       0x62 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003c00                SAL_XSPI_SendReadCommand
  .text.SAL_XSPI_CommandSendReadAddress
-                0x20003c6a       0x8a ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003c6a                SAL_XSPI_CommandSendReadAddress
+                0x20003c62       0x8a ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003c62                SAL_XSPI_CommandSendReadAddress
  .text.SAL_XSPI_CheckStatusRegister
-                0x20003cf4       0xa8 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003cf4                SAL_XSPI_CheckStatusRegister
+                0x20003cec       0xa8 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003cec                SAL_XSPI_CheckStatusRegister
  .text.SAL_XSPI_EnableMapMode
-                0x20003d9c       0xb0 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003d9c                SAL_XSPI_EnableMapMode
+                0x20003d94       0xb0 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003d94                SAL_XSPI_EnableMapMode
  .text.XSPI_Transmit
-                0x20003e4c        0x8 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003e4c                XSPI_Transmit
+                0x20003e44        0x8 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003e44                XSPI_Transmit
  .text.SAL_XSPI_Write
-                0x20003e54       0x56 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
-                0x20003e54                SAL_XSPI_Write
+                0x20003e4c       0x56 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sal_xspi.o
+                0x20003e4c                SAL_XSPI_Write
  .text.driver_check_FlagBUSY
-                0x20003eaa       0x3e ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20003eaa                driver_check_FlagBUSY
+                0x20003ea2       0x3e ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20003ea2                driver_check_FlagBUSY
  .text.sfdp_getfrequencevalue
-                0x20003ee8       0x48 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20003ee8                sfdp_getfrequencevalue
+                0x20003ee0       0x48 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20003ee0                sfdp_getfrequencevalue
  .text.sfdp_get_paraminfo
-                0x20003f30      0x168 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20003f30                sfdp_get_paraminfo
+                0x20003f28      0x168 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20003f28                sfdp_get_paraminfo
  .text.SFDP_CollectData
-                0x20004098       0xf8 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20004098                SFDP_CollectData
+                0x20004090       0xf8 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20004090                SFDP_CollectData
  .text.SFDP_MemoryReset
-                0x20004190       0x90 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20004190                SFDP_MemoryReset
+                0x20004188       0x90 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20004188                SFDP_MemoryReset
  .text.sfdp_enter_octal_mode
-                0x20004220      0x154 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20004220                sfdp_enter_octal_mode
+                0x20004218      0x154 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20004218                sfdp_enter_octal_mode
  .text.sfdp_set_dummycycle
-                0x20004374      0x110 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20004374                sfdp_set_dummycycle
+                0x2000436c      0x110 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x2000436c                sfdp_set_dummycycle
  .text.JEDEC_Basic_ManageQuadEnableRequirement
-                0x20004484      0x184 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20004484                JEDEC_Basic_ManageQuadEnableRequirement
+                0x2000447c      0x184 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x2000447c                JEDEC_Basic_ManageQuadEnableRequirement
  .text.JEDEC_Basic_Manage4S4S4SEnableSequence
-                0x20004608       0x40 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20004608                JEDEC_Basic_Manage4S4S4SEnableSequence
+                0x20004600       0x40 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20004600                JEDEC_Basic_Manage4S4S4SEnableSequence
  .text.SFDP_BuildGenericDriver
-                0x20004648      0x6dc ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20004648                SFDP_BuildGenericDriver
+                0x20004640      0x6dc ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20004640                SFDP_BuildGenericDriver
  .text.CheckSFDP_Signature
-                0x20004d24       0x34 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20004d24                CheckSFDP_Signature
+                0x20004d1c       0x34 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20004d1c                CheckSFDP_Signature
  .text.SFDP_ReadHeader
-                0x20004d58       0x40 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20004d58                SFDP_ReadHeader
+                0x20004d50       0x40 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20004d50                SFDP_ReadHeader
  .text.SFDP_GetHeader
-                0x20004d98       0xa0 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20004d98                SFDP_GetHeader
+                0x20004d90       0xa0 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20004d90                SFDP_GetHeader
  .text.driver_set_FlagWEL.constprop.0
-                0x20004e38       0x5c ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
+                0x20004e30       0x5c ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
  .text.EXTMEM_DRIVER_NOR_SFDP_Init
-                0x20004e94       0xe4 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
-                0x20004e94                EXTMEM_DRIVER_NOR_SFDP_Init
+                0x20004e8c       0xe4 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
+                0x20004e8c                EXTMEM_DRIVER_NOR_SFDP_Init
  .text.EXTMEM_DRIVER_NOR_SFDP_Write
-                0x20004f78       0x8c ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
-                0x20004f78                EXTMEM_DRIVER_NOR_SFDP_Write
+                0x20004f70       0x8c ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
+                0x20004f70                EXTMEM_DRIVER_NOR_SFDP_Write
  .text.EXTMEM_DRIVER_NOR_SFDP_MassErase
-                0x20005004       0x44 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
-                0x20005004                EXTMEM_DRIVER_NOR_SFDP_MassErase
+                0x20004ffc       0x44 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
+                0x20004ffc                EXTMEM_DRIVER_NOR_SFDP_MassErase
  .text.EXTMEM_DRIVER_NOR_SFDP_SectorErase
-                0x20005048       0x9a ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
-                0x20005048                EXTMEM_DRIVER_NOR_SFDP_SectorErase
+                0x20005040       0x9a ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
+                0x20005040                EXTMEM_DRIVER_NOR_SFDP_SectorErase
  .text.EXTMEM_DRIVER_NOR_SFDP_Enable_MemoryMappedMode
-                0x200050e2       0x26 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
-                0x200050e2                EXTMEM_DRIVER_NOR_SFDP_Enable_MemoryMappedMode
+                0x200050da       0x26 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
+                0x200050da                EXTMEM_DRIVER_NOR_SFDP_Enable_MemoryMappedMode
  .text.EXTMEM_DRIVER_NOR_SFDP_Disable_MemoryMappedMode
-                0x20005108       0x14 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
-                0x20005108                EXTMEM_DRIVER_NOR_SFDP_Disable_MemoryMappedMode
- .text.memset   0x2000511c       0x10 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-memset.o)
-                0x2000511c                memset
- .text.memcpy   0x2000512c       0x1c D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-memcpy-stub.o)
-                0x2000512c                memcpy
+                0x20005100       0x14 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_driver.o
+                0x20005100                EXTMEM_DRIVER_NOR_SFDP_Disable_MemoryMappedMode
+ .text.memset   0x20005114       0x10 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-memset.o)
+                0x20005114                memset
+ .text.memcpy   0x20005124       0x1c D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+dp/hard\libc_nano.a(libc_a-memcpy-stub.o)
+                0x20005124                memcpy
  *(.glue_7)
- .glue_7        0x20005148        0x0 linker stubs
+ .glue_7        0x20005140        0x0 linker stubs
  *(.glue_7t)
- .glue_7t       0x20005148        0x0 linker stubs
+ .glue_7t       0x20005140        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x20005148        0x0 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crtbegin.o
+ .eh_frame      0x20005140        0x0 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crtbegin.o
  *(.init)
- .init          0x20005148        0x4 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crti.o
-                0x20005148                _init
- .init          0x2000514c        0x8 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crtn.o
+ .init          0x20005140        0x4 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crti.o
+                0x20005140                _init
+ .init          0x20005144        0x8 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crtn.o
  *(.fini)
- .fini          0x20005154        0x4 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crti.o
-                0x20005154                _fini
- .fini          0x20005158        0x8 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crtn.o
-                0x20005160                        . = ALIGN (0x4)
-                0x20005160                        _etext = .
+ .fini          0x2000514c        0x4 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crti.o
+                0x2000514c                _fini
+ .fini          0x20005150        0x8 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crtn.o
+                0x20005158                        . = ALIGN (0x4)
+                0x20005158                        _etext = .
 
-.vfp11_veneer   0x20005160        0x0
- .vfp11_veneer  0x20005160        0x0 linker stubs
+.vfp11_veneer   0x20005158        0x0
+ .vfp11_veneer  0x20005158        0x0 linker stubs
 
-.v4_bx          0x20005160        0x0
- .v4_bx         0x20005160        0x0 linker stubs
+.v4_bx          0x20005158        0x0
+ .v4_bx         0x20005158        0x0 linker stubs
 
-.iplt           0x20005160        0x0
- .iplt          0x20005160        0x0 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crtbegin.o
+.iplt           0x20005158        0x0
+ .iplt          0x20005158        0x0 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crtbegin.o
 
 .stm32_device_info
-                0x20005160       0xc8
+                0x20005158       0xc8
  *stm32_device_info.o(.rodata*)
  .rodata.StorageInfo
-                0x20005160       0xc8 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_device_info.o
-                0x20005160                StorageInfo
+                0x20005158       0xc8 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_device_info.o
+                0x20005158                StorageInfo
 
-.rodata         0x20005228       0x50
-                0x20005228                        . = ALIGN (0x4)
+.rodata         0x20005220       0x50
+                0x20005220                        . = ALIGN (0x4)
  *(.rodata)
- .rodata        0x20005228       0x2a ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+ .rodata        0x20005220       0x2a ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
  *(.rodata*)
  .rodata.HAL_RCC_GetHCLKFreq.str1.1
-                0x20005252        0x9 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
- *fill*         0x2000525b        0x1 
+                0x2000524a        0x9 ./Drivers/STM32H7RSxx_HAL_Driver/stm32h7rsxx_hal_rcc.o
+ *fill*         0x20005253        0x1 
  .rodata.condition
-                0x2000525c        0x4 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
-                0x2000525c                condition
+                0x20005254        0x4 ./Middlewares/ST/STM32_ExtMem_Loader/stm32_loader_api.o
+                0x20005254                condition
  .rodata.chip_erase_unit.0
-                0x20005260       0x10 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20005258       0x10 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
  .rodata.block_erase_unit.1
-                0x20005270        0x8 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
-                0x20005278                        . = ALIGN (0x4)
+                0x20005268        0x8 ./Middlewares/ST/STM32_ExtMem_Manager/stm32_sfdp_data.o
+                0x20005270                        . = ALIGN (0x4)
 
-.rel.dyn        0x20005278        0x0
- .rel.iplt      0x20005278        0x0 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crtbegin.o
+.rel.dyn        0x20005270        0x0
+ .rel.iplt      0x20005270        0x0 D:/Tools/STM32CubeIDE_2.2.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.14.3.rel1.win32_1.0.100.202602081740/tools/bin/../lib/gcc/arm-none-eabi/14.3.1/thumb/v7e-m+dp/hard/crtbegin.o
 
 ._user_heap_stack
-                0x20005278      0x600
-                0x20005278                        . = ALIGN (0x8)
+                0x20005270      0x600
+                0x20005270                        . = ALIGN (0x8)
                 [!provide]                        PROVIDE (end = .)
-                0x20005278                        PROVIDE (_end = .)
-                0x20005478                        . = (. + _Min_Heap_Size)
- *fill*         0x20005278      0x200 
-                0x20005878                        . = (. + _Min_Stack_Size)
- *fill*         0x20005478      0x400 
-                0x20005878                        . = ALIGN (0x8)
+                0x20005270                        PROVIDE (_end = .)
+                0x20005470                        . = (. + _Min_Heap_Size)
+ *fill*         0x20005270      0x200 
+                0x20005870                        . = (. + _Min_Stack_Size)
+ *fill*         0x20005470      0x400 
+                0x20005870                        . = ALIGN (0x8)
 
 .ARM.attributes
                 0x00000000       0x2e

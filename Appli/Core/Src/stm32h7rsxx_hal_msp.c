@@ -100,11 +100,22 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* hadc)
 {
   GPIO_InitTypeDef GPIO_InitStruct = {0};
   DMA_NodeConfTypeDef NodeConfig;
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
   if(hadc->Instance==ADC2)
   {
     /* USER CODE BEGIN ADC2_MspInit 0 */
 
     /* USER CODE END ADC2_MspInit 0 */
+
+  /** Initializes the peripherals clock
+  */
+    PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_ADC;
+    PeriphClkInit.AdcClockSelection = RCC_ADCCLKSOURCE_PLL2P;
+    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
     /* Peripheral clock enable */
     __HAL_RCC_ADC12_CLK_ENABLE();
 
@@ -297,6 +308,51 @@ void HAL_CRYP_MspDeInit(CRYP_HandleTypeDef* hcryp)
     /* USER CODE BEGIN CRYP_MspDeInit 1 */
 
     /* USER CODE END CRYP_MspDeInit 1 */
+  }
+
+}
+
+/**
+  * @brief DTS MSP Initialization
+  * This function configures the hardware resources used in this example
+  * @param hdts: DTS handle pointer
+  * @retval None
+  */
+void HAL_DTS_MspInit(DTS_HandleTypeDef* hdts)
+{
+  if(hdts->Instance==DTS)
+  {
+    /* USER CODE BEGIN DTS_MspInit 0 */
+
+    /* USER CODE END DTS_MspInit 0 */
+    /* Peripheral clock enable */
+    __HAL_RCC_DTS_CLK_ENABLE();
+    /* USER CODE BEGIN DTS_MspInit 1 */
+
+    /* USER CODE END DTS_MspInit 1 */
+
+  }
+
+}
+
+/**
+  * @brief DTS MSP De-Initialization
+  * This function freeze the hardware resources used in this example
+  * @param hdts: DTS handle pointer
+  * @retval None
+  */
+void HAL_DTS_MspDeInit(DTS_HandleTypeDef* hdts)
+{
+  if(hdts->Instance==DTS)
+  {
+    /* USER CODE BEGIN DTS_MspDeInit 0 */
+
+    /* USER CODE END DTS_MspDeInit 0 */
+    /* Peripheral clock disable */
+    __HAL_RCC_DTS_CLK_DISABLE();
+    /* USER CODE BEGIN DTS_MspDeInit 1 */
+
+    /* USER CODE END DTS_MspDeInit 1 */
   }
 
 }

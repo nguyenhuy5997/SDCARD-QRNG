@@ -54,11 +54,15 @@ set "LOG=%TEMP%\evt2_v8y_build_%1.log"
 echo [build] exercise1_%1/Release ...
 "%CUBEIDE%" --launcher.suppressErrors -nosplash -application org.eclipse.cdt.managedbuilder.core.headlessbuild ^
     -data "%V8Y_WS%" -build "exercise1_%1/Release" > "%LOG%" 2>&1
-findstr /c:"Build Finished. 0 errors" "%LOG%" > nul
+rem Judge by the LAST "Build Finished" line only: the log can hold an earlier one (e.g. a referenced project) that
+rem says "0 errors" while this project's own build failed.
+set "LAST="
+for /f "delims=" %%L in ('findstr /c:"Build Finished" "%LOG%"') do set "LAST=%%L"
+if defined LAST echo          %LAST%
+echo %LAST% | findstr /c:"Build Finished. 0 errors" > nul
 if errorlevel 1 (
     echo [build] FAILED -- see %LOG%
     findstr /r /c:"error:" "%LOG%"
     exit /b 1
 )
-for /f "delims=" %%L in ('findstr /c:"Build Finished" "%LOG%"') do echo          %%L
 exit /b 0

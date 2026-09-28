@@ -26,5 +26,12 @@
     "not_before": 1790497324,
     "not_after": 2105857384,
     "status": "good"
+  },
+  {
+    "serial": "6D9E56C6439A600A053EE6E9ED98E082",
+    "device_id": "040050010D36000959D29204493212482590",
+    "not_before": 1790613059,
+    "not_after": 2105973119,
+    "status": "good"
   }
 ]

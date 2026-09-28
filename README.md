@@ -15,6 +15,14 @@ flash.bat [appli|boot|all]           rem STM32_Programmer_CLI qua ST-Link SWD, m
 - Đổi đường dẫn công cụ bằng biến môi trường `CUBEIDE` (stm32cubeidec.exe) và `PROGRAMMER_CLI` (STM32_Programmer_CLI.exe).
 - Không ngắt lệnh khi đang nạp; nếu báo "Unable to get core ID" / "No STM32 target found" thì kiểm tra board có nguồn và ST-Link đã nối.
 
+## Xung nhịp và nguồn (2026-09-28)
+
+CPU 120 MHz, HCLK/APB 120 MHz, VOS1, USB Full-Speed, nguồn LDO (mạch không có SMPS). ADC2 chạy async 25 MHz (PLL2P 100 MHz / 4).
+Vòng lặp chính ngủ bằng WFI khi không có việc (`Appli/Core_app/App/app_power.c`). Đọc nhiệt độ chip và tỉ lệ ngủ qua
+USB: lệnh `CMD_TYPE_QRNG` sub-command `0x11` (DEVICE_STATUS). DBG_SLEEP tắt mặc định: SWD chỉ vào được chip ngay sau khi
+cấp nguồn, nên khi nạp phải chạy lại flash.bat liên tục và rút/cắm nguồn board (build với `EVT2_DEBUG_IN_SLEEP=1` để SWD
+vào được lúc chip ngủ, khi đó `python Tools/board_status.py` cũng dùng được).
+
 ## Macro công tắc (compile-time)
 
 ### Macro đặt bằng cờ biên dịch (`Appli/.cproject`, không nằm trong file)
@@ -34,7 +42,7 @@ flash.bat [appli|boot|all]           rem STM32_Programmer_CLI qua ST-Link SWD, m
 
 | Macro | Giá trị | Rào phần gì | File |
 |---|---|---|---|
-| `BOARD_QRNG_ANALOG_ENABLE` | 0 | **Khóa an toàn**: không bật PS_FIRST/PS_SECOND/LED_ENABLE, giữ AD5398 power-down, QRNG không khởi động | `Appli/Core_app/BSP/board.h` |
+| `BOARD_QRNG_POWERUP_STEP_MS` | 10 | Chờ sau mỗi bước bật khối analog: PS_FIRST → PS_SECOND → LED_ENABLE → AD5398 20 mA | `Appli/Core_app/BSP/board.h` |
 | `BOARD_DEBUG_UART` | không định nghĩa | Log UART (board không có UART → `app_log` không làm gì) | `board.h` |
 | `PLATFORM_USB_BACKEND` | `PLATFORM_USB_BACKEND_STM32LIB` | Chọn stack USB (ST lib / TinyUSB) | `Appli/Core_app/Platform/platform_usb_config.h` |
 | `EVT2_XSPI_AB_SLOW` | 0 | Boot: XSPI 25 MHz + SSHIFT (công tắc thử) | `Boot/Core/Src/extmem_manager.c` |

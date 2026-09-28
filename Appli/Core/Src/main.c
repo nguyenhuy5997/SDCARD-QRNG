@@ -28,6 +28,7 @@
 #include "bsp_hal.h"
 #include "usb_device.h"
 #include "app_main.h"
+#include "app_power.h"      /* main-loop WFI + DTS temperature (2026-09-28) */
 #if EVT2_DIAGNOSTICS
 #include "app_self_test.h"
 #endif
@@ -80,6 +81,8 @@ __ALIGN_BEGIN static const uint32_t pInitVectCRYP[4] __ALIGN_END = {
 __ALIGN_BEGIN static const uint32_t HeaderCRYP[1] __ALIGN_END = {
                             0x00000000};
 
+DTS_HandleTypeDef hdts;
+
 HASH_HandleTypeDef hhash;
 
 I2C_HandleTypeDef hi2c1;
@@ -107,6 +110,7 @@ static void MX_I2C1_Init(void);
 static void MX_RNG_Init(void);
 static void MX_TIM1_Init(void);
 static void MX_IWDG_Init(void);
+static void MX_DTS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -177,10 +181,11 @@ int main(void)
   MX_TIM1_Init();
   MX_USB_DEVICE_Init();
   MX_IWDG_Init();
+  MX_DTS_Init();
   /* USER CODE BEGIN 2 */
   bsp_init();            /* only what CubeMX does not own (FPC2530 with EVT2_ENABLE_BIOMETRIC) -- bsp_h7s3.c */
   app_init();
-
+  app_power_init();      /* starts the DTS (configured by MX_DTS_Init() above) */
   /* Always run, regardless of EVT2_DIAGNOSTICS -- these three are the ONLY place these services get
    * initialised anywhere in this codebase (app_self_test()/app_qrng_self_test() used to be (ab)used for this,
    * since each happens to call one of these as ITS first step -- replaced 2026-09-25 with calling the real init
@@ -246,6 +251,7 @@ int main(void)
     app_trace_loop();
     HAL_IWDG_Refresh(&hiwdg); /* ~32.8 s watchdog (.ioc): resets the chip if the main loop stops */
     app_command_protocol_poll();
+    app_power_idle();       /* WFI until the next interrupt when nothing is pending (1 ms tick at the latest) */
   }
   /* USER CODE END 3 */
 }
@@ -271,13 +277,13 @@ static void MX_ADC2_Init(void)
   /** Common config
   */
   hadc2.Instance = ADC2;
-  hadc2.Init.ClockPrescaler = ADC_CLOCK_SYNC_PCLK_DIV4;
+  hadc2.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV2;
   hadc2.Init.Resolution = ADC_RESOLUTION_12B;
   hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
   hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
   hadc2.Init.EOCSelection = ADC_EOC_SINGLE_CONV;
   hadc2.Init.LowPowerAutoWait = DISABLE;
-  hadc2.Init.ContinuousConvMode = ENABLE;
+  hadc2.Init.ContinuousConvMode = DISABLE;
   hadc2.Init.NbrOfConversion = 1;
   hadc2.Init.DiscontinuousConvMode = DISABLE;
   hadc2.Init.ExternalTrigConv = ADC_EXTERNALTRIG_T1_TRGO;
@@ -295,7 +301,7 @@ static void MX_ADC2_Init(void)
   */
   sConfig.Channel = ADC_CHANNEL_18;
   sConfig.Rank = ADC_REGULAR_RANK_1;
-  sConfig.SamplingTime = ADC_SAMPLETIME_47CYCLES_5;
+  sConfig.SamplingTime = ADC_SAMPLETIME_6CYCLES_5;
   sConfig.SingleDiff = ADC_SINGLE_ENDED;
   sConfig.OffsetNumber = ADC_OFFSET_NONE;
   sConfig.Offset = 0;
@@ -379,6 +385,39 @@ static void MX_CRYP_Init(void)
   /* USER CODE BEGIN CRYP_Init 2 */
 
   /* USER CODE END CRYP_Init 2 */
+
+}
+
+/**
+  * @brief DTS Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_DTS_Init(void)
+{
+
+  /* USER CODE BEGIN DTS_Init 0 */
+
+  /* USER CODE END DTS_Init 0 */
+
+  /* USER CODE BEGIN DTS_Init 1 */
+
+  /* USER CODE END DTS_Init 1 */
+  hdts.Instance = DTS;
+  hdts.Init.QuickMeasure = DTS_QUICKMEAS_DISABLE;
+  hdts.Init.RefClock = DTS_REFCLKSEL_PCLK;
+  hdts.Init.TriggerInput = DTS_TRIGGER_HW_NONE;
+  hdts.Init.SamplingTime = DTS_SMP_TIME_15_CYCLE;
+  hdts.Init.Divider = 1;
+  hdts.Init.HighThreshold = 0x0;
+  hdts.Init.LowThreshold = 0x0;
+  if (HAL_DTS_Init(&hdts) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN DTS_Init 2 */
+
+  /* USER CODE END DTS_Init 2 */
 
 }
 
@@ -614,7 +653,7 @@ static void MX_TIM1_Init(void)
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 0;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 1790;
+  htim1.Init.Period = 79;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;

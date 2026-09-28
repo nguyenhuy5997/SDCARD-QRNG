@@ -15,6 +15,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <stdbool.h>
 
 /** Milliseconds elapsed since boot (wraps at UINT32_MAX like HAL_GetTick()). */
 uint32_t platform_get_tick_ms(void);
@@ -45,6 +46,14 @@ uint32_t platform_get_cpu_hz(void);
  *  not a specific one -- callers that need to wait for one particular
  *  event must check for it themselves after this returns). */
 void platform_wait_for_interrupt(void);
+
+/** Idle sleep for the main loop: with interrupts masked, asks `still_idle()`; if it returns true, sleeps (WFI) until
+ *  any interrupt is pending, then unmasks so that interrupt runs. Masking closes the race where an interrupt that
+ *  brings new work arrives between the check and the WFI -- it then wakes the WFI at once instead of being slept
+ *  through. `still_idle` runs with interrupts masked: keep it to a few flag/counter reads.
+ *  Returns the time spent asleep in microseconds (0 when it did not sleep). The system tick interrupt (1 ms) always
+ *  ends a sleep, so a caller's periodic work still runs at least once per millisecond. */
+uint32_t platform_sleep_until_interrupt(bool (*still_idle)(void));
 
 #ifdef __cplusplus
 }

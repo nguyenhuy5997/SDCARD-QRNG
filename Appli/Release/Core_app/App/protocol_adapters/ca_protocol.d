@@ -14,7 +14,7 @@ Core_app/App/protocol_adapters/ca_protocol.o: \
  ../Core_app/Platform/platform_rng.h ../Core_app/Platform/platform_dac.h \
  ../Core_app/Platform/platform_hash.h \
  ../Core_app/Platform/platform_crypto.h \
- ../Core_app/Platform/platform_usb.h
+ ../Core_app/Platform/platform_usb.h ../Core_app/Platform/platform_temp.h
 ../Core_app/Middleware/CommandProtocol/command_protocol.h:
 ../Core_app/Middleware/CA/ca_service.h:
 ../Core_app/Middleware/CA/ca_x509.h:
@@ -34,3 +34,4 @@ Core_app/App/protocol_adapters/ca_protocol.o: \
 ../Core_app/Platform/platform_hash.h:
 ../Core_app/Platform/platform_crypto.h:
 ../Core_app/Platform/platform_usb.h:
+../Core_app/Platform/platform_temp.h:

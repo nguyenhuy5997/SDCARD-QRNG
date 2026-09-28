@@ -10,7 +10,7 @@ Core_app/Middleware/Security/SE052F/security_service_se052f.o: \
  ../Core_app/Platform/platform_rng.h ../Core_app/Platform/platform_dac.h \
  ../Core_app/Platform/platform_hash.h \
  ../Core_app/Platform/platform_crypto.h \
- ../Core_app/Platform/platform_usb.h \
+ ../Core_app/Platform/platform_usb.h ../Core_app/Platform/platform_temp.h \
  ../Core_app/Drivers/SE05x/middleware/hostlib/platform/inc/ax_reset.h \
  ../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_types.h \
  ../Core_app/Drivers/SE05x/middleware/hostlib/se05x_03_xx_xx/se05x_APDU.h \
@@ -58,6 +58,7 @@ Core_app/Middleware/Security/SE052F/security_service_se052f.o: \
 ../Core_app/Platform/platform_hash.h:
 ../Core_app/Platform/platform_crypto.h:
 ../Core_app/Platform/platform_usb.h:
+../Core_app/Platform/platform_temp.h:
 ../Core_app/Drivers/SE05x/middleware/hostlib/platform/inc/ax_reset.h:
 ../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_types.h:
 ../Core_app/Drivers/SE05x/middleware/hostlib/se05x_03_xx_xx/se05x_APDU.h:

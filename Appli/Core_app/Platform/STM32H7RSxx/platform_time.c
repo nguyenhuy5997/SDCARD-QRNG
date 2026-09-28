@@ -89,6 +89,59 @@ void platform_wait_for_interrupt(void)
      * -- do not assume DSB/ISB alone fixes it, that was already tried. */
 }
 
+uint32_t platform_sleep_until_interrupt(bool (*still_idle)(void))
+{
+    /* PRIMASK set: a pending interrupt still ends the WFI, but its handler only runs after __enable_irq(), so the
+     * idle check and the sleep are atomic with respect to every interrupt. Unlike platform_wait_for_interrupt()
+     * above (FPC polling loop, left without WFI), the caller of this one (app_power.c) only sleeps once USB is
+     * configured -- the EVT2 D-Cache + WFI problem described above hit during USB enumeration. */
+    /* DBGMCU DBG_SLEEP keeps the core clock running in WFI so that SWD can reach the chip while it sleeps. Off by
+     * default (2026-09-28): it costs heat. Its value survives a system reset (debug domain), so it is written
+     * explicitly either way. With it off, SWD -- even "connect under reset", the V8Y board has no NRST line -- only
+     * reaches the chip right after power-up, before this loop first sleeps: flash with flash.bat retried in a loop
+     * and power-cycle the board. Build with EVT2_DEBUG_IN_SLEEP=1 for SWD access to a running board. */
+#ifndef EVT2_DEBUG_IN_SLEEP
+#define EVT2_DEBUG_IN_SLEEP 0
+#endif
+    static bool s_dbg_sleep_set;
+    if (!s_dbg_sleep_set) {
+#if EVT2_DEBUG_IN_SLEEP
+        HAL_DBGMCU_EnableDBGSleepMode();
+#else
+        HAL_DBGMCU_DisableDBGSleepMode();
+#endif
+        s_dbg_sleep_set = true;
+    }
+
+    __disable_irq();
+    if (still_idle == NULL || !still_idle()) {
+        __enable_irq();
+        return 0U;
+    }
+
+    /* Sleep time from SysTick (it keeps counting in Sleep mode, unlike the DWT cycle counter, which stops with the
+     * core clock). It counts down from LOAD; with interrupts masked, at most one wrap can happen during the sleep,
+     * because the wrap itself pends the SysTick interrupt, which ends the WFI. */
+    const uint32_t period = SysTick->LOAD + 1U;
+    const bool wrapped_before = (SCB->ICSR & SCB_ICSR_PENDSTSET_Msk) != 0U;
+    const uint32_t v0 = SysTick->VAL;
+    __DSB();
+    __WFI();
+    const uint32_t v1 = SysTick->VAL;
+    const bool wrapped_after = (SCB->ICSR & SCB_ICSR_PENDSTSET_Msk) != 0U;
+    __enable_irq();
+    __ISB();
+
+    uint32_t cycles;
+    if (wrapped_after && !wrapped_before) {
+        cycles = v0 + (period - v1);
+    }
+    else {
+        cycles = (v0 >= v1) ? (v0 - v1) : 0U;
+    }
+    return (uint32_t)(((uint64_t)cycles * 1000U) / period); /* period cycles = 1 ms */
+}
+
 uint32_t platform_get_cycle_count(void)
 {
     ensure_dwt_enabled();

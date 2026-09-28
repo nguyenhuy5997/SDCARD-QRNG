@@ -174,6 +174,37 @@ qrng_status_t qrng_service_set_auto_reseed(bool enable);
  *  since the last qrng_service_deinit()). */
 qrng_status_t qrng_service_get_startup_health_record(uint8_t *buf, size_t len);
 
+/** ADC sample rate of the noise source, samples/s. `*boot_sps`: measured over 100 ms right after the ADC started in
+ *  qrng_service_init() (0 if it never got that far) -- kept even if the startup health check failed afterwards.
+ *  `*live_sps`: measured now over `window_ms` (1..1000, blocks that long; 0 when the service is not running). */
+qrng_status_t qrng_service_measure_adc_rate(uint32_t window_ms, uint32_t *boot_sps, uint32_t *live_sps);
+
+/** What the last qrng_service_init() did (kept after a failure, for bring-up of the analog front end). */
+typedef struct {
+    uint8_t init_status;      /* qrng_status_t returned by the last qrng_service_init() (0xFF = never ran) */
+    uint8_t step;             /* last step reached: 1 DAC, 2 analog power-on, 3 settle + crypto init, 4 ADC/timer
+                               * init, 5 ADC start, 6 startup health check, 7 done */
+    uint8_t health_status;    /* entropy_health_t of the last startup attempt: 0 OK, 1 RCT, 2 APT, 0xFF no buffer */
+    uint8_t attempts;         /* startup health-check attempts made */
+    uint32_t healthy_samples; /* samples that passed the online tests in the last attempt before it tripped */
+    uint32_t ad5398_ua;       /* AD5398 current read back after power-on (0 if not read) */
+    uint16_t min;             /* min / max of the last attempt's 1024-sample buffer */
+    uint16_t max;
+    uint16_t samples[8];      /* first raw samples of that buffer */
+} qrng_init_diag_t;
+
+void qrng_service_get_init_diag(qrng_init_diag_t *out);
+
+/** Raw ADC samples of the noise source, NO health test (bring-up/analysis of the analog front end). If the service
+ *  is not running, powers the analog front end (same sequence as qrng_service_init()), waits 3 s to settle and
+ *  starts the ADC; it stays on for later captures until qrng_service_raw_stop(). Copies one fresh half-buffer:
+ *  `n` must be QRNG_RAW_CAPTURE_SAMPLES consecutive 12-bit samples at the ADC rate. */
+#define QRNG_RAW_CAPTURE_SAMPLES 1024U
+qrng_status_t qrng_service_raw_capture(uint16_t *out, size_t n);
+
+/** Stops what qrng_service_raw_capture() started (ADC, analog front end); no effect while the service itself runs. */
+qrng_status_t qrng_service_raw_stop(void);
+
 #if EVT2_DIAGNOSTICS /* self-tests, benchmarks and diagnostics -- dev/QA only, see Core/Src/main.c */
 
 /* ---- Porting-fidelity self-tests (algorithm math only, no live ADC/RNG) ---- */

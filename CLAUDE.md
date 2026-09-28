@@ -263,3 +263,68 @@ This project is NOT in git. The full handoff (what was ported, verified results,
     keeps in .dma_noncache (checked: 0x24071000, inside MPU region 2). The same settings as the old hand-written
     bsp_adc1_dma_init(), which was removed. The symbol table matches the old build apart from the renamed DMA objects.
     Not flashed yet.
+
+## 2026-09-28: chip ran hot -- lower clock + VOS1, main-loop WFI, DTS temperature
+
+- Power supply checked against the schematic: LDO only (VDDSMPS/VFBSMPS to GND, VLXSMPS open, VDDLDO 3.3 V, VCAP1-4 +
+  DVDD tied, 3x2.2 uF). `PWR_LDO_SUPPLY` is right; the heat is the LDO drop (3.3 V -> core) times core current. SMPS
+  would need a board change.
+- Clock (exercise1.ioc, regenerated; Boot and ExtMemLoader SystemClock_Config): PLL1 HSI/4 x36 /P2 = **288 MHz CPU**
+  (was 600), HCLK 144 (was 300), all APB 144 with prescaler 1 (was 150), **VOS1** (was VOS0), FLASH_LATENCY_3.
+  Why these numbers: VOS1 allows <= 400 MHz CPU; APB 144 keeps I2C1 Timing 0x30929BBB (made for 150 MHz) a valid
+  Standard-mode setting (~96 kHz instead of 100). Consequences, all in the .ioc:
+  - ADC2 now ASYNC from PLL2P: PLL2 P 2 -> 8 = 100 MHz, ADC_CLOCK_ASYNC_DIV4 = 25 MHz (was sync HCLK/4 = 75 MHz).
+    CubeMX refused VOS1 with the sync clock: its DB computes the sync ADC clock from the CPU clock (288/4 = 72 MHz)
+    and allows 36 MHz at VOS1; the async kernel clock is limited to 125 MHz. PLL2S (XSPI1, 200 MHz) unchanged.
+  - TIM1 (QRNG ADC trigger) period 1790 -> 859: the timer clock is 144 MHz now (APB prescaler 1 = no x2),
+    144e6/860 = 167.4 kHz (was 167.5). **The QRNG sampling aperture changed (47.5 cycles at 25 MHz = 1.9 us, was
+    0.63 us): re-characterise the noise when the analog block is repaired.**
+  - Headless generate that hangs: grep the CubeMX log for "IP not ready for code generation: <IP>".
+- Main loop: `app_power_idle()` (Core_app/App/app_power.c) sleeps with WFI when USB is configured, the RX ring is empty
+  and no QRNG stream is armed; the check runs with interrupts masked (`platform_sleep_until_interrupt()`,
+  Platform/platform_time), so data that arrives just before the WFI wakes it at once. SysTick (1 ms) always wakes it:
+  every poll and the IWDG refresh still run each millisecond. No sleep before USB is configured (EVT2 lost USB
+  enumeration with WFI + D-Cache, see platform_time.c). `platform_wait_for_interrupt()` (FPC) unchanged.
+- DTS in the .ioc (Appli, same settings as ST's DTS_GetTemperature example); `platform_temp_init()/_read_c()`
+  (Platform/platform_temp.h). Once a second app_power.c writes temp_c, temp_max_c (since power-on), sleep_permille,
+  sleep_count at g_app_trace + 0x188..0x197. Read over SWD without reset: `python Tools/board_status.py [--watch 5]`.
+- Status: Boot, ExtMemLoader and Appli build (0 errors). **NOT flashed yet** (no ST-Link connected). To verify: flash
+  all (Boot too -- the clock lives there), USB enumeration from PC and phone several times, CA handshake, media
+  timings (WebRTC board-call p50/p95 vs the 600 MHz numbers), board_status.py temperature before/after.
+- Same day, later (hardware measurements, DTS): heat per block, 60 s stages, core in WFI unless noted -- baseline
+  (PLLs + 144 MHz buses) 52 C, CPU busy +6, + CRYP GCM loop +5, HASH/RNG ~0, ADC sampling ~0, USB HS PHY +4..8.
+  Core halted right after reset (HSI 64 MHz only, no PLL) settles at ~37 C. No sign of a board fault: the four
+  analog-block pins held through weak pulls changed nothing, HSE/oscillator off changed nothing.
+- Then: **CPU = HCLK = APB = 120 MHz** (PLL1 x30 /P4, VCO 480; AHB and APB prescalers 1; FLASH_LATENCY_3; TIM1 period
+  715 = 167.6 kHz; I2C1 0x30929BBB at 120 MHz = ~87 kHz, still Standard-mode valid) and **DBG_SLEEP cleared** at the
+  first sleep (`EVT2_DEBUG_IN_SLEEP=1` compiler define keeps it on). Result: ~53 C idle with USB connected (was ~60 C
+  at 288 MHz with DBG_SLEEP on). With DBG_SLEEP off, SWD cannot reach a sleeping chip, not even under reset (no NRST):
+  run flash.bat in a retry loop and power-cycle the board; Tools/board_status.py only works with EVT2_DEBUG_IN_SLEEP=1.
+  Temperature over USB: CMD_TYPE_QRNG sub-command 0x11 (DEVICE_STATUS, qrng_protocol.c).
+  Not yet re-measured: CA handshake / media crypto timing at 120 MHz (CPU-bound parts ~2.4x slower than 288 MHz).
+- 2026-09-29: calls on this board failed at USB HIGH speed (two-PC test, also on the unchanged commit 76aec4d):
+  (1) EP1 IN "TX FIFO empty" interrupt storm (~150k/s: TX1 FIFO = one 512-byte packet, TXFE fires at half empty,
+  HAL writes nothing and leaves it enabled) starving the main loop -> IWDG reset; TXFELVL=1 did not help, TX1=0x100
+  broke the IN path, masking TXFE until the next SOF left the board unresponsive after ~2.5 min. (2) with a host
+  that stops reading, every reply waited 300 ms and one poll could exceed the 32 s IWDG -> fixed in
+  command_protocol.c (after one TX timeout, drop at once until the transfer completes).
+  -> USB now runs at FULL SPEED on the OTG_HS block (.ioc USB_OTG_HS.DeviceSpeed = PCD_SPEED_FULL). Using the OTG_FS
+  block instead needs a board change: its pins are PM11 (DP, today LED_ENABLE) / PM12 (DM); the connector is on PM5/PM6.
+- CPU 240 MHz (PLL1 x30 /P2), AHB /2 = 120 MHz, APB 120 MHz, VOS1: at 120 MHz CPU the board decrypted only ~46 % of
+  incoming video+audio in a two-way video call (CPU 100 % busy). At 240 MHz, 4-minute two-way call (board: webcam
+  out + 30 fps test picture in, pc_call_peer.py --camera -1): video in 7118/7123 decrypted, out 5974 -> 5938 shown,
+  audio ~100 %, 0 errors, CPU ~85 % busy, die 63 -> 71 C (idle ~58 C).
+- device-status (QRNG 0x11) also returns uptime, runs since power-on and the reset cause (RCC_RSR).
+- Back to CPU 120 MHz (240 MHz ran the call but reached 71 C) and made AES-256-GCM cheap instead
+  (platform_crypto.c): GHASH with the 4-bit Shoup table (mbedTLS method; the bit-by-bit ghash_mul() is kept unused
+  for reference) and the GCM keystream from up to 32 counter blocks per CRYP ECB run instead of one HAL_CRYP_Init()
+  per 16-byte block (checked against the per-block path on first use, falls back to it on any mismatch). Algorithm
+  checked in Python against the bitwise GHASH and a library AES-GCM (lengths 1..7157). Same 4-minute two-way video
+  call at 120 MHz: video in 7055/7057, out 5881 -> 5883 shown, audio 2350/2351, 0 errors, CPU ~60 % asleep
+  (was 0 %), die 59..61 C.
+- Analog safety lock REMOVED (2026-09-29, on the user's request): BOARD_QRNG_ANALOG_ENABLE is gone. qrng_service_init()
+  now powers the front end with qrng_analog_power_on(): PS_FIRST_STAGE -> PS_SECOND_STAGE -> LED_ENABLE -> AD5398 at
+  20 mA (register read back), BOARD_QRNG_POWERUP_STEP_MS (10 ms) after each step; qrng_analog_power_off() is the
+  reverse (current first) and runs on every init failure after power-on and in qrng_service_deinit(). Boot and the
+  loader still drive the enables low (and the AD5398 PD pin high) at reset. Built, NOT flashed yet.
+

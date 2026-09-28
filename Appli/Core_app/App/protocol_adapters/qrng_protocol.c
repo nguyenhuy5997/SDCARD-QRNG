@@ -71,6 +71,10 @@ typedef enum {
     QRNG_CMD_STREAM_DEBUG_TIMING        = 0x0E, /* -> response: [sub_cmd][status][draw_us_avg:u32][send_us_avg:u32][push_count:u32] -- per-push breakdown of qrng_protocol_poll()'s two stages (see its doc comment); averages reset to 0 after each read, same convention as qrng_service_debug_get_timing() */
     QRNG_CMD_ECHO                       = 0x0F, /* payload[1..]: arbitrary bytes -> response: [sub_cmd][status][payload[1..] echoed back unchanged] -- pure transport-layer loopback, no QRNG involved; exists to test command_protocol.c's large-payload path (CMD_PROTO_MAX_PAYLOAD) end-to-end without any handler's own data-size limits (e.g. the SE05x secure element's one-shot APDU size cap) getting in the way */
     QRNG_CMD_NONCE_POOL_STATUS          = 0x10, /* -> response: [sub_cmd][status][pool_count:u8][pool_capacity:u8][rng_in_pool:u8][last_qrng_draw_ok:u8][qrng_draw_ok:u32][qrng_draw_fail:u32][nonces_from_qrng:u32][nonces_from_rng:u32] -- read-only debug snapshot of media_protocol.c's AES-GCM nonce pool (never any nonce bytes); counters are cumulative since boot, u32 LE */
+    QRNG_CMD_RAW_CAPTURE                = 0x13, /* -> response: [sub_cmd][status][count:u16][count x u16 raw ADC samples] (LE) -- 1024 consecutive samples, NO health test; starts the analog front end + ADC if the service is not running (qrng_service_raw_capture()). Analog bring-up only. */
+    QRNG_CMD_RAW_STOP                   = 0x14, /* -> response: [sub_cmd][status] -- stops what RAW_CAPTURE started */
+    QRNG_CMD_ADC_RATE                   = 0x12, /* payload[1..2]: window_ms (u16 LE, 1..1000, default 200) -> response: [sub_cmd][status][boot_sps:u32][live_sps:u32][init diag: qrng_init_diag_t fields in order, 32 B] (LE) -- ADC sample rate of the noise source, measured on the chip from the DMA position (qrng_service_measure_adc_rate()). Built in every image. */
+    QRNG_CMD_DEVICE_STATUS              = 0x11, /* -> response: [sub_cmd][status][temp_c:i32][temp_max_c:i32][sleep_permille:u32][wfi_per_s:u32][uptime_ms:u32][boot_count:u32][reset_rsr:u32] (LE; the last 3 added later, readers of the first 18 bytes still work) -- die temperature (DTS, deg C; INT32_MIN = no reading) and main-loop sleep share, refreshed once a second by Core_app/App/app_power.c. Not a QRNG function: it lives here with the other device diagnostics (0x10). Built in every image (read-only counters, no secrets). */
 } qrng_cmd_t;
 
 #if EVT2_DIAGNOSTICS /* dev/QA only, see Core/Src/main.c */
@@ -80,6 +84,9 @@ extern void media_protocol_get_nonce_pool_status(uint32_t *count, uint32_t *capa
                                                  uint32_t *qrng_draw_ok, uint32_t *qrng_draw_fail, bool *last_draw_ok);
 extern void media_protocol_get_nonce_stats(uint32_t *from_qrng, uint32_t *from_rng);
 #endif /* EVT2_DIAGNOSTICS */
+
+#include "app_power.h"
+#include "app_trace.h"
 
 static bool s_streaming;
 static bool s_stream_is_entropy;
@@ -187,6 +194,93 @@ bool qrng_protocol_handler(const uint8_t *payload, uint16_t payload_len, uint8_t
             qrng_status_t st = qrng_service_set_extractor((qrng_extractor_t)payload[1]);
             response[1] = (uint8_t)st;
             *response_len = 2U;
+            return true;
+        }
+        case QRNG_CMD_RAW_CAPTURE: {
+            const uint16_t n = (uint16_t)QRNG_RAW_CAPTURE_SAMPLES;
+            if (max_response_len < 4U + 2U * n) {
+                return false;
+            }
+            static uint16_t s_raw[QRNG_RAW_CAPTURE_SAMPLES];
+            const qrng_status_t st = qrng_service_raw_capture(s_raw, n);
+            response[1] = (uint8_t)st;
+            const uint16_t count = (st == QRNG_OK) ? n : 0U;
+            response[2] = (uint8_t)count;
+            response[3] = (uint8_t)(count >> 8);
+            for (uint32_t i = 0; i < count; i++) {
+                response[4U + 2U * i] = (uint8_t)s_raw[i];
+                response[5U + 2U * i] = (uint8_t)(s_raw[i] >> 8);
+            }
+            *response_len = (uint16_t)(4U + 2U * count);
+            return true;
+        }
+        case QRNG_CMD_RAW_STOP: {
+            response[1] = (uint8_t)qrng_service_raw_stop();
+            *response_len = 2U;
+            return true;
+        }
+        case QRNG_CMD_ADC_RATE: {
+            if (max_response_len < 42U) {
+                return false;
+            }
+            uint32_t window_ms = 200U;
+            if (payload_len >= 3U) {
+                window_ms = (uint32_t)payload[1] | ((uint32_t)payload[2] << 8);
+            }
+            uint32_t boot_sps = 0U;
+            uint32_t live_sps = 0U;
+            const qrng_status_t st = qrng_service_measure_adc_rate(window_ms, &boot_sps, &live_sps);
+            response[1] = (uint8_t)st;
+            for (uint32_t i = 0; i < 4U; i++) {
+                response[2U + i] = (uint8_t)(boot_sps >> (8U * i));
+                response[6U + i] = (uint8_t)(live_sps >> (8U * i));
+            }
+            qrng_init_diag_t d;
+            qrng_service_get_init_diag(&d);
+            uint8_t *r = &response[10];
+            r[0] = d.init_status;
+            r[1] = d.step;
+            r[2] = d.health_status;
+            r[3] = d.attempts;
+            for (uint32_t i = 0; i < 4U; i++) {
+                r[4U + i] = (uint8_t)(d.healthy_samples >> (8U * i));
+                r[8U + i] = (uint8_t)(d.ad5398_ua >> (8U * i));
+            }
+            r[12] = (uint8_t)d.min;
+            r[13] = (uint8_t)(d.min >> 8);
+            r[14] = (uint8_t)d.max;
+            r[15] = (uint8_t)(d.max >> 8);
+            for (uint32_t i = 0; i < 8U; i++) {
+                r[16U + 2U * i] = (uint8_t)d.samples[i];
+                r[17U + 2U * i] = (uint8_t)(d.samples[i] >> 8);
+            }
+            *response_len = 42U;
+            return true;
+        }
+        case QRNG_CMD_DEVICE_STATUS: {
+            if (max_response_len < 30U) {
+                return false;
+            }
+            int32_t temp, temp_max;
+            uint32_t permille, count;
+            app_power_get_status(&temp, &temp_max, &permille, &count);
+#if EVT2_TRACE
+            const uint32_t boots = g_app_trace.boot_count;
+            const uint32_t rsr = g_app_trace.rsr;
+#else
+            const uint32_t boots = 0U;
+            const uint32_t rsr = 0U;
+#endif
+            const uint32_t v[7] = { (uint32_t)temp, (uint32_t)temp_max, permille, count,
+                                    platform_get_tick_ms(), boots, rsr };
+            response[1] = (uint8_t)QRNG_OK;
+            for (uint32_t i = 0; i < 7U; i++) {
+                response[2U + 4U * i] = (uint8_t)v[i];
+                response[3U + 4U * i] = (uint8_t)(v[i] >> 8);
+                response[4U + 4U * i] = (uint8_t)(v[i] >> 16);
+                response[5U + 4U * i] = (uint8_t)(v[i] >> 24);
+            }
+            *response_len = 30U;
             return true;
         }
 #if EVT2_DIAGNOSTICS /* dev/QA only, see Core/Src/main.c */
@@ -315,6 +409,13 @@ bool qrng_protocol_handler(const uint8_t *payload, uint16_t payload_len, uint8_t
         default:
             return false;
     }
+}
+
+/** True while a stream is armed: qrng_protocol_poll() then has a frame to push on every main-loop pass, so the loop
+ *  must not sleep (Core_app/App/app_power.c's idle check, extern there -- same convention as the poll below). */
+bool qrng_protocol_is_streaming(void)
+{
+    return s_streaming;
 }
 
 /** Called from Core_app/App/app_main.c's main loop, right after

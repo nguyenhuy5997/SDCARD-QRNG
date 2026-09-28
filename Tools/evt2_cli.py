@@ -78,6 +78,10 @@ Examples:
     python evt2_cli.py --port COM13 qrng echo --size 32760   # near CMD_PROTO_MAX_PAYLOAD's ceiling
     python evt2_cli.py --port COM13 qrng bench-noise --duration-ms 4000
     python evt2_cli.py --port COM13 qrng bench-entropy --duration-ms 4000 --algo aes
+    python evt2_cli.py --port COM13 qrng adc-rate --count 5           # ADC sample rate measured on the chip
+    python evt2_cli.py --port COM13 qrng device-status                # die temperature (DTS) + main-loop sleep share
+    python evt2_cli.py --port COM13 qrng device-status --watch 5      # repeat every 5 s until Ctrl+C
+    python evt2_cli.py --port COM13 qrng device-status --watch 10 --count 6   # 6 readings, 10 s apart
 
     --- full sweep ---
     python evt2_cli.py --port COM13 all
@@ -182,6 +186,8 @@ QRNG_CMD_BENCH_NOISE = 0x0C
 QRNG_CMD_BENCH_ENTROPY = 0x0D
 QRNG_CMD_STREAM_DEBUG_TIMING = 0x0E
 QRNG_CMD_ECHO = 0x0F
+QRNG_CMD_ADC_RATE = 0x12  # V8Y: [boot_sps:u32][live_sps:u32]
+QRNG_CMD_DEVICE_STATUS = 0x11  # V8Y: [temp_c:i32][temp_max_c:i32][sleep_permille:u32][wfi_per_s:u32], app_power.c
 
 QRNG_NOISE_BYTES = 2048
 QRNG_ENTROPY_BYTES = 1024
@@ -1001,6 +1007,71 @@ def do_qrng_echo(dev, session_id, data: bytes):
     return ok
 
 
+def do_qrng_adc_rate(dev, session_id, window_ms=200, count=1):
+    """ADC sample rate of the noise source measured on the chip (QRNG_CMD_ADC_RATE, V8Y firmware): the rate
+    right after the ADC started at boot, and now over `window_ms` (0 when the QRNG service is not running)."""
+    for _ in range(count):
+        resp = request(dev, CMD_TYPE_QRNG, session_id, QRNG_CMD_ADC_RATE, struct.pack("<H", window_ms), timeout=5.0)
+        if resp is None:
+            print("qrng adc-rate -> TIMEOUT")
+            return False
+        payload = resp[3]
+        if len(payload) < 10:
+            print(f"qrng adc-rate -> unexpected reply {payload.hex()} (firmware without sub-command 0x12?)")
+            return False
+        boot, live = struct.unpack_from("<II", payload, 2)
+        print(f"qrng adc-rate -> status={QRNG_STATUS_NAMES.get(payload[1], payload[1])}  "
+              f"boot {boot / 1e6:.4f} MS/s  now {live / 1e6:.4f} MS/s ({window_ms} ms)  "
+              f"= {live * 12 / 1e6:.2f} Mbit/s at 12 bit")
+        if len(payload) >= 42:
+            st, step, health, attempts, healthy, ua, mn, mx = struct.unpack_from("<BBBBIIHH", payload, 10)
+            samples = struct.unpack_from("<8H", payload, 26)
+            steps = {1: "DAC", 2: "analog power-on", 3: "settle/crypto init", 4: "ADC/timer init", 5: "ADC start",
+                     6: "startup health check", 7: "done"}
+            hname = {0: "OK", 1: "RCT fail", 2: "APT fail", 0xFF: "no ADC buffer"}
+            print(f"  init: status={'never ran' if st == 0xFF else QRNG_STATUS_NAMES.get(st, st)}  "
+                  f"last step={step} ({steps.get(step, '?')})  AD5398 read back={ua / 1000:.1f} mA")
+            print(f"  startup health: {hname.get(health, health)} after {healthy} good samples, {attempts} attempt(s); "
+                  f"last buffer min={mn} max={mx} span={mx - mn}")
+            print(f"  first samples: {list(samples)}")
+    return True
+
+
+def do_qrng_device_status(dev, session_id, watch=0.0, count=0):
+    """Die temperature and main-loop sleep share (QRNG_CMD_DEVICE_STATUS, V8Y firmware). The board refreshes the
+    values once a second (Core_app/App/app_power.c); temp_max is the maximum since the firmware started.
+    watch > 0 repeats every `watch` seconds, `count` times (0 = until Ctrl+C)."""
+    n = 0
+    try:
+        while True:
+            resp = request(dev, CMD_TYPE_QRNG, session_id, QRNG_CMD_DEVICE_STATUS)
+            if resp is None:
+                print("qrng device-status -> TIMEOUT")
+                return False
+            payload = resp[3]
+            if len(payload) < 18 or payload[1] != 0:
+                print(f"qrng device-status -> unexpected reply {payload.hex()} (firmware without sub-command 0x11?)")
+                return False
+            words = [int.from_bytes(payload[2 + 4 * i:6 + 4 * i], "little", signed=(i < 2)) for i in range(4)]
+            temp, temp_max, permille, wfi = words
+            fmt = lambda c: "--" if c == -0x80000000 else f"{c} C"
+            extra = ""
+            if len(payload) >= 30:  # newer firmware: uptime, runs since power-on, reset cause of this run
+                up_ms, boots, rsr = struct.unpack_from("<III", payload, 18)
+                causes = [n for b, n in ((1 << 30, "LPWR"), (1 << 28, "WWDG"), (1 << 26, "IWDG"), (1 << 24, "SW"),
+                                         (1 << 23, "POR"), (1 << 22, "PIN"), (1 << 21, "BOR"), (1 << 17, "OBL"))
+                          if rsr & b]  # RCC_RSR, stm32h7s3xx.h
+                extra = f"  uptime {up_ms / 1000:.0f} s  run #{boots} since power-on  reset cause {'+'.join(causes) or hex(rsr)}"
+            print(f"{time.strftime('%H:%M:%S')}  temp {fmt(temp)}  (max {fmt(temp_max)})  "
+                  f"asleep {permille / 10:.1f}%  ({wfi} WFI/s){extra}")
+            n += 1
+            if watch <= 0 or (count and n >= count):
+                return True
+            time.sleep(watch)
+    except KeyboardInterrupt:
+        return True
+
+
 def _run_stream(dev, session_id, label, start_sub_cmd, seconds, verbose=False):
     print(f"\n--- qrng stream-{label} for {seconds:.1f}s{' (verbose)' if verbose else ''} ---")
     resp = request(dev, CMD_TYPE_QRNG, session_id, start_sub_cmd)
@@ -1325,6 +1396,13 @@ def main():
     g.add_argument("--message", help="Text to echo (UTF-8)")
     g.add_argument("--size", type=int, help="Echo this many bytes of deterministic filler data instead of --message "
                                              "(e.g. --size 32760 to test near CMD_PROTO_MAX_PAYLOAD's ceiling)")
+    p = qsub.add_parser("adc-rate", help="QRNG_CMD_ADC_RATE (0x12) -- ADC sample rate measured on the chip")
+    p.add_argument("--window-ms", type=int, default=200)
+    p.add_argument("--count", type=int, default=1)
+    p = qsub.add_parser("device-status", help="QRNG_CMD_DEVICE_STATUS (0x11) -- die temperature (DTS) and main-loop "
+                                              "sleep share, refreshed once a second by the board")
+    p.add_argument("--watch", type=float, default=0.0, metavar="S", help="Repeat every S seconds")
+    p.add_argument("--count", type=int, default=0, help="Stop after this many readings with --watch (0 = Ctrl+C)")
     qsub.add_parser("stream-debug-timing", help="Read qrng_protocol_poll()'s per-push draw-vs-USB-send cycle "
                                                  "breakdown -- call right after stopping a stream-noise/"
                                                  "stream-entropy run in the same session")
@@ -1460,6 +1538,10 @@ def main():
                 else:
                     data = (args.message or "hello").encode("utf-8")
                 ok = do_qrng_echo(dev, session_id, data)
+            elif args.qrng_cmd == "adc-rate":
+                ok = do_qrng_adc_rate(dev, session_id, args.window_ms, args.count)
+            elif args.qrng_cmd == "device-status":
+                ok = do_qrng_device_status(dev, session_id, args.watch, args.count)
             elif args.qrng_cmd == "stream-debug-timing":
                 ok = do_qrng_stream_debug_timing(dev, session_id)
             elif args.qrng_cmd == "stream-stop":

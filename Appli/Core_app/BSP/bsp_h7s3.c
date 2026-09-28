@@ -148,7 +148,7 @@ static void bsp_usart1_msp_init(UART_HandleTypeDef *huart)
     GPIO_InitTypeDef g = {0};
 
     pclk.PeriphClockSelection = RCC_PERIPHCLK_USART1;
-    pclk.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2; /* 150MHz */
+    pclk.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK2; /* 144MHz */
     if (HAL_RCCEx_PeriphCLKConfig(&pclk) != HAL_OK) {
         Error_Handler();
     }

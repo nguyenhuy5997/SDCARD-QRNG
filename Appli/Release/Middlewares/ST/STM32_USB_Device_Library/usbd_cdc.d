@@ -32,6 +32,7 @@ Middlewares/ST/STM32_USB_Device_Library/usbd_cdc.o: \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_crc_ex.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp_ex.h \
+ ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_dts.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_exti.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash_ex.h \
@@ -85,6 +86,7 @@ Middlewares/ST/STM32_USB_Device_Library/usbd_cdc.o: \
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_crc_ex.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp_ex.h:
+../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_dts.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_exti.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash_ex.h:

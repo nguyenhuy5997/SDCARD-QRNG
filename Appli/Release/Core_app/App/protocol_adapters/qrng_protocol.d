@@ -10,7 +10,8 @@ Core_app/App/protocol_adapters/qrng_protocol.o: \
  ../Core_app/Platform/platform_rng.h ../Core_app/Platform/platform_dac.h \
  ../Core_app/Platform/platform_hash.h \
  ../Core_app/Platform/platform_crypto.h \
- ../Core_app/Platform/platform_usb.h
+ ../Core_app/Platform/platform_usb.h ../Core_app/Platform/platform_temp.h \
+ ../Core_app/App/app_power.h ../Core_app/App/app_trace.h
 ../Core_app/Middleware/CommandProtocol/command_protocol.h:
 ../Core_app/Middleware/QRNG/qrng_service.h:
 ../Core_app/Platform/platform.h:
@@ -26,3 +27,6 @@ Core_app/App/protocol_adapters/qrng_protocol.o: \
 ../Core_app/Platform/platform_hash.h:
 ../Core_app/Platform/platform_crypto.h:
 ../Core_app/Platform/platform_usb.h:
+../Core_app/Platform/platform_temp.h:
+../Core_app/App/app_power.h:
+../Core_app/App/app_trace.h:

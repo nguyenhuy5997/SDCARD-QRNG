@@ -83,7 +83,16 @@ typedef struct {
     volatile uint32_t fault_mmfar;
     /* previous runs, [0] = most recent */
     app_trace_run_t history[APP_TRACE_HISTORY];
+    /* thermal / power (Core_app/App/app_power.c, updated once a second). Appended after history so the offsets above
+     * do not move. Not cleared by app_trace_boot(): after a reset they still show the last values of the run that
+     * ended until the new run's first update; temp_max_c keeps the maximum since power-on. */
+    volatile int32_t temp_c;         /* DTS junction temperature, deg C; APP_TRACE_TEMP_NONE = no reading */
+    volatile int32_t temp_max_c;
+    volatile uint32_t sleep_permille; /* share of the last second spent in WFI (0..1000) */
+    volatile uint32_t sleep_count;    /* WFI entries in the last second */
 } app_trace_t;
+
+#define APP_TRACE_TEMP_NONE ((int32_t)0x80000000)
 
 extern app_trace_t g_app_trace;
 

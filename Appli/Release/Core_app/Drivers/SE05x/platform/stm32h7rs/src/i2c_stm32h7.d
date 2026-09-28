@@ -9,8 +9,8 @@ Core_app/Drivers/SE05x/platform/stm32h7rs/src/i2c_stm32h7.o: \
  ../Core_app/Platform/platform_rng.h ../Core_app/Platform/platform_dac.h \
  ../Core_app/Platform/platform_hash.h \
  ../Core_app/Platform/platform_crypto.h \
- ../Core_app/Platform/platform_usb.h ../Core_app/BSP/board.h \
- ../Core_app/BSP/bsp_hal.h ../Core/Inc/main.h \
+ ../Core_app/Platform/platform_usb.h ../Core_app/Platform/platform_temp.h \
+ ../Core_app/BSP/board.h ../Core_app/BSP/bsp_hal.h ../Core/Inc/main.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal.h \
  ../Core/Inc/stm32h7rsxx_hal_conf.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_rcc.h \
@@ -39,6 +39,7 @@ Core_app/Drivers/SE05x/platform/stm32h7rs/src/i2c_stm32h7.o: \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_crc_ex.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp_ex.h \
+ ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_dts.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_exti.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash_ex.h \
@@ -71,6 +72,7 @@ Core_app/Drivers/SE05x/platform/stm32h7rs/src/i2c_stm32h7.o: \
 ../Core_app/Platform/platform_hash.h:
 ../Core_app/Platform/platform_crypto.h:
 ../Core_app/Platform/platform_usb.h:
+../Core_app/Platform/platform_temp.h:
 ../Core_app/BSP/board.h:
 ../Core_app/BSP/bsp_hal.h:
 ../Core/Inc/main.h:
@@ -102,6 +104,7 @@ Core_app/Drivers/SE05x/platform/stm32h7rs/src/i2c_stm32h7.o: \
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_crc_ex.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp_ex.h:
+../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_dts.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_exti.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash_ex.h:

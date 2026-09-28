@@ -42,12 +42,10 @@ extern "C" {
 #define BOARD_PS_SECOND_STAGE_EN_GPIO ((platform_gpio_t){ PLATFORM_GPIO_PORT_B, 14U }) /* main.h: PS_SECOND_STAGE_ENABLE_Pin (PB14) */
 #define BOARD_LED_EN_GPIO             ((platform_gpio_t){ PLATFORM_GPIO_PORT_M, 11U }) /* main.h: LED_ENABLE_Pin (PM11) */
 
-/* SAFETY LOCK (2026-09-26, hardware problem on the board): 0 = the analog noise front end must stay OFF.
- * qrng_service_init() then never drives the three enables above high, puts the AD5398 into power-down (register PD
- * bit + BOARD_AD5398_PD_GPIO) and reports QRNG_ERROR, so nothing is ever read from the noise source. Media nonces
- * fall back to the hardware TRNG (media_protocol.c) and PQC randombytes() does the same. Set to 1 only after the
- * hardware is fixed and the power-up sequence is filled in (qrng_analog_front_end()). */
-#define BOARD_QRNG_ANALOG_ENABLE 0
+/* Power-up order of the analog front end (2026-09-29, from the hardware owner), done by qrng_service_init():
+ * PS_FIRST_STAGE -> PS_SECOND_STAGE -> LED_ENABLE -> AD5398 drive current (BOARD_QRNG_DRIVE_CURRENT_UA).
+ * Power-down is the reverse, drive current first. BOARD_QRNG_POWERUP_STEP_MS is the wait after each step. */
+#define BOARD_QRNG_POWERUP_STEP_MS 10U
 
 /* OSC_ENABLE (PC15) gates the 24 MHz HSE oscillator (USB PHY clock). Boot drives it high before SystemClock_Config()
  * and the Appli keeps it high (GPIO default in the .ioc); Core_app never touches it. */
@@ -57,12 +55,15 @@ extern "C" {
 
 /* ---- ADC ---- */
 #define BOARD_ADC              PLATFORM_ADC_2  /* logical id only -- the .ioc owns the pin/channel: PA5 = ADC2_INP18
-                                                 * (PA5 does not reach ADC1), TIM1 TRGO (first edge only, continuous
-                                                 * mode) + circular GPDMA1 channel 0 */
+                                                 * (PA5 does not reach ADC1), one conversion per TIM1 TRGO (continuous
+                                                 * mode off) + circular GPDMA1 channel 0.
+                                                 * 1.5 MS/s x 12 bit = 18 Mbit/s raw (2026-09-29): TIM1 120 MHz / 80;
+                                                 * ADC clock PLL2P 66.7 MHz / 2 = 33.3 MHz (VOS1 max 36 MHz), 6.5
+                                                 * sampling + 12.5 conversion cycles = 0.57 us < 0.667 us period. */
 
 /* ---- Timers ---- */
-#define BOARD_ADC_TRIGGER_TIMER PLATFORM_TIMER_1 /* main.h/main.c: htim1, paces BOARD_ADC via TRGO -- must be
-                                                   * platform_timer_start()-ed for ADC conversions to happen */
+#define BOARD_ADC_TRIGGER_TIMER PLATFORM_TIMER_1 /* main.h/main.c: htim1, paces BOARD_ADC via TRGO at 1.5 MHz (every
+                                                   * sample) -- must be platform_timer_start()-ed for conversions */
 
 /* ---- QRNG analog noise source -- Core_app/Middleware/QRNG/ADC_Noise ----
  * The noise source is BOARD_ADC sampling the analog noise circuit, enabled through the PS_*_STAGE / LED enables

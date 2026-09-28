@@ -27,6 +27,7 @@ extern RNG_HandleTypeDef  hrng;
 extern CRC_HandleTypeDef  hcrc;
 extern I2C_HandleTypeDef  hi2c1;
 extern TIM_HandleTypeDef  htim1;
+extern DTS_HandleTypeDef  hdts;
 #if EVT2_ENABLE_BIOMETRIC
 extern UART_HandleTypeDef huart1; /* bsp_h7s3.c (the board has no USART in the .ioc) */
 #endif

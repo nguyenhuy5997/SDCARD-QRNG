@@ -119,7 +119,7 @@ uint32_t extmemloader_Init()
   {
     /* SAFETY (2026-09-26, board hardware problem): hold the QRNG analog enables PS_FIRST_STAGE_ENABLE (PA8),
      * PS_SECOND_STAGE_ENABLE (PB14) and LED_ENABLE (PM11) low from the first instructions on; otherwise they float
-     * until the Appli's MX_GPIO_Init(). See BOARD_QRNG_ANALOG_ENABLE in Appli/Core_app/BSP/board.h.
+     * until the Appli's MX_GPIO_Init(). The Appli's qrng_service_init() powers it up (board.h: power-up order).
      * Also hold the AD5398's PD pin (PO2, active HIGH = powered down) high, so the current sink stays off. */
     GPIO_InitTypeDef off = {0};
     __HAL_RCC_GPIOA_CLK_ENABLE();
@@ -180,7 +180,7 @@ void SystemClock_Config(void)
 
   /** Configure the main internal regulator output voltage
   */
-  if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE0) != HAL_OK)
+  if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK)
   {
     Error_Handler();
   }
@@ -203,18 +203,18 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL1.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL1.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL1.PLLM = 4;
-  RCC_OscInitStruct.PLL1.PLLN = 37;
-  RCC_OscInitStruct.PLL1.PLLP = 1;
+  RCC_OscInitStruct.PLL1.PLLN = 30;
+  RCC_OscInitStruct.PLL1.PLLP = 4;
   RCC_OscInitStruct.PLL1.PLLQ = 2;
   RCC_OscInitStruct.PLL1.PLLR = 2;
   RCC_OscInitStruct.PLL1.PLLS = 2;
   RCC_OscInitStruct.PLL1.PLLT = 2;
-  RCC_OscInitStruct.PLL1.PLLFractional = 4096;
+  RCC_OscInitStruct.PLL1.PLLFractional = 0;
   RCC_OscInitStruct.PLL2.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL2.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL2.PLLM = 4;
   RCC_OscInitStruct.PLL2.PLLN = 50;
-  RCC_OscInitStruct.PLL2.PLLP = 2;
+  RCC_OscInitStruct.PLL2.PLLP = 12;
   RCC_OscInitStruct.PLL2.PLLQ = 2;
   RCC_OscInitStruct.PLL2.PLLR = 2;
   RCC_OscInitStruct.PLL2.PLLS = 4;
@@ -233,13 +233,13 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK4|RCC_CLOCKTYPE_PCLK5;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV2;
-  RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV2;
-  RCC_ClkInitStruct.APB5CLKDivider = RCC_APB5_DIV2;
+  RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV1;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_APB2_DIV1;
+  RCC_ClkInitStruct.APB4CLKDivider = RCC_APB4_DIV1;
+  RCC_ClkInitStruct.APB5CLKDivider = RCC_APB5_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_7) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_3) != HAL_OK)
   {
     Error_Handler();
   }

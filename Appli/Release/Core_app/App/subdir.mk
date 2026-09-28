@@ -6,18 +6,21 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../Core_app/App/app_main.c \
+../Core_app/App/app_power.c \
 ../Core_app/App/app_se05x_probe.c \
 ../Core_app/App/app_self_test.c \
 ../Core_app/App/app_trace.c 
 
 OBJS += \
 ./Core_app/App/app_main.o \
+./Core_app/App/app_power.o \
 ./Core_app/App/app_se05x_probe.o \
 ./Core_app/App/app_self_test.o \
 ./Core_app/App/app_trace.o 
 
 C_DEPS += \
 ./Core_app/App/app_main.d \
+./Core_app/App/app_power.d \
 ./Core_app/App/app_se05x_probe.d \
 ./Core_app/App/app_self_test.d \
 ./Core_app/App/app_trace.d 
@@ -30,7 +33,7 @@ Core_app/App/%.o Core_app/App/%.su Core_app/App/%.cyclo: ../Core_app/App/%.c Cor
 clean: clean-Core_app-2f-App
 
 clean-Core_app-2f-App:
-	-$(RM) ./Core_app/App/app_main.cyclo ./Core_app/App/app_main.d ./Core_app/App/app_main.o ./Core_app/App/app_main.su ./Core_app/App/app_se05x_probe.cyclo ./Core_app/App/app_se05x_probe.d ./Core_app/App/app_se05x_probe.o ./Core_app/App/app_se05x_probe.su ./Core_app/App/app_self_test.cyclo ./Core_app/App/app_self_test.d ./Core_app/App/app_self_test.o ./Core_app/App/app_self_test.su ./Core_app/App/app_trace.cyclo ./Core_app/App/app_trace.d ./Core_app/App/app_trace.o ./Core_app/App/app_trace.su
+	-$(RM) ./Core_app/App/app_main.cyclo ./Core_app/App/app_main.d ./Core_app/App/app_main.o ./Core_app/App/app_main.su ./Core_app/App/app_power.cyclo ./Core_app/App/app_power.d ./Core_app/App/app_power.o ./Core_app/App/app_power.su ./Core_app/App/app_se05x_probe.cyclo ./Core_app/App/app_se05x_probe.d ./Core_app/App/app_se05x_probe.o ./Core_app/App/app_se05x_probe.su ./Core_app/App/app_self_test.cyclo ./Core_app/App/app_self_test.d ./Core_app/App/app_self_test.o ./Core_app/App/app_self_test.su ./Core_app/App/app_trace.cyclo ./Core_app/App/app_trace.d ./Core_app/App/app_trace.o ./Core_app/App/app_trace.su
 
 .PHONY: clean-Core_app-2f-App
 

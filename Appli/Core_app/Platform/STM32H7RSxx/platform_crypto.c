@@ -322,6 +322,7 @@ static platform_status_t aes256_ecb_block(const uint32_t key_words[8], const uin
  *  hash function -- one polynomial multiply, ~128 XOR/shift steps, called once per 16-byte block.
  *  Branch-free on purpose: H = E(K, 0) is secret, so the conditional XOR and the reduction step are
  *  done with all-ones/all-zeros masks instead of `if`, keeping timing independent of H and X. */
+static void ghash_mul(uint8_t x[16], const uint8_t h[16]) __attribute__((unused));
 static void ghash_mul(uint8_t x[16], const uint8_t h[16])
 {
     uint8_t z[16] = {0};
@@ -341,6 +342,124 @@ static void ghash_mul(uint8_t x[16], const uint8_t h[16])
     memcpy(x, z, 16U);
     memset(z, 0, sizeof(z));
     memset(v, 0, sizeof(v));
+}
+
+/* ---- Table-driven GHASH (2026-09-29, CPU load at 120 MHz) ----
+ * ghash_mul() above is ~128 shift/XOR rounds over 16 bytes per block; with ~450 blocks in a 7 KB video chunk it
+ * was the largest share of the board's CPU time in a call. This is the 4-bit (Shoup) table method used by mbedTLS:
+ * a 16-entry table of H multiples built once per call, then 32 table steps per block. Same result, bit for bit
+ * (checked against ghash_mul() and against a library AES-GCM for lengths 1..7157, 2026-09-29). The table is indexed
+ * by X (ciphertext-dependent) -- the usual mbedTLS trade-off; ghash_mul() stays for reference. */
+typedef struct {
+    uint64_t hl[16];
+    uint64_t hh[16];
+} ghash_table_t;
+
+static const uint16_t s_ghash_last4[16] = {
+    0x0000U, 0x1c20U, 0x3840U, 0x2460U, 0x7080U, 0x6ca0U, 0x48c0U, 0x54e0U,
+    0xe100U, 0xfd20U, 0xd940U, 0xc560U, 0x9180U, 0x8da0U, 0xa9c0U, 0xb5e0U,
+};
+
+static uint64_t be64(const uint8_t *p)
+{
+    uint64_t v = 0U;
+    for (int i = 0; i < 8; i++) {
+        v = (v << 8) | p[i];
+    }
+    return v;
+}
+
+static void ghash_table_init(ghash_table_t *t, const uint8_t h[16])
+{
+    uint64_t vh = be64(h);
+    uint64_t vl = be64(h + 8);
+    t->hl[0] = 0U;
+    t->hh[0] = 0U;
+    t->hl[8] = vl;
+    t->hh[8] = vh;
+    for (uint32_t i = 4U; i > 0U; i >>= 1) {
+        const uint64_t tt = (vl & 1U) * 0xe1000000ULL;
+        vl = (vh << 63) | (vl >> 1);
+        vh = (vh >> 1) ^ (tt << 32);
+        t->hl[i] = vl;
+        t->hh[i] = vh;
+    }
+    for (uint32_t i = 2U; i <= 8U; i *= 2U) {
+        vh = t->hh[i];
+        vl = t->hl[i];
+        for (uint32_t j = 1U; j < i; j++) {
+            t->hh[i + j] = vh ^ t->hh[j];
+            t->hl[i + j] = vl ^ t->hl[j];
+        }
+    }
+}
+
+/** x = x * H using the table (same contract as ghash_mul()). */
+static void ghash_mul_table(uint8_t x[16], const ghash_table_t *t)
+{
+    uint32_t lo = x[15] & 0xFU;
+    uint64_t zh = t->hh[lo];
+    uint64_t zl = t->hl[lo];
+    for (int i = 15; i >= 0; i--) {
+        lo = x[i] & 0xFU;
+        const uint32_t hi = (x[i] >> 4) & 0xFU;
+        uint32_t rem;
+        if (i != 15) {
+            rem = (uint32_t)(zl & 0xFU);
+            zl = (zh << 60) | (zl >> 4);
+            zh = (zh >> 4) ^ ((uint64_t)s_ghash_last4[rem] << 48);
+            zh ^= t->hh[lo];
+            zl ^= t->hl[lo];
+        }
+        rem = (uint32_t)(zl & 0xFU);
+        zl = (zh << 60) | (zl >> 4);
+        zh = (zh >> 4) ^ ((uint64_t)s_ghash_last4[rem] << 48);
+        zh ^= t->hh[hi];
+        zl ^= t->hl[hi];
+    }
+    for (int i = 0; i < 8; i++) {
+        x[i] = (uint8_t)(zh >> (56 - 8 * i));
+        x[8 + i] = (uint8_t)(zl >> (56 - 8 * i));
+    }
+}
+
+/* ---- AES-256-ECB over many blocks in ONE CRYP run (2026-09-29) ----
+ * aes256_ecb_block() re-initialises CRYP (key load) for every 16-byte block. The GCM keystream blocks are
+ * independent, so up to GCM_ECB_BATCH counter blocks are encrypted per HAL_CRYP_Encrypt() call in ECB mode --
+ * always a multiple of 16 bytes, which this hardware handles correctly (see above). Checked once against
+ * aes256_ecb_block() on first use; on any mismatch the per-block path is used from then on. */
+#define GCM_ECB_BATCH 32U
+static uint32_t s_ecb_in[GCM_ECB_BATCH * 4U];
+static uint32_t s_ecb_out[GCM_ECB_BATCH * 4U];
+static int8_t s_ecb_batch_ok = -1; /* -1 = not checked yet, 0 = use per-block, 1 = batch works */
+
+static platform_status_t aes256_ecb_batch(const uint32_t key_words[8], uint32_t nblocks)
+{
+    hcryp.Init.DataType        = CRYP_DATATYPE_8B;
+    hcryp.Init.KeySize         = CRYP_KEYSIZE_256B;
+    hcryp.Init.pKey            = (uint32_t *)(void *)(uintptr_t)(const void *)key_words;
+    hcryp.Init.pInitVect       = NULL;
+    hcryp.Init.Algorithm       = CRYP_AES_ECB;
+    hcryp.Init.DataWidthUnit   = CRYP_DATAWIDTHUNIT_WORD;
+    hcryp.Init.HeaderWidthUnit = CRYP_HEADERWIDTHUNIT_WORD;
+    hcryp.Init.KeyIVConfigSkip = CRYP_KEYIVCONFIG_ALWAYS;
+
+    (void)gcm_reload_clock_if_needed();
+    if (HAL_CRYP_Init(&hcryp) != HAL_OK) {
+        return PLATFORM_ERROR;
+    }
+    ((CRYP_TypeDef *)hcryp.Instance)->CR |= CRYP_CR_FFLUSH;
+    if (HAL_CRYP_Encrypt(&hcryp, s_ecb_in, (uint16_t)(nblocks * 4U), s_ecb_out, 100U) != HAL_OK) {
+        return PLATFORM_ERROR;
+    }
+    return PLATFORM_OK;
+}
+
+/** Byte `i` (0..15) of output block `b` of the last aes256_ecb_batch() -- DOUT words come back byte-reversed,
+ *  same extraction as aes256_ecb_block(). */
+static inline uint8_t ecb_out_byte(uint32_t b, uint32_t i)
+{
+    return (uint8_t)(s_ecb_out[b * 4U + i / 4U] >> (8U * (i % 4U)));
 }
 
 /** Builds the AES-CTR counter block for GCM payload block `block_index` (0-based): 96-bit nonce ||
@@ -382,38 +501,85 @@ static platform_status_t aes256_gcm_run(const uint8_t key[32], const uint8_t non
         return PLATFORM_ERROR;
     }
 
-    uint8_t y[16] = {0};
-    uint32_t num_blocks = (len + 15U) / 16U;
-    for (uint32_t b = 0; b < num_blocks; b++) {
-        uint8_t ctr_block[16];
-        gcm_counter_block(nonce, b, ctr_block);
-        uint8_t keystream[16];
-        if (aes256_ecb_block(key_words, ctr_block, keystream) != PLATFORM_OK) {
-            return PLATFORM_ERROR;
-        }
+    static ghash_table_t s_gt; /* static: 256 B, not on the stack; wiped below */
+    ghash_table_init(&s_gt, h_subkey);
 
-        uint32_t off = b * 16U;
-        uint32_t chunk = (len - off < 16U) ? (len - off) : 16U;
-        uint8_t cipher_block[16] = {0};
-
-        if (encrypting) {
-            for (uint32_t i = 0; i < chunk; i++) {
-                uint8_t c = (uint8_t)(src[off + i] ^ keystream[i]);
-                dst[off + i] = c;
-                cipher_block[i] = c;
+    if (s_ecb_batch_ok < 0) { /* first use: the batch path must match the proven per-block path */
+        uint8_t ref[16];
+        uint8_t blk[16];
+        gcm_counter_block(nonce, 0U, blk);
+        memcpy(&s_ecb_in[0], blk, 16U);
+        gcm_counter_block(nonce, 1U, blk);
+        memcpy(&s_ecb_in[4], blk, 16U);
+        int8_t ok = (aes256_ecb_batch(key_words, 2U) == PLATFORM_OK) ? 1 : 0;
+        uint32_t saved[8];
+        memcpy(saved, s_ecb_out, sizeof(saved));
+        for (uint32_t b = 0U; ok != 0 && b < 2U; b++) {
+            gcm_counter_block(nonce, b, blk);
+            if (aes256_ecb_block(key_words, blk, ref) != PLATFORM_OK) {
+                return PLATFORM_ERROR;
             }
-        } else {
-            memcpy(cipher_block, &src[off], chunk);
-            for (uint32_t i = 0; i < chunk; i++) {
-                dst[off + i] = (uint8_t)(src[off + i] ^ keystream[i]);
+            for (uint32_t i = 0U; i < 16U; i++) {
+                if ((uint8_t)(saved[b * 4U + i / 4U] >> (8U * (i % 4U))) != ref[i]) {
+                    ok = 0;
+                }
             }
         }
-
-        for (int j = 0; j < 16; j++) {
-            y[j] = (uint8_t)(y[j] ^ cipher_block[j]);
-        }
-        ghash_mul(y, h_subkey);
+        memset(saved, 0, sizeof(saved));
+        s_ecb_batch_ok = ok;
     }
+
+    uint8_t y[16] = {0};
+    const uint32_t num_blocks = (len + 15U) / 16U;
+    for (uint32_t first = 0U; first < num_blocks; first += GCM_ECB_BATCH) {
+        const uint32_t n = (num_blocks - first < GCM_ECB_BATCH) ? (num_blocks - first) : GCM_ECB_BATCH;
+        if (s_ecb_batch_ok > 0) {
+            for (uint32_t b = 0U; b < n; b++) {
+                gcm_counter_block(nonce, first + b, (uint8_t *)(void *)&s_ecb_in[b * 4U]);
+            }
+            if (aes256_ecb_batch(key_words, n) != PLATFORM_OK) {
+                return PLATFORM_ERROR;
+            }
+        }
+        for (uint32_t b = 0U; b < n; b++) {
+            uint8_t keystream[16];
+            if (s_ecb_batch_ok > 0) {
+                for (uint32_t i = 0U; i < 16U; i++) {
+                    keystream[i] = ecb_out_byte(b, i);
+                }
+            }
+            else {
+                uint8_t ctr_block[16];
+                gcm_counter_block(nonce, first + b, ctr_block);
+                if (aes256_ecb_block(key_words, ctr_block, keystream) != PLATFORM_OK) {
+                    return PLATFORM_ERROR;
+                }
+            }
+
+            const uint32_t off = (first + b) * 16U;
+            const uint32_t chunk = (len - off < 16U) ? (len - off) : 16U;
+            uint8_t cipher_block[16] = {0};
+
+            if (encrypting) {
+                for (uint32_t i = 0; i < chunk; i++) {
+                    uint8_t c = (uint8_t)(src[off + i] ^ keystream[i]);
+                    dst[off + i] = c;
+                    cipher_block[i] = c;
+                }
+            } else {
+                memcpy(cipher_block, &src[off], chunk);
+                for (uint32_t i = 0; i < chunk; i++) {
+                    dst[off + i] = (uint8_t)(src[off + i] ^ keystream[i]);
+                }
+            }
+
+            for (int j = 0; j < 16; j++) {
+                y[j] = (uint8_t)(y[j] ^ cipher_block[j]);
+            }
+            ghash_mul_table(y, &s_gt);
+        }
+    }
+    memset(s_ecb_out, 0, sizeof(s_ecb_out)); /* keystream */
 
     /* Final GHASH block: 64-bit AAD bit-length (always 0 -- this file never uses GCM AAD) || 64-bit
      * ciphertext bit-length, big-endian, per NIST SP 800-38D. */
@@ -425,7 +591,8 @@ static platform_status_t aes256_gcm_run(const uint8_t key[32], const uint8_t non
     for (int j = 0; j < 16; j++) {
         y[j] = (uint8_t)(y[j] ^ len_block[j]);
     }
-    ghash_mul(y, h_subkey);
+    ghash_mul_table(y, &s_gt);
+    memset(&s_gt, 0, sizeof(s_gt)); /* derived from the secret H */
 
     if (encrypting) {
         for (int i = 0; i < 16; i++) {

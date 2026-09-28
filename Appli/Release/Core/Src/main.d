@@ -27,6 +27,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_crc_ex.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp_ex.h \
+ ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_dts.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_exti.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash.h \
  ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash_ex.h \
@@ -48,6 +49,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../USB_DEVICE/Target/usbd_conf.h ../Core_app/App/app_trace.h \
  ../Core_app/Middleware/Security/scp03_keys_cfg.h \
  ../Core_app/BSP/bsp_hal.h ../Core_app/App/app_main.h \
+ ../Core_app/App/app_power.h \
  ../Core_app/Middleware/Security/security_service.h \
  ../Core_app/App/app_se05x_probe.h ../Core_app/Middleware/CA/ca_service.h \
  ../Core_app/Middleware/QRNG/qrng_service.h
@@ -80,6 +82,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_crc_ex.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_cryp_ex.h:
+../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_dts.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_exti.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash.h:
 ../../Drivers/STM32H7RSxx_HAL_Driver/Inc/stm32h7rsxx_hal_flash_ex.h:
@@ -103,6 +106,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Core_app/Middleware/Security/scp03_keys_cfg.h:
 ../Core_app/BSP/bsp_hal.h:
 ../Core_app/App/app_main.h:
+../Core_app/App/app_power.h:
 ../Core_app/Middleware/Security/security_service.h:
 ../Core_app/App/app_se05x_probe.h:
 ../Core_app/Middleware/CA/ca_service.h:

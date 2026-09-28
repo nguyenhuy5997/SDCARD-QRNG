@@ -297,11 +297,25 @@ cmd_protocol_status_t command_protocol_register_media(cmd_protocol_media_handler
 #define CMD_PROTO_TX_CHUNK 4000u
 static uint8_t s_tx_chunk[2][CMD_PROTO_TX_CHUNK] __attribute__((aligned(32)));
 
+/* Set when a wait for the previous IN transfer timed out: the host has stopped reading. Until that transfer
+ * completes, later frames are dropped at once instead of each waiting 300 ms again -- a single poll can hold
+ * hundreds of queued requests, and 300 ms per reply kept the main loop away from the IWDG refresh for > 32 s
+ * (2026-09-28, calls on the V8Y board ended in an IWDG reset). Cleared by the first wait that succeeds. */
+static bool s_tx_stalled;
+
+/** Wait for the previous transfer (not at all while the host is known to have stopped reading). */
+static bool tx_wait_ready(void)
+{
+    const bool ok = platform_usb_wait_tx_ready(s_tx_stalled ? 0U : 300U) == PLATFORM_OK;
+    s_tx_stalled = !ok;
+    return ok;
+}
+
 /** Wait for the previous transfer, then start sending `len` bytes of
  *  s_tx_chunk[which]. False = the frame cannot be completed. */
 static bool tx_chunk_flush(uint32_t which, uint32_t len)
 {
-    if (platform_usb_wait_tx_ready(300U) != PLATFORM_OK) {
+    if (!tx_wait_ready()) {
         return false;
     }
     return platform_usb_transmit(s_tx_chunk[which], len, 100U) == PLATFORM_OK;
@@ -315,7 +329,7 @@ static void send_frame(const uint8_t *body, uint16_t body_len)
 
     /* The previous frame's last chunk may still be in flight in EITHER
      * buffer -- wait before writing the first byte of this one. */
-    if (platform_usb_wait_tx_ready(300U) != PLATFORM_OK) {
+    if (!tx_wait_ready()) {
         return; /* previous transfer still in flight after waiting -- drop this one rather than corrupt it */
     }
 
