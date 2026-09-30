@@ -1,4 +1,0 @@
-../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/indcpa.c:157:6:PQCLEAN_MLKEM768_CLEAN_gen_matrix	568	static
-../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/indcpa.c:198:6:PQCLEAN_MLKEM768_CLEAN_indcpa_keypair_derand	9304	static
-../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/indcpa.c:254:6:PQCLEAN_MLKEM768_CLEAN_indcpa_enc	12344	static
-../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/indcpa.c:310:6:PQCLEAN_MLKEM768_CLEAN_indcpa_dec	4112	static

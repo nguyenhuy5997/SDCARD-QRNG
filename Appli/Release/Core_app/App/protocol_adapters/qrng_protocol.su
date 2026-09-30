@@ -1,3 +1,0 @@
-../Core_app/App/protocol_adapters/qrng_protocol.c:107:6:qrng_protocol_handler	88	static
-../Core_app/App/protocol_adapters/qrng_protocol.c:416:6:qrng_protocol_is_streaming	0	static
-../Core_app/App/protocol_adapters/qrng_protocol.c:425:6:qrng_protocol_poll	32	static

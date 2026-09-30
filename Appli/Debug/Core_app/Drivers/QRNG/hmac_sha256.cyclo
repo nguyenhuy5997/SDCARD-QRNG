@@ -1,3 +1,0 @@
-../Core_app/Drivers/QRNG/hmac_sha256.c:14:6:hmac_sha256_init	1
-../Core_app/Drivers/QRNG/hmac_sha256.c:20:6:hmac_sha256_set_key	1
-../Core_app/Drivers/QRNG/hmac_sha256.c:26:6:hmac_sha256_extractor	1

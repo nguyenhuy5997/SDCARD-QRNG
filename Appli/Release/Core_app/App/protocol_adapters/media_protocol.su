@@ -1,3 +1,0 @@
-../Core_app/App/protocol_adapters/media_protocol.c:286:6:media_protocol_init	0	static
-../Core_app/App/protocol_adapters/media_protocol.c:1128:6:media_protocol_handler	128	static
-../Core_app/App/protocol_adapters/media_protocol.c:1138:6:media_protocol_poll	24	static

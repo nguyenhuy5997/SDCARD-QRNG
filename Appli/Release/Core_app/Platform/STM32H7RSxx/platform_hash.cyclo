@@ -1,3 +1,0 @@
-../Core_app/Platform/STM32H7RSxx/platform_hash.c:49:19:platform_hash_init	3
-../Core_app/Platform/STM32H7RSxx/platform_hash.c:65:19:platform_hmac_sha256	5
-../Core_app/Platform/STM32H7RSxx/platform_hash.c:90:19:platform_sha256	5

@@ -33,5 +33,26 @@
     "not_before": 1790613059,
     "not_after": 2105973119,
     "status": "good"
+  },
+  {
+    "serial": "357D9A5B2A6C242848BD91F0952ED21C",
+    "device_id": "0400500182A9379B68ADDE04494612482590",
+    "not_before": 1790737638,
+    "not_after": 2106097698,
+    "status": "good"
+  },
+  {
+    "serial": "2F1379AFE76A2DDF6D2005F9B27F2D26",
+    "device_id": "0400500118CDF7D59818B804494812482590",
+    "not_before": 1790743581,
+    "not_after": 2106103641,
+    "status": "good"
+  },
+  {
+    "serial": "07D0C92D0711D7B88AE4AD73C271B1E7",
+    "device_id": "040050010C78B4C1D7957504494412482590",
+    "not_before": 1790755112,
+    "not_after": 2106115172,
+    "status": "good"
   }
 ]

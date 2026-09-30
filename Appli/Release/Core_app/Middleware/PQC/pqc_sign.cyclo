@@ -1,9 +1,0 @@
-../Core_app/Middleware/PQC/pqc_sign.c:148:13:verify_trampoline	4
-../Core_app/Middleware/PQC/pqc_sign.c:63:13:keygen_trampoline	4
-../Core_app/Middleware/PQC/pqc_sign.c:103:13:sign_trampoline	4
-../Core_app/Middleware/PQC/pqc_sign.c:23:8:pqc_sign_publickey_bytes	2
-../Core_app/Middleware/PQC/pqc_sign.c:33:8:pqc_sign_secretkey_bytes	2
-../Core_app/Middleware/PQC/pqc_sign.c:43:8:pqc_sign_max_signature_bytes	2
-../Core_app/Middleware/PQC/pqc_sign.c:78:6:pqc_sign_keygen_from_seed	2
-../Core_app/Middleware/PQC/pqc_sign.c:123:6:pqc_sign_sign	2
-../Core_app/Middleware/PQC/pqc_sign.c:168:6:pqc_sign_verify	2

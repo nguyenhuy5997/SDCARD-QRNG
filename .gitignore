@@ -4,3 +4,15 @@
 # rewritten by STM32CubeIDE on every (headless) build
 .settings/language.settings.xml
 */.settings/language.settings.xml
+
+# build outputs (STM32CubeIDE Debug/Release configurations)
+Appli/Debug/
+Appli/Release/
+Boot/Debug/
+Boot/Release/
+ExtMemLoader/Debug/
+ExtMemLoader/Release/
+
+# QRNG captures (raw ADC / conditioned data, GBs)
+captures/
+Tools/captures/

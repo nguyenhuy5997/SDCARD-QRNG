@@ -198,12 +198,39 @@ void qrng_service_get_init_diag(qrng_init_diag_t *out);
 /** Raw ADC samples of the noise source, NO health test (bring-up/analysis of the analog front end). If the service
  *  is not running, powers the analog front end (same sequence as qrng_service_init()), waits 3 s to settle and
  *  starts the ADC; it stays on for later captures until qrng_service_raw_stop(). Copies one fresh half-buffer:
- *  `n` must be QRNG_RAW_CAPTURE_SAMPLES consecutive 12-bit samples at the ADC rate. */
+ *  `n` must be QRNG_RAW_CAPTURE_SAMPLES consecutive 12-bit samples at the ADC rate.
+ *  power_analog = false starts only the ADC and leaves the front end as it is (switched by
+ *  qrng_service_analog_set()), with no settle wait. It only matters for the call that starts the ADC. */
 #define QRNG_RAW_CAPTURE_SAMPLES 1024U
-qrng_status_t qrng_service_raw_capture(uint16_t *out, size_t n);
+qrng_status_t qrng_service_raw_capture(uint16_t *out, size_t n, bool power_analog);
 
 /** Stops what qrng_service_raw_capture() started (ADC, analog front end); no effect while the service itself runs. */
 qrng_status_t qrng_service_raw_stop(void);
+
+/** Manual control of the analog front end, one element at a time (bring-up only). Refused with QRNG_ERROR while
+ *  the QRNG service runs (qrng_service_is_ready()): it owns the front end then. No ordering is enforced -- the
+ *  caller chooses the sequence. qrng_service_raw_stop() and a later qrng_service_init() switch everything off/on
+ *  again with the normal sequence. */
+typedef enum {
+    QRNG_ANALOG_PS_FIRST  = 0, /* BOARD_PS_FIRST_STAGE_EN_GPIO */
+    QRNG_ANALOG_PS_SECOND = 1, /* BOARD_PS_SECOND_STAGE_EN_GPIO */
+    QRNG_ANALOG_LED       = 2, /* BOARD_LED_EN_GPIO */
+    QRNG_ANALOG_AD5398    = 3, /* on = BOARD_QRNG_DRIVE_CURRENT_UA + enable bit (read back), off = enable bit 0 + PD pin high */
+    QRNG_ANALOG_COUNT
+} qrng_analog_elem_t;
+qrng_status_t qrng_service_analog_set(qrng_analog_elem_t elem, bool on);
+
+/** AD5398 current for manual control (bring-up). Stored as the value qrng_service_analog_set(QRNG_ANALOG_AD5398,
+ *  true) uses; applied at once if the AD5398 is on. QRNG_INVALID_PARAM above QRNG_ANALOG_AD5398_MAX_UA, QRNG_ERROR
+ *  while the QRNG service runs. The service's own power-up still uses BOARD_QRNG_DRIVE_CURRENT_UA. */
+#define QRNG_ANALOG_AD5398_MAX_UA 30000U
+qrng_status_t qrng_service_analog_set_ad5398_ua(uint32_t ua);
+uint32_t qrng_service_analog_get_ad5398_setpoint_ua(void);
+
+/** Current state, read back from the hardware: bit n = element n (qrng_analog_elem_t) is on. The AD5398 counts as
+ *  on when its PD pin is low and its register has the enable bit (15) set; `ad5398_ua` (may be NULL) gets the
+ *  programmed current, 0 if the chip cannot be read. */
+uint8_t qrng_service_analog_state(uint32_t *ad5398_ua);
 
 #if EVT2_DIAGNOSTICS /* self-tests, benchmarks and diagnostics -- dev/QA only, see Core/Src/main.c */
 

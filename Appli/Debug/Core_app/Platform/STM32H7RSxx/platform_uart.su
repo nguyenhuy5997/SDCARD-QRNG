@@ -1,9 +1,0 @@
-../Core_app/Platform/STM32H7RSxx/platform_uart.c:233:19:platform_uart_init	0	static
-../Core_app/Platform/STM32H7RSxx/platform_uart.c:234:19:platform_uart_deinit	0	static
-../Core_app/Platform/STM32H7RSxx/platform_uart.c:235:19:platform_uart_transmit	0	static
-../Core_app/Platform/STM32H7RSxx/platform_uart.c:240:19:platform_uart_receive	0	static
-../Core_app/Platform/STM32H7RSxx/platform_uart.c:245:19:platform_uart_start_rx_stream	0	static
-../Core_app/Platform/STM32H7RSxx/platform_uart.c:250:19:platform_uart_stop_rx_stream	0	static
-../Core_app/Platform/STM32H7RSxx/platform_uart.c:251:10:platform_uart_rx_stream_pos	0	static
-../Core_app/Platform/STM32H7RSxx/platform_uart.c:252:19:platform_uart_transmit_dma	0	static
-../Core_app/Platform/STM32H7RSxx/platform_uart.c:257:6:platform_uart_dma_tx_busy	0	static

@@ -1,2 +1,0 @@
-../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/reduce.c:16:9:PQCLEAN_MLKEM768_CLEAN_montgomery_reduce	0	static
-../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/reduce.c:34:9:PQCLEAN_MLKEM768_CLEAN_barrett_reduce	0	static

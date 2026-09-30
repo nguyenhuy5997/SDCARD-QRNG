@@ -1,5 +1,0 @@
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/ax_reset_stm32h7.c:10:6:axReset_PowerUp	1
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/ax_reset_stm32h7.c:15:6:axReset_PowerDown	1
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/ax_reset_stm32h7.c:20:6:axReset_ResetPulseDUT	1
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/ax_reset_stm32h7.c:27:6:axReset_HostConfigure	1
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/ax_reset_stm32h7.c:35:6:axReset_HostUnconfigure	1

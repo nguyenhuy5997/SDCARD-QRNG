@@ -1,4 +1,0 @@
-../Core_app/App/app_power.c:35:13:app_power_nothing_pending	3
-../Core_app/App/app_power.c:40:6:app_power_init	1
-../Core_app/App/app_power.c:78:6:app_power_get_status	1
-../Core_app/App/app_power.c:86:6:app_power_idle	9

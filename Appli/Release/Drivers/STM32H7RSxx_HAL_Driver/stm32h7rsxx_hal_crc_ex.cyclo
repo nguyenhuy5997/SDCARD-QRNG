@@ -1,3 +1,0 @@
-D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_crc_ex.c:89:19:HAL_CRCEx_Polynomial_Set	12
-D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_crc_ex.c:168:19:HAL_CRCEx_Input_Data_Reverse	1
-D:/Workspace/SDQRNG_V8Y/Drivers/STM32H7RSxx_HAL_Driver/Src/stm32h7rsxx_hal_crc_ex.c:194:19:HAL_CRCEx_Output_Data_Reverse	1

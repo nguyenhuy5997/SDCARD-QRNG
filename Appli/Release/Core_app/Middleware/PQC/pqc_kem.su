@@ -1,6 +1,0 @@
-../Core_app/Middleware/PQC/pqc_kem.c:25:13:kem_keygen_trampoline	8	static
-../Core_app/Middleware/PQC/pqc_kem.c:45:13:kem_enc_trampoline	8	static
-../Core_app/Middleware/PQC/pqc_kem.c:66:13:kem_dec_trampoline	8	static
-../Core_app/Middleware/PQC/pqc_kem.c:31:6:pqc_kem_keygen	24	static
-../Core_app/Middleware/PQC/pqc_kem.c:51:6:pqc_kem_encapsulate	24	static
-../Core_app/Middleware/PQC/pqc_kem.c:72:6:pqc_kem_decapsulate	24	static

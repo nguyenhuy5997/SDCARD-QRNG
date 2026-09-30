@@ -1,2 +1,0 @@
-../Core_app/App/protocol_adapters/qrng_protocol.c:100:6:qrng_protocol_handler	17
-../Core_app/App/protocol_adapters/qrng_protocol.c:324:6:qrng_protocol_poll	4

@@ -10,7 +10,9 @@
 #define AD5398_I2C_ADDR        (0x0CU << 1)
 #define AD5398_I2C_TIMEOUT_MS  100U
 
-#define AD5398_PD_BIT          0x8000U
+/* Bit 15 ENABLES the current sink: 1 = output on, 0 = output off (same as the Linux regulator driver,
+ * drivers/regulator/ad5398.c, AD5398_CURRENT_EN_MASK). It is NOT a power-down bit. */
+#define AD5398_CURRENT_EN_BIT  0x8000U
 #define AD5398_CODE_SHIFT      4U
 #define AD5398_CODE_MAX        0x3FFU
 #define AD5398_CODE_MASK       (AD5398_CODE_MAX << AD5398_CODE_SHIFT)
@@ -79,7 +81,7 @@ platform_status_t ad5398_set_current_ua(uint32_t current_ua)
     if (code > AD5398_CODE_MAX) {
         code = AD5398_CODE_MAX;
     }
-    uint16_t reg = (uint16_t)(code << AD5398_CODE_SHIFT); /* PD bit 0: output on */
+    uint16_t reg = (uint16_t)(AD5398_CURRENT_EN_BIT | (code << AD5398_CODE_SHIFT)); /* enable bit 1: output on */
 
     /* Release the PD pin too, in case ad5398_power_down() raised it earlier. */
     platform_status_t st = platform_gpio_write(BOARD_AD5398_PD_GPIO, false);
@@ -95,7 +97,7 @@ platform_status_t ad5398_set_current_ua(uint32_t current_ua)
     if (st != PLATFORM_OK) {
         return st;
     }
-    return ((readback & (AD5398_PD_BIT | AD5398_CODE_MASK)) == reg) ? PLATFORM_OK : PLATFORM_ERROR;
+    return ((readback & (AD5398_CURRENT_EN_BIT | AD5398_CODE_MASK)) == reg) ? PLATFORM_OK : PLATFORM_ERROR;
 }
 
 platform_status_t ad5398_get_current_ua(uint32_t *current_ua, bool *enabled)
@@ -112,7 +114,7 @@ platform_status_t ad5398_get_current_ua(uint32_t *current_ua, bool *enabled)
         *current_ua = ad5398_code_to_ua(reg);
     }
     if (enabled != NULL) {
-        *enabled = (reg & AD5398_PD_BIT) == 0U;
+        *enabled = (reg & AD5398_CURRENT_EN_BIT) != 0U;
     }
     return PLATFORM_OK;
 }
@@ -124,7 +126,7 @@ platform_status_t ad5398_power_down(void)
         uint16_t reg = 0U;
         st = ad5398_read_reg(&reg);
         if (st == PLATFORM_OK) {
-            st = ad5398_write_reg((uint16_t)(reg | AD5398_PD_BIT));
+            st = ad5398_write_reg((uint16_t)(reg & (uint16_t)~AD5398_CURRENT_EN_BIT)); /* enable bit 0: off */
         }
     }
     /* Pin as well, so the output is off even if the bus write failed. */

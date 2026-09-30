@@ -1,7 +1,0 @@
-../Core_app/App/protocol_adapters/ca_protocol.c:248:13:end_session	3
-../Core_app/App/protocol_adapters/ca_protocol.c:516:13:se052f_verify	5
-../Core_app/App/protocol_adapters/ca_protocol.c:415:15:build_msg	6
-../Core_app/App/protocol_adapters/ca_protocol.c:375:13:hkdf_sha256_extract_expand_32.constprop	2
-../Core_app/App/protocol_adapters/ca_protocol.c:313:13:read_kem_ext.constprop	10
-../Core_app/App/protocol_adapters/ca_protocol.c:213:6:ca_protocol_get_session_keys	2
-../Core_app/App/protocol_adapters/ca_protocol.c:552:6:ca_protocol_handler	128

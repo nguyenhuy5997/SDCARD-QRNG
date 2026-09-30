@@ -1,2 +1,0 @@
-../Core_app/Middleware/PQC/pqc_randombytes.c:18:6:pqc_randombytes_pin_next	1
-../Core_app/Middleware/PQC/pqc_randombytes.c:24:5:randombytes	3

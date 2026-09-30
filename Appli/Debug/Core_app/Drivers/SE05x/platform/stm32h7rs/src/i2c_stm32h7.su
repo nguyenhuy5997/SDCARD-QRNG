@@ -1,4 +1,0 @@
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/i2c_stm32h7.c:22:13:axI2CInit	8	static
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/i2c_stm32h7.c:40:6:axI2CTerm	0	static
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/i2c_stm32h7.c:46:13:axI2CWrite	16	static
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/i2c_stm32h7.c:61:13:axI2CRead	16	static

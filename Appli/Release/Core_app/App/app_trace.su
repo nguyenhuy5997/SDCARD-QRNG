@@ -1,6 +1,0 @@
-../Core_app/App/app_trace.c:26:6:app_trace_boot	16	static
-../Core_app/App/app_trace.c:80:6:app_trace_loop	8	static
-../Core_app/App/app_trace.c:88:6:command_protocol_trace_hook	0	static
-../Core_app/App/app_trace.c:93:6:platform_i2c_trace_hook	0	static
-../Core_app/App/app_trace.c:100:6:app_trace_fault_c	0	static,ignoring_inline_asm
-../Core_app/App/app_trace.c:119:6:app_trace_fault_entry	0	static,ignoring_inline_asm

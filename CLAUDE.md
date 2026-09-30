@@ -327,4 +327,86 @@ This project is NOT in git. The full handoff (what was ported, verified results,
   20 mA (register read back), BOARD_QRNG_POWERUP_STEP_MS (10 ms) after each step; qrng_analog_power_off() is the
   reverse (current first) and runs on every init failure after power-on and in qrng_service_deinit(). Boot and the
   loader still drive the enables low (and the AD5398 PD pin high) at reset. Built, NOT flashed yet.
-
+- 2026-09-29: QRNG ADC at exactly 1.0 MS/s (TIM1 period 79 -> 119: 120 MHz / 120; .ioc + main.c + board.h), measured
+  on the chip 0.9985-0.9993 MS/s (HSI tolerance). New Tools/adc_stream.py: RAW_CAPTURE (0x13) blocks -> CSV file (--samples
+  N, --out FILE.csv: block,index,adc,volts) with a live matplotlib plot (newest block + histogram). 2 MB/s raw does not fit USB
+  Full Speed: blocks of 1024 contiguous samples with gaps; pipelined requests reach ~340 kS/s (depth 2-4; depth 8 lost
+  a reply -> capped at 4). Flashed and run on the board (1M samples OK). The signal is still the rail-to-rail square
+  wave (min 0, max ~4017): analog hardware problem, not firmware.
+- Build pitfalls hit again: headless build.bat rewrites Appli/.project without its links (restore it from git and
+  delete %TEMP%\evt2_v8y_ws), and committed Release .d files still name D:/Workspace/SDQRNG_V8Y (delete the stale
+  .d/.o). build.bat can print "done" after a FAILED build (its check also matches the clean step's "0 errors").
+- ADC reference (schematic, 2026-09-29): VREFP (U10) = net VREF_2V5 from an EXTERNAL 2.5 V reference IC (100 nF +
+  1 uF to GND), VREFM/VSSA to GND. So 1 LSB = 2.5 V / 4096 (tools adc_stream.py/adc_scope.py use VREF = 2.5).
+  The internal VREFBUF must stay OFF (external-reference mode): the firmware never touches it -- keep it that way.
+- 2026-09-29: manual analog front-end control for bring-up: QRNG_CMD_ANALOG_CTRL 0x15 ([elem 0..3 | 0xFF query]
+  [on]) -> [status][state bits read back from the pins/AD5398][ad5398_ua]; qrng_service_analog_set()/_state(),
+  refused while the QRNG service runs. RAW_CAPTURE payload[1] bit0 = start the ADC WITHOUT powering the front end.
+  RAW_STOP now always powers the front end off (also after manual switching). Tools/adc_stream.py: 4 toggle buttons
+  in the live window, --manual starts with everything off; the view stays live after the CSV is complete.
+  Flashed + tested on the board. ADC2 (PA5) per front-end state, one element switched on at a time in this order:
+  all off = mean 1131 std 253 (1024..2815, floating-like); +PS_FIRST = 4095 flat (saturated, >= 2.5 V);
+  +PS_SECOND = 4095 flat; +LED_EN = ~4014 flat (std 0.6, ~2.45 V); +AD5398 20 mA = 0 flat. No noise in any state:
+  the front end swings between the rails -- a hardware (bias/gain) problem to look at with a scope.
+- 2026-09-29 AD5398 BIT 15 WAS INVERTED (fixed): bit 15 is CURRENT ENABLE (1 = sink on, 0 = off), as in the Linux
+  regulator driver (AD5398_CURRENT_EN_MASK 0x8000) -- confirmed by the user. ad5398.c now: set_current_ua() writes
+  0x8000 | code<<4, power_down() clears bit 15 + PD pin HIGH, get_current_ua() enabled = bit 15 set. The PD pin
+  (PO2, datasheet 'PD: asynchronous power-down', no overbar -> active HIGH) was right. Every earlier 'AD5398 on'
+  measurement (incl. the per-state table above) was taken with the sink actually OFF; the old 'off' states were
+  still off thanks to the PD pin. With the fixed driver the QRNG startup health check PASSES at boot (buffer
+  1784..2408, noise-like), so the service owns the front end; ANALOG_CTRL element 0xFE = release
+  (qrng_service_deinit()), state bit 7 = service owns the front end; adc_stream.py releases it automatically.
+  Manual steps ~60 ms apart, measured right after each: all off ~1244; +PS_FIRST 4095; +PS_SECOND mostly 0;
+  +LED_EN 0; +AD5398 (real 20 mA) 0..4015 swinging -- probably not settled yet (the service waits 3 s).
+- 2026-09-29 AD5398 setpoint for manual control: ANALOG_CTRL element 0xFD + u32 uA (max QRNG_ANALOG_AD5398_MAX_UA =
+  30 mA, refused above; applied at once if the AD5398 is on), reply now also carries the setpoint (11 bytes).
+  The manual ON value defaults to 8 mA (user's choice); the service's own power-up still uses 20 mA.
+  adc_stream.py: slider 0..30 mA (117 uA steps), AC RMS (block mean removed) per block and accumulated per state,
+  per-block Hann FFT averaged per state; each finished state's RMS is printed on the console.
+  Measured (PS_FIRST+PS_SECOND+LED_EN on, 3.5 s settle each, 60 blocks): AC RMS 113.9 / 114.0 / 114.4 / 115.3 /
+  113.4 LSB at 0 / 5 / 10 / 20 / 30 mA, 115.7 LSB with the AD5398 off -- the AD5398 current has NO visible effect
+  on the ADC signal (register read back correct each time). Hardware question: is the AD5398 output really in the
+  LED current path? Check the LED current / AD5398 output pin voltage with a meter while moving the slider.
+- 2026-09-29: QRNG ADC at 2.0 MS/s: TIM1 period 119 -> 59 (120 MHz / 60) and ADC2 sampling time 6.5 -> 2.5 cycles
+  (2.5 + 12.5 = 15 cycles at 33.3 MHz = 0.45 us < 0.5 us; 6.5 cycles = 0.57 us would miss triggers). .ioc + main.c +
+  board.h; adc_stream.py DEFAULT_FS 2e6. Measured on the chip 1.9969 (boot) / 1.9993 MS/s -> no missed triggers.
+  The sampling aperture is now only 75 ns (PA5's source must settle that fast). QRNG startup health check still
+  passes at boot (buffer 1701..2334). AC RMS with the full default power-up ~113 LSB (same as at 1 MS/s).
+  FFT now covers 0..1 MHz, 1.95 kHz resolution; USB still carries only ~200-340 kS/s (~10-17 % of the samples).
+- adc_stream.py shows RMS in mV (LSB in brackets) and runs the firmware's RCT/APT health test on every block on the
+  PC (health_check(), a line-by-line copy of entropy.c; RAW_CAPTURE itself has no health test): newest block
+  PASS/FAIL (with the failing sample and test) and PASS % per state. Note: with IDEAL Gaussian noise of sigma
+  113 LSB (synthetic) only ~67 % of the blocks pass -- APT cutoff 4 in a 512 window is too strict for a 12-bit ADC
+  (it was set for the 16-bit H753 ADC); re-derive RCT/APT cutoffs from the measured min-entropy (SP 800-90B 4.4).
+- adc_stream.py throughput (2026-09-29): the bare USB link does 511 kS/s at depth 2 (~1.03 MB/s = USB Full Speed
+  limit, 2 ms per 2 KB block). The tool only reached ~200-340 kS/s because the PC was the bottleneck: live plot
+  ~55 ms x 10/s (55 % of the time, USB idle meanwhile), CSV text formatting 1.3 ms/block, per-byte frame decoding
+  0.29 ms/block. Now: capture in its own thread (CaptureThread; front-end commands queued to it), FastDevice
+  (split on 0x7E + bytes un-escape, checked identical to FrameDecoder), CSV written once at the end (~4.3 s per
+  1M samples). Measured on the board: 505 kS/s headless, 515-521 kS/s with the live plot.
+  Real board data at 2 MS/s: health PASS only 67.8-69.2 % of the blocks, almost all failures APT -- the same rate
+  as synthetic ideal Gaussian noise of the same RMS (~67 %): the APT cutoff, not the signal, causes them.
+- 2026-09-29 1 GB conditioned QRNG file for dieharder: captures/cond_1GB.bin (+ .seeds). Firmware RAW_CAPTURE packed
+  12-bit mode (flag bit 1, 2 samples in 3 bytes, MSB-first stream) -> 650 kS/s over USB FS. Tools: raw_capture.py
+  (headless .bin, auto-reconnect), entropy_estimate.py (SP 800-90B MCV + autocorrelation), toeplitz_condition.py
+  (GF(2) Toeplitz, checked with the 10 Microsoft RSS vectors + direct product; os.urandom key, reseed 1000 blocks,
+  --drop-health-fail), qrng_health.py (firmware RCT/APT copy), quick_randtest.py (ent-like checks).
+  Pilot: MCV 7.74 bits/sample, lag-1 autocorrelation +0.45 (lag 2 -0.14, lag 4 +0.08): the 2 MS/s samples are
+  correlated; a 16-tap linear predictor removes 0.47 bits -> ~7.27 bits/sample; chosen 5.5 bits/sample (12288 ->
+  5632 bits per block). Raw: raw_1p46G.bin (810M samples; USB CDC dropped at 55 %, Windows removed COM25 while the
+  firmware kept running -- cause unknown) + raw_part2.bin (1.38G, 0 reconnects). 2,079,656 blocks read, 31.7 %
+  dropped by the health test (APT 633,598, RCT 25,546), 1,420,512 conditioned -> 1e9 bytes, 1421 keys.
+  quick_randtest: monobit p 0.64, byte chi2 254.7 p 0.49, 8.000000 bits/byte, serial corr p 0.74, runs p 0.92,
+  incompressible. dieharder not run here (not installed).
+- 2026-09-30: USB back to HIGH SPEED (.ioc USB_OTG_HS.DeviceSpeed = PCD_SPEED_HIGH, usbd_conf.c Init.speed). The
+  user says the 09-29 EP1 IN TXFE interrupt storm came from hardware noise that is now fixed on the board: no
+  interrupt workaround on purpose (an attempted TXFE guard + TXFELVL was removed at the user's request). FIFOs
+  unchanged (RX 0x200 / TX0 0x40 / TX1 0x80).
+- 2026-09-30 2 GiB conditioned QRNG file for dieharder: captures/cond_2G_0930.bin (+ .seeds, .log). Front end as the
+  user's uncommitted debug firmware leaves it (PS_FIRST+PS_SECOND+LED_EN on, AD5398 not used: power_on skips
+  ad5398_init() so RAW_CAPTURE's own power-up fails with QRNG_ERROR -> raw_capture.py --manual, new option).
+  Transfer 1.846 MS/s (of 1.994 MS/s). raw_2G_0930.bin: 2.55e9 samples, RMS 319 mV, health PASS 99.1 %.
+  Pilot (20M): MCV 10.12 bits/sample, lag-1 r +0.59, AR(16) removes 0.75 -> ~9.37; chosen 7.0 bits/sample
+  (12288 -> 7168 bits per block, ratio 0.583). Toeplitz key reseeded every 1000 CONDITIONED blocks (user's rule;
+  dropped blocks do not count). quick_randtest: monobit p 0.51, byte chi2 p 0.34, serial corr p 0.42, runs p 0.92,
+  incompressible. dieharder not run here.

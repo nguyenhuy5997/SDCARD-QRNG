@@ -1,7 +1,0 @@
-../Core_app/App/app_main.c:106:13:app_random_source	8	static
-../Core_app/App/app_main.c:63:6:app_log	0	static
-../Core_app/App/app_main.c:72:6:app_log_hex	0	static
-../Core_app/App/app_main.c:86:6:app_log_uint	0	static
-../Core_app/App/app_main.c:111:6:app_init	8	static
-../Core_app/App/app_main.c:127:6:app_command_protocol_init	8	static
-../Core_app/App/app_main.c:170:6:app_command_protocol_poll	16	static

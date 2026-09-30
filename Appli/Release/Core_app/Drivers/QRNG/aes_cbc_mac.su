@@ -1,4 +1,0 @@
-../Core_app/Drivers/QRNG/aes_cbc_mac.c:13:6:aes_cbc_mac_init	0	static
-../Core_app/Drivers/QRNG/aes_cbc_mac.c:19:6:aes_cbc_mac_set_key	0	static
-../Core_app/Drivers/QRNG/aes_cbc_mac.c:24:6:aes_cbc_mac_extractor	8	static
-../Core_app/Drivers/QRNG/aes_cbc_mac.c:29:6:aes_cbc_mac_extractor_batch	24	static

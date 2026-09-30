@@ -1,3 +1,0 @@
-../Core_app/Drivers/SE05x/middleware/hostlib/se05x/src/se05x_session_none.c:8:19:pnt_se05x_RawTXn	928	static
-../Core_app/Drivers/SE05x/middleware/hostlib/se05x/src/se05x_session_none.c:62:19:pnt_se05x_TXn	960	static
-../Core_app/Drivers/SE05x/middleware/hostlib/se05x/src/se05x_session_none.c:132:6:Se05x_SessionInit	16	static

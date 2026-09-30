@@ -1,7 +1,0 @@
-D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Loader/STM32Cube/stm32_loader_api.c:186:43:Reset_Handler	1
-D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Loader/STM32Cube/stm32_loader_api.c:275:10:Init	1
-D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Loader/STM32Cube/stm32_loader_api.c:322:28:Write	3
-D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Loader/STM32Cube/stm32_loader_api.c:350:28:MassErase	3
-D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Loader/STM32Cube/stm32_loader_api.c:377:28:SectorErase	3
-D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Loader/STM32Cube/stm32_loader_api.c:220:5:main	6
-D:/Workspace/SDQRNG_V8Y/Middlewares/ST/STM32_ExtMem_Loader/STM32Cube/stm32_loader_api.c:412:28:Verify	15

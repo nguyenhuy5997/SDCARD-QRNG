@@ -1,5 +1,0 @@
-../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/kem.c:25:5:PQCLEAN_MLKEM768_CLEAN_crypto_kem_keypair_derand	16	static
-../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/kem.c:49:5:PQCLEAN_MLKEM768_CLEAN_crypto_kem_keypair	80	static
-../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/kem.c:74:5:PQCLEAN_MLKEM768_CLEAN_crypto_kem_enc_derand	144	static
-../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/kem.c:110:5:PQCLEAN_MLKEM768_CLEAN_crypto_kem_enc	48	static
-../Core_app/Middleware/PQC/pqclean/ml-kem-768-clean/kem.c:136:5:PQCLEAN_MLKEM768_CLEAN_crypto_kem_dec	1264	static

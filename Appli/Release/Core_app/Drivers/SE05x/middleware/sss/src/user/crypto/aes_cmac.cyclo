@@ -1,3 +1,0 @@
-../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes_cmac.c:84:6:block_xor_triple	3
-../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes_cmac.c:91:6:gen_subkey	3
-../Core_app/Drivers/SE05x/middleware/sss/src/user/crypto/aes_cmac.c:25:6:aes_cmac	5

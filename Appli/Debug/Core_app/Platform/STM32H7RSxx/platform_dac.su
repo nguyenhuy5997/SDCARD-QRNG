@@ -1,4 +1,0 @@
-../Core_app/Platform/STM32H7RSxx/platform_dac.c:19:19:platform_dac_init	0	static
-../Core_app/Platform/STM32H7RSxx/platform_dac.c:25:19:platform_dac_start	0	static
-../Core_app/Platform/STM32H7RSxx/platform_dac.c:31:19:platform_dac_stop	0	static
-../Core_app/Platform/STM32H7RSxx/platform_dac.c:37:19:platform_dac_set_value	0	static

@@ -106,9 +106,9 @@ static int s_dbg_attempt_count;
 static void qrng_analog_power_off(void)
 {
     (void)ad5398_power_down();                                        /* drive current off first */
-    (void)platform_gpio_write(BOARD_LED_EN_GPIO, false);
-    (void)platform_gpio_write(BOARD_PS_SECOND_STAGE_EN_GPIO, false);
-    (void)platform_gpio_write(BOARD_PS_FIRST_STAGE_EN_GPIO, false);
+    (void)platform_gpio_write(BOARD_LED_EN_GPIO, true);
+    (void)platform_gpio_write(BOARD_PS_SECOND_STAGE_EN_GPIO, true);
+    (void)platform_gpio_write(BOARD_PS_FIRST_STAGE_EN_GPIO, true);
 }
 
 /** PS_FIRST_STAGE -> PS_SECOND_STAGE -> LED_ENABLE -> AD5398 at BOARD_QRNG_DRIVE_CURRENT_UA (register read back
@@ -120,8 +120,8 @@ static platform_status_t qrng_analog_power_on(void)
         BOARD_PS_SECOND_STAGE_EN_GPIO,
         BOARD_LED_EN_GPIO,
     };
-
-    platform_status_t st = ad5398_init(); /* talks to the chip, keeps the PD pin high: no current yet */
+    platform_status_t st = PLATFORM_OK;
+    // platform_status_t st = ad5398_init(); /* talks to the chip, keeps the PD pin high: no current yet */
     for (size_t i = 0; st == PLATFORM_OK && i < sizeof(order) / sizeof(order[0]); i++) {
         st = platform_gpio_write(order[i], true);
         platform_delay_ms(BOARD_QRNG_POWERUP_STEP_MS);
@@ -130,6 +130,7 @@ static platform_status_t qrng_analog_power_on(void)
         st = ad5398_set_current_ua(BOARD_QRNG_DRIVE_CURRENT_UA);
         platform_delay_ms(BOARD_QRNG_POWERUP_STEP_MS);
     }
+    st == PLATFORM_OK;
     if (st != PLATFORM_OK) {
         qrng_analog_power_off();
     }
@@ -430,16 +431,18 @@ qrng_status_t qrng_service_init(void)
 /* ---- raw capture (analog front-end bring-up) ---- */
 static bool s_raw_running;
 
-qrng_status_t qrng_service_raw_capture(uint16_t *out, size_t n)
+qrng_status_t qrng_service_raw_capture(uint16_t *out, size_t n, bool power_analog)
 {
     if (out == NULL || n != QRNG_RAW_CAPTURE_SAMPLES || n != (QRNG_ADC_SAMPLES / 2U)) {
         return QRNG_INVALID_PARAM;
     }
     if (!s_ready && !s_raw_running) {
-        if (qrng_analog_power_on() != PLATFORM_OK) {
-            return QRNG_ERROR;
+        if (power_analog) {
+            if (qrng_analog_power_on() != PLATFORM_OK) {
+                return QRNG_ERROR;
+            }
+            platform_delay_ms(3000); /* same settle time as qrng_service_init() */
         }
-        platform_delay_ms(3000); /* same settle time as qrng_service_init() */
         if (platform_timer_init(BOARD_ADC_TRIGGER_TIMER) != PLATFORM_OK || platform_adc_init(BOARD_ADC) != PLATFORM_OK) {
             qrng_init_fail_cleanup();
             return QRNG_ERROR;
@@ -463,11 +466,103 @@ qrng_status_t qrng_service_raw_capture(uint16_t *out, size_t n)
 
 qrng_status_t qrng_service_raw_stop(void)
 {
-    if (s_raw_running && !s_ready) {
-        qrng_init_fail_cleanup(); /* ADC + timer stop, analog power-off sequence */
+    if (!s_ready) {
+        /* ADC + timer stop, analog power-off sequence. Also when only qrng_service_analog_set() switched parts on:
+         * the stop command must always leave the front end off. */
+        qrng_init_fail_cleanup();
     }
     s_raw_running = false;
     return QRNG_OK;
+}
+
+/* ---- manual analog front-end control (bring-up) ---- */
+static const platform_gpio_t s_analog_gpio[] = {
+    [QRNG_ANALOG_PS_FIRST] = BOARD_PS_FIRST_STAGE_EN_GPIO,
+    [QRNG_ANALOG_PS_SECOND] = BOARD_PS_SECOND_STAGE_EN_GPIO,
+    [QRNG_ANALOG_LED] = BOARD_LED_EN_GPIO,
+};
+
+/* Current the AD5398 gets when it is switched on manually (qrng_service_analog_set()); 8 mA was the user's choice
+ * (2026-09-29), qrng_service_analog_set_ad5398_ua() changes it. Never above QRNG_ANALOG_AD5398_MAX_UA. */
+static uint32_t s_manual_ad5398_ua = 8000U;
+
+qrng_status_t qrng_service_analog_set_ad5398_ua(uint32_t ua)
+{
+    if (s_ready) {
+        return QRNG_ERROR; /* the running QRNG service owns the front end */
+    }
+    if (ua > QRNG_ANALOG_AD5398_MAX_UA) {
+        return QRNG_INVALID_PARAM;
+    }
+    s_manual_ad5398_ua = ua;
+    uint32_t cur = 0U;
+    bool enabled = false;
+    if (ad5398_get_current_ua(&cur, &enabled) == PLATFORM_OK && enabled &&
+        !platform_gpio_read(BOARD_AD5398_PD_GPIO)) {
+        /* switched on right now: apply the new value at once (register read back by the driver) */
+        return (ad5398_set_current_ua(ua) == PLATFORM_OK) ? QRNG_OK : QRNG_ERROR;
+    }
+    return QRNG_OK; /* switched off: used at the next switch-on */
+}
+
+uint32_t qrng_service_analog_get_ad5398_setpoint_ua(void)
+{
+    return s_manual_ad5398_ua;
+}
+
+qrng_status_t qrng_service_analog_set(qrng_analog_elem_t elem, bool on)
+{
+    if (s_ready) {
+        return QRNG_ERROR; /* the running QRNG service owns the front end */
+    }
+    platform_status_t st;
+    switch (elem) {
+        case QRNG_ANALOG_PS_FIRST:
+        case QRNG_ANALOG_PS_SECOND:
+        case QRNG_ANALOG_LED:
+            st = platform_gpio_write(s_analog_gpio[elem], on);
+            break;
+        case QRNG_ANALOG_AD5398:
+            if (on) {
+                st = ad5398_init();
+                if (st == PLATFORM_OK) {
+                    st = ad5398_set_current_ua(s_manual_ad5398_ua); /* releases PD, reads back */
+                }
+                if (st != PLATFORM_OK) {
+                    (void)ad5398_power_down();
+                }
+            }
+            else {
+                st = ad5398_power_down();
+            }
+            break;
+        default:
+            return QRNG_INVALID_PARAM;
+    }
+    return (st == PLATFORM_OK) ? QRNG_OK : QRNG_ERROR;
+}
+
+uint8_t qrng_service_analog_state(uint32_t *ad5398_ua)
+{
+    uint8_t bits = 0U;
+    for (uint32_t i = 0; i < sizeof(s_analog_gpio) / sizeof(s_analog_gpio[0]); i++) {
+        if (platform_gpio_read(s_analog_gpio[i])) {
+            bits |= (uint8_t)(1U << i);
+        }
+    }
+    uint32_t ua = 0U;
+    bool enabled = false;
+    if (ad5398_get_current_ua(&ua, &enabled) != PLATFORM_OK) { /* fails before ad5398_init(): chip never used */
+        ua = 0U;
+        enabled = false;
+    }
+    if (enabled && !platform_gpio_read(BOARD_AD5398_PD_GPIO)) {
+        bits |= (uint8_t)(1U << QRNG_ANALOG_AD5398);
+    }
+    if (ad5398_ua != NULL) {
+        *ad5398_ua = ua;
+    }
+    return bits;
 }
 
 qrng_status_t qrng_service_measure_adc_rate(uint32_t window_ms, uint32_t *boot_sps, uint32_t *live_sps)

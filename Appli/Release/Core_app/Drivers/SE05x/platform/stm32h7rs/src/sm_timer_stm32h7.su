@@ -1,3 +1,0 @@
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/sm_timer_stm32h7.c:7:10:sm_initSleep	0	static
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/sm_timer_stm32h7.c:12:6:sm_sleep	0	static
-../Core_app/Drivers/SE05x/platform/stm32h7rs/src/sm_timer_stm32h7.c:17:6:sm_usleep	0	static

@@ -1,7 +1,0 @@
-../Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.c:79:19:platform_usb_init	0	static
-../Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.c:99:6:platform_usb_cdc_rx_isr_push	12	static
-../Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.c:121:8:platform_usb_bytes_available	0	static
-../Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.c:128:19:platform_usb_receive	16	static
-../Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.c:143:19:platform_usb_transmit	24	static
-../Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.c:167:19:platform_usb_wait_tx_ready	16	static
-../Core_app/Platform/STM32H7RSxx/platform_usb_stm32lib.c:187:6:platform_usb_is_connected	0	static

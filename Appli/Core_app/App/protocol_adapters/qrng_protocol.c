@@ -71,7 +71,8 @@ typedef enum {
     QRNG_CMD_STREAM_DEBUG_TIMING        = 0x0E, /* -> response: [sub_cmd][status][draw_us_avg:u32][send_us_avg:u32][push_count:u32] -- per-push breakdown of qrng_protocol_poll()'s two stages (see its doc comment); averages reset to 0 after each read, same convention as qrng_service_debug_get_timing() */
     QRNG_CMD_ECHO                       = 0x0F, /* payload[1..]: arbitrary bytes -> response: [sub_cmd][status][payload[1..] echoed back unchanged] -- pure transport-layer loopback, no QRNG involved; exists to test command_protocol.c's large-payload path (CMD_PROTO_MAX_PAYLOAD) end-to-end without any handler's own data-size limits (e.g. the SE05x secure element's one-shot APDU size cap) getting in the way */
     QRNG_CMD_NONCE_POOL_STATUS          = 0x10, /* -> response: [sub_cmd][status][pool_count:u8][pool_capacity:u8][rng_in_pool:u8][last_qrng_draw_ok:u8][qrng_draw_ok:u32][qrng_draw_fail:u32][nonces_from_qrng:u32][nonces_from_rng:u32] -- read-only debug snapshot of media_protocol.c's AES-GCM nonce pool (never any nonce bytes); counters are cumulative since boot, u32 LE */
-    QRNG_CMD_RAW_CAPTURE                = 0x13, /* -> response: [sub_cmd][status][count:u16][count x u16 raw ADC samples] (LE) -- 1024 consecutive samples, NO health test; starts the analog front end + ADC if the service is not running (qrng_service_raw_capture()). Analog bring-up only. */
+    QRNG_CMD_RAW_CAPTURE                = 0x13, /* -> response: [sub_cmd][status][count:u16][count x u16 raw ADC samples] (LE) -- 1024 consecutive samples, NO health test; payload[1] (optional) bit 0 = do not power the front end, bit 1 = packed 12-bit stream (MSB first, 2 samples in 3 bytes, 1536 bytes); starts the analog front end + ADC if the service is not running (qrng_service_raw_capture()). Analog bring-up only. */
+    QRNG_CMD_ANALOG_CTRL                = 0x15, /* payload[1]: element (qrng_analog_elem_t: 0 PS_FIRST, 1 PS_SECOND, 2 LED_EN, 3 AD5398 at BOARD_QRNG_DRIVE_CURRENT_UA; 0xFF or absent = read only, 0xFE = release: stop the QRNG service (qrng_service_deinit(), front end off) so manual control is allowed -- until the next reset the random-number users fall back to the TRNG; 0xFD = AD5398 current setpoint, payload[2..5] = uA u32 LE, max 30 mA, applied at once if on), payload[2]: 0 off / 1 on -> response: [sub_cmd][status][state bits, bit n = element n on, bit 7 = the QRNG service runs and owns the front end][ad5398_ua:u32 LE, programmed code][setpoint_ua:u32 LE] -- manual analog front-end control for bring-up; QRNG_ERROR while the QRNG service runs. */
     QRNG_CMD_RAW_STOP                   = 0x14, /* -> response: [sub_cmd][status] -- stops what RAW_CAPTURE started */
     QRNG_CMD_ADC_RATE                   = 0x12, /* payload[1..2]: window_ms (u16 LE, 1..1000, default 200) -> response: [sub_cmd][status][boot_sps:u32][live_sps:u32][init diag: qrng_init_diag_t fields in order, 32 B] (LE) -- ADC sample rate of the noise source, measured on the chip from the DMA position (qrng_service_measure_adc_rate()). Built in every image. */
     QRNG_CMD_DEVICE_STATUS              = 0x11, /* -> response: [sub_cmd][status][temp_c:i32][temp_max_c:i32][sleep_permille:u32][wfi_per_s:u32][uptime_ms:u32][boot_count:u32][reset_rsr:u32] (LE; the last 3 added later, readers of the first 18 bytes still work) -- die temperature (DTS, deg C; INT32_MIN = no reading) and main-loop sleep share, refreshed once a second by Core_app/App/app_power.c. Not a QRNG function: it lives here with the other device diagnostics (0x10). Built in every image (read-only counters, no secrets). */
@@ -202,21 +203,76 @@ bool qrng_protocol_handler(const uint8_t *payload, uint16_t payload_len, uint8_t
                 return false;
             }
             static uint16_t s_raw[QRNG_RAW_CAPTURE_SAMPLES];
-            const qrng_status_t st = qrng_service_raw_capture(s_raw, n);
+            /* payload[1] (optional) bit 0 = 1: start the ADC without powering the analog front end (manual control
+             * with QRNG_CMD_ANALOG_CTRL). Absent or 0: power it with the normal sequence, as before. */
+            const bool power_analog = !(payload_len >= 2U && (payload[1] & 0x01U) != 0U);
+            /* payload[1] bit 1 = 1: send the 12-bit samples packed as one MSB-first bit stream (sample A's 12 bits,
+             * then B's 12 bits, ...): 2 samples in 3 bytes, the first 16 bits = A[11:0] + B[11:8]. 1536 bytes per
+             * block instead of 2048, i.e. 33 % more samples through the USB Full Speed bottleneck. */
+            const bool packed12 = (payload_len >= 2U && (payload[1] & 0x02U) != 0U);
+            const qrng_status_t st = qrng_service_raw_capture(s_raw, n, power_analog);
             response[1] = (uint8_t)st;
             const uint16_t count = (st == QRNG_OK) ? n : 0U;
             response[2] = (uint8_t)count;
             response[3] = (uint8_t)(count >> 8);
-            for (uint32_t i = 0; i < count; i++) {
-                response[4U + 2U * i] = (uint8_t)s_raw[i];
-                response[5U + 2U * i] = (uint8_t)(s_raw[i] >> 8);
+            if (packed12) {
+                uint8_t *o = &response[4];
+                for (uint32_t i = 0; i + 1U < count; i += 2U) { /* count is even (1024) */
+                    const uint16_t a = s_raw[i] & 0x0FFFU;
+                    const uint16_t b = s_raw[i + 1U] & 0x0FFFU;
+                    *o++ = (uint8_t)(a >> 4);
+                    *o++ = (uint8_t)(((a & 0x0FU) << 4) | (b >> 8));
+                    *o++ = (uint8_t)b;
+                }
+                *response_len = (uint16_t)(4U + (3U * count) / 2U);
             }
-            *response_len = (uint16_t)(4U + 2U * count);
+            else {
+                for (uint32_t i = 0; i < count; i++) {
+                    response[4U + 2U * i] = (uint8_t)s_raw[i];
+                    response[5U + 2U * i] = (uint8_t)(s_raw[i] >> 8);
+                }
+                *response_len = (uint16_t)(4U + 2U * count);
+            }
             return true;
         }
         case QRNG_CMD_RAW_STOP: {
             response[1] = (uint8_t)qrng_service_raw_stop();
             *response_len = 2U;
+            return true;
+        }
+        case QRNG_CMD_ANALOG_CTRL: {
+            if (max_response_len < 11U) {
+                return false;
+            }
+            qrng_status_t st = QRNG_OK;
+            if (payload_len >= 2U && payload[1] == 0xFEU) {
+                st = qrng_service_deinit(); /* release: stop the QRNG service, front end off, manual control allowed */
+            }
+            else if (payload_len >= 2U && payload[1] == 0xFDU) {
+                /* AD5398 current setpoint: payload[2..5] = uA (u32 LE), 0..QRNG_ANALOG_AD5398_MAX_UA (30 mA) */
+                if (payload_len >= 6U) {
+                    const uint32_t set_ua = (uint32_t)payload[2] | ((uint32_t)payload[3] << 8) |
+                                            ((uint32_t)payload[4] << 16) | ((uint32_t)payload[5] << 24);
+                    st = qrng_service_analog_set_ad5398_ua(set_ua);
+                }
+                else {
+                    st = QRNG_INVALID_PARAM;
+                }
+            }
+            else if (payload_len >= 3U && payload[1] != 0xFFU) {
+                st = (payload[1] < (uint8_t)QRNG_ANALOG_COUNT)
+                    ? qrng_service_analog_set((qrng_analog_elem_t)payload[1], payload[2] != 0U)
+                    : QRNG_INVALID_PARAM;
+            }
+            uint32_t ua = 0U;
+            response[1] = (uint8_t)st;
+            response[2] = (uint8_t)(qrng_service_analog_state(&ua) | (qrng_service_is_ready() ? 0x80U : 0x00U));
+            const uint32_t setpoint = qrng_service_analog_get_ad5398_setpoint_ua();
+            for (uint32_t i = 0; i < 4U; i++) {
+                response[3U + i] = (uint8_t)(ua >> (8U * i));
+                response[7U + i] = (uint8_t)(setpoint >> (8U * i));
+            }
+            *response_len = 11U;
             return true;
         }
         case QRNG_CMD_ADC_RATE: {

@@ -27,7 +27,7 @@ QRNG_CMD_RAW_STOP = 0x14
 QRNG_CMD_ADC_RATE = 0x12
 QRNG_CMD_DEVICE_STATUS = 0x11
 ADC_BITS = 12
-VREF = 3.3
+VREF = 2.5  # VREF+ = net VREF_2V5, external 2.5 V reference IC (schematic)
 
 
 def device_status(dev):

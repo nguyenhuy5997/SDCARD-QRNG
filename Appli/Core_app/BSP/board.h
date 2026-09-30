@@ -57,12 +57,14 @@ extern "C" {
 #define BOARD_ADC              PLATFORM_ADC_2  /* logical id only -- the .ioc owns the pin/channel: PA5 = ADC2_INP18
                                                  * (PA5 does not reach ADC1), one conversion per TIM1 TRGO (continuous
                                                  * mode off) + circular GPDMA1 channel 0.
-                                                 * 1.5 MS/s x 12 bit = 18 Mbit/s raw (2026-09-29): TIM1 120 MHz / 80;
-                                                 * ADC clock PLL2P 66.7 MHz / 2 = 33.3 MHz (VOS1 max 36 MHz), 6.5
-                                                 * sampling + 12.5 conversion cycles = 0.57 us < 0.667 us period. */
+                                                 * 2.0 MS/s x 12 bit = 24 Mbit/s raw (2026-09-29, was 1.0 MS/s):
+                                                 * TIM1 120 MHz / 60; ADC clock PLL2P 66.7 MHz / 2 = 33.3 MHz (VOS1
+                                                 * max 36 MHz), 2.5 sampling + 12.5 conversion cycles = 0.45 us < 0.5 us
+                                                 * period (6.5 cycles = 0.57 us would miss triggers). Sampling aperture
+                                                 * only 75 ns: the source driving PA5 must settle that fast. */
 
 /* ---- Timers ---- */
-#define BOARD_ADC_TRIGGER_TIMER PLATFORM_TIMER_1 /* main.h/main.c: htim1, paces BOARD_ADC via TRGO at 1.5 MHz (every
+#define BOARD_ADC_TRIGGER_TIMER PLATFORM_TIMER_1 /* main.h/main.c: htim1, paces BOARD_ADC via TRGO at 2.0 MHz (every
                                                    * sample) -- must be platform_timer_start()-ed for conversions */
 
 /* ---- QRNG analog noise source -- Core_app/Middleware/QRNG/ADC_Noise ----

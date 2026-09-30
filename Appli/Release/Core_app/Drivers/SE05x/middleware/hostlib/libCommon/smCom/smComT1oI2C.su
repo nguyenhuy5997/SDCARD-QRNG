@@ -1,8 +1,0 @@
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smComT1oI2C.c:153:12:smComT1oI2C_TransceiveRaw	24	static
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smComT1oI2C.c:140:12:smComT1oI2C_Transceive	32	static
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smComT1oI2C.c:40:5:smComT1oI2C_Close	8	static
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smComT1oI2C.c:73:5:smComT1oI2C_Init	8	static
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smComT1oI2C.c:91:5:smComT1oI2C_Resume	8	static
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smComT1oI2C.c:109:5:smComT1oI2C_Open	24	static
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smComT1oI2C.c:183:5:smComT1oI2C_AnswerToReset	32	static
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/smCom/smComT1oI2C.c:218:5:smComT1oI2C_ComReset	8	static

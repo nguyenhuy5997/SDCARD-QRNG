@@ -416,7 +416,7 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
 
   hpcd_USB_OTG_HS.Instance = USB_OTG_HS;
   hpcd_USB_OTG_HS.Init.dev_endpoints = 9;
-  hpcd_USB_OTG_HS.Init.speed = PCD_SPEED_FULL;
+  hpcd_USB_OTG_HS.Init.speed = PCD_SPEED_HIGH;
   hpcd_USB_OTG_HS.Init.phy_itface = USB_OTG_HS_EMBEDDED_PHY;
   hpcd_USB_OTG_HS.Init.dma_enable = DISABLE;
   hpcd_USB_OTG_HS.Init.Sof_enable = DISABLE;
@@ -466,13 +466,10 @@ USBD_StatusTypeDef USBD_LL_Init(USBD_HandleTypeDef *pdev)
   HAL_PCDEx_SetRxFiFo(&hpcd_USB_OTG_HS, 0x200);
   HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_HS, 0, 0x40);
   HAL_PCDEx_SetTxFiFo(&hpcd_USB_OTG_HS, 1, 0x80);
-  /* 2026-09-28: the link now runs at FULL SPEED (.ioc USB_OTG_HS.DeviceSpeed = PCD_SPEED_FULL, 64-byte packets).
-   * At high speed, calls failed on this board within 34 s .. 2.5 min: TX1 holds one 512-byte packet, the IN
-   * endpoint's "TX FIFO empty" interrupt fired while less than a packet was free, HAL wrote nothing and left it
-   * enabled -> ~150 000 interrupts/s, main loop starved, IWDG reset. GAHBCFG.TXFELVL = 1 did not stop it, TX1 =
-   * 0x100 broke the IN path (see above), masking TXFE until the next SOF still left the board unresponsive after
-   * ~2.5 min. At full speed a 64-byte packet always fits, and a 4-minute two-PC call ran with no error. Full speed
-   * also draws less power; ~10 Mbit/s is enough for the call (EVT2 ran on FS). */
+  /* 2026-09-30: back to HIGH SPEED (.ioc USB_OTG_HS.DeviceSpeed = PCD_SPEED_HIGH, 512-byte packets). From
+   * 2026-09-28 it ran at full speed because calls failed at high speed with an EP1 IN "TX FIFO empty" interrupt
+   * storm (~150 000/s) and IWDG resets; that came from hardware noise, since fixed on the board (user, 2026-09-30),
+   * so no interrupt workaround is used. */
   /* USER CODE END USB_HS_FIFO_Configuration */
   }
   return USBD_OK;

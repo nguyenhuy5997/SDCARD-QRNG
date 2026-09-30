@@ -1,5 +1,0 @@
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_connect.c:328:5:SM_RjctConnect	1
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_connect.c:465:5:SM_Connect	10
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_connect.c:413:5:SM_I2CConnect	7
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_connect.c:607:5:SM_Close	1
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/infra/sm_connect.c:663:5:SM_SendAPDU	4

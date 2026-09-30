@@ -1,8 +1,0 @@
-../Core_app/Platform/STM32H7RSxx/platform_crypto.c:283:26:aes256_ecb_block	4
-../Core_app/Platform/STM32H7RSxx/platform_crypto.c:398:13:ghash_mul_table.constprop	2
-../Core_app/Platform/STM32H7RSxx/platform_crypto.c:482:26:aes256_gcm_run	69
-../Core_app/Platform/STM32H7RSxx/platform_crypto.c:54:19:platform_crypto_init	3
-../Core_app/Platform/STM32H7RSxx/platform_crypto.c:70:19:platform_aes128_cbc_mac	10
-../Core_app/Platform/STM32H7RSxx/platform_crypto.c:76:19:platform_aes128_cbc_mac_batch	12
-../Core_app/Platform/STM32H7RSxx/platform_crypto.c:611:19:platform_aes256_gcm_encrypt	8
-../Core_app/Platform/STM32H7RSxx/platform_crypto.c:624:19:platform_aes256_gcm_decrypt	9

@@ -1,4 +1,0 @@
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/nxScp/nxScp03_Com.c:88:14:nxSCP03_Encrypt_CommandAPDU	13
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/nxScp/nxScp03_Com.c:135:10:nxpSCP03_Decrypt_ResponseAPDU	32
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/nxScp/nxScp03_Com.c:343:6:nxpSCP03_Inc_CommandCounter	4
-../Core_app/Drivers/SE05x/middleware/hostlib/libCommon/nxScp/nxScp03_Com.c:381:14:nxpSCP03_CalculateMac_CommandAPDU	8

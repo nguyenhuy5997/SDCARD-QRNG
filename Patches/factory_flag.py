@@ -1,6 +1,6 @@
 """factory_flag.py on|off -- add/remove EVT2_FACTORY_PROVISION=1 in the Appli Release C compiler defines (V8Y)."""
 import re, sys
-p = r"D:\Workspace\SDQRNG_V8Y\Appli\.cproject"
+p = r"D:\Workspace\STM32\SDCARD-QRNG\Appli\.cproject"
 t = open(p, "rb").read().decode()
 line = '<listOptionValue builtIn="false" value="EVT2_FACTORY_PROVISION=1"/>'
 t = re.sub(r'\s*' + re.escape(line), "", t)

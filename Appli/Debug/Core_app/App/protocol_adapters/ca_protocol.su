@@ -1,8 +1,0 @@
-../Core_app/App/protocol_adapters/ca_protocol.c:529:13:hex_upper	4	static
-../Core_app/App/protocol_adapters/ca_protocol.c:242:13:end_session	16	static
-../Core_app/App/protocol_adapters/ca_protocol.c:509:13:se052f_verify	40	static
-../Core_app/App/protocol_adapters/ca_protocol.c:408:15:build_msg	32	static
-../Core_app/App/protocol_adapters/ca_protocol.c:368:13:hkdf_sha256_extract_expand_32.constprop	144	static
-../Core_app/App/protocol_adapters/ca_protocol.c:307:13:read_kem_ext.constprop	8	static
-../Core_app/App/protocol_adapters/ca_protocol.c:207:6:ca_protocol_get_session_keys	16	static
-../Core_app/App/protocol_adapters/ca_protocol.c:545:6:ca_protocol_handler	1576	static
